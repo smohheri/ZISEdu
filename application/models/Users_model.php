@@ -5,6 +5,21 @@ class Users_model extends CI_Model
 {
 	protected $table = 'users';
 
+	private function _apply_search($search = '')
+	{
+		$search = trim((string) $search);
+		if ($search === '') {
+			return;
+		}
+
+		$this->db->group_start();
+		$this->db->like('nama_lengkap', $search);
+		$this->db->or_like('username', $search);
+		$this->db->or_like('email', $search);
+		$this->db->or_like('role', $search);
+		$this->db->group_end();
+	}
+
 	public function get_all()
 	{
 		return $this->db
@@ -21,53 +36,22 @@ class Users_model extends CI_Model
 			->row();
 	}
 
-	/**
-	 * Get data for DataTables server-side processing
-	 */
-	public function get_datatables($search = '', $start = 0, $length = 10, $order_column = 'id', $order_dir = 'DESC')
+	public function count_filtered($search = '')
 	{
-		// Build base query
 		$this->db->from($this->table);
+		$this->_apply_search($search);
+		return (int) $this->db->count_all_results();
+	}
 
-		// Search
-		if ($search !== '') {
-			$this->db->group_start();
-			$this->db->like('nama_lengkap', $search);
-			$this->db->or_like('username', $search);
-			$this->db->or_like('email', $search);
-			$this->db->or_like('role', $search);
-			$this->db->group_end();
-		}
-
-		// Total filtered records
-		$total_filtered = $this->db->count_all_results();
-
-		// Get data
+	public function get_paginated($limit, $offset, $search = '')
+	{
 		$this->db->from($this->table);
-
-		// Apply search again
-		if ($search !== '') {
-			$this->db->group_start();
-			$this->db->like('nama_lengkap', $search);
-			$this->db->or_like('username', $search);
-			$this->db->or_like('email', $search);
-			$this->db->or_like('role', $search);
-			$this->db->group_end();
-		}
-
-		$this->db->order_by($order_column, $order_dir);
-		$this->db->limit($length, $start);
-
-		$data = $this->db->get()->result();
-
-		// Total all records
-		$total_all = $this->db->count_all($this->table);
-
-		return array(
-			'total' => $total_all,
-			'total_filtered' => $total_filtered,
-			'data' => $data
-		);
+		$this->_apply_search($search);
+		return $this->db
+			->order_by('id', 'DESC')
+			->limit((int) $limit, (int) $offset)
+			->get()
+			->result();
 	}
 
 	/**

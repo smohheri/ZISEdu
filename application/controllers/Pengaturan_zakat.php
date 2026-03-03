@@ -12,10 +12,28 @@ class Pengaturan_zakat extends CI_Controller
 
     public function index()
     {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->pengaturan->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('pengaturan_zakat'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
+        $latest = $this->pengaturan->get_latest();
         $data = array(
             'page_title' => 'Pengaturan Zakat',
             'content_view' => 'pengaturan_zakat/index',
-            'rows' => $this->pengaturan->get_all()
+            'rows' => $this->pengaturan->get_paginated($paging['limit'], $paging['offset'], $search),
+            'paging_links' => $paging['links'],
+            'paging' => $paging,
+            'search' => $search,
+            'total_pengaturan' => $this->pengaturan->count_all(),
+            'latest_pengaturan' => $latest
         );
 
         $this->load->view('layouts/adminlte', $data);

@@ -12,10 +12,26 @@ class Penyaluran extends CI_Controller
 
     public function index()
     {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->penyaluran->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('penyaluran'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
         $data = array(
             'page_title' => 'Penyaluran',
             'content_view' => 'penyaluran/index',
-            'rows' => $this->penyaluran->get_all()
+            'rows' => $this->penyaluran->get_paginated($paging['limit'], $paging['offset'], $search),
+            'stats' => $this->penyaluran->get_statistics(),
+            'paging' => $paging,
+            'paging_links' => $paging['links'],
+            'search' => $search
         );
 
         $this->load->view('layouts/adminlte', $data);

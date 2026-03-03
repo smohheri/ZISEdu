@@ -5,15 +5,94 @@ class Zakat_mal_model extends CI_Model
 {
 	protected $table = 'zakat_mal';
 
-	public function get_all()
+	private function _base_query()
 	{
 		return $this->db
 			->select('zm.*, m.nama AS nama_muzakki')
 			->from($this->table . ' zm')
-			->join('muzakki m', 'm.id = zm.muzakki_id', 'inner')
+			->join('muzakki m', 'm.id = zm.muzakki_id', 'inner');
+	}
+
+	private function _apply_search($search = '')
+	{
+		$search = trim((string) $search);
+		if ($search === '') {
+			return;
+		}
+
+		$this->db->group_start()
+			->like('zm.nomor_transaksi', $search)
+			->or_like('m.nama', $search)
+			->or_like('zm.status', $search)
+			->group_end();
+	}
+
+	public function get_all()
+	{
+		return $this->_base_query()
 			->order_by('zm.id', 'DESC')
 			->get()
 			->result();
+	}
+
+	public function count_all()
+	{
+		return (int) $this->db->count_all($this->table);
+	}
+
+	public function count_filtered($search = '')
+	{
+		$this->_base_query();
+		$this->_apply_search($search);
+		return (int) $this->db->count_all_results();
+	}
+
+	public function get_paginated($limit, $offset, $search = '')
+	{
+		$this->_base_query();
+		$this->_apply_search($search);
+		return $this->db
+			->order_by('zm.id', 'DESC')
+			->limit((int) $limit, (int) $offset)
+			->get()
+			->result();
+	}
+
+	public function get_statistics()
+	{
+		$stats = array(
+			'total' => $this->count_all(),
+			'lunas' => 0,
+			'draft' => 0,
+			'batal' => 0,
+			'total_zakat' => 0.0,
+			'total_harta_bersih' => 0.0
+		);
+
+		$status_rows = $this->db
+			->select('status, COUNT(*) AS jumlah', FALSE)
+			->from($this->table)
+			->group_by('status')
+			->get()
+			->result();
+		foreach ($status_rows as $item) {
+			$key = (string) $item->status;
+			if (isset($stats[$key])) {
+				$stats[$key] = (int) $item->jumlah;
+			}
+		}
+
+		$sum_row = $this->db
+			->select('COALESCE(SUM(total_zakat),0) AS total_zakat, COALESCE(SUM(harta_bersih),0) AS total_harta_bersih', FALSE)
+			->from($this->table)
+			->get()
+			->row();
+		if ($sum_row) {
+			$stats['total_zakat'] = (float) $sum_row->total_zakat;
+			$stats['total_harta_bersih'] = (float) $sum_row->total_harta_bersih;
+		}
+
+		return $stats;
 	}
 
 	public function get_by_id($id)

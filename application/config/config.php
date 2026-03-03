@@ -23,8 +23,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/zakat/';
+/*
+ * Auto-detect base_url
+ * Mendeteksi protokol (http/https) dan path secara otomatis
+ */
+$host = $_SERVER['HTTP_HOST'];
+$script_name = dirname($_SERVER['SCRIPT_NAME']);
+$script_name = rtrim($script_name, '/\\');
 
+$is_https = (
+	(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+	(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+);
+
+$protocol = $is_https ? 'https://' : 'http://';
+
+$config['base_url'] = $protocol . $host . $script_name . '/';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -530,3 +544,10 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Application Version
+|--------------------------------------------------------------------------
+*/
+$config['app_version'] = 'v1.0.0';

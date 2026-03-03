@@ -12,10 +12,26 @@ class Zakat_fitrah extends CI_Controller
 
     public function index()
     {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->zakat_fitrah->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('zakat_fitrah'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
         $data = array(
             'page_title' => 'Zakat Fitrah',
             'content_view' => 'zakat_fitrah/index',
-            'rows' => $this->zakat_fitrah->get_all()
+            'rows' => $this->zakat_fitrah->get_paginated($paging['limit'], $paging['offset'], $search),
+            'stats' => $this->zakat_fitrah->get_statistics(),
+            'paging' => $paging,
+            'paging_links' => $paging['links'],
+            'search' => $search
         );
 
         $this->load->view('layouts/adminlte', $data);

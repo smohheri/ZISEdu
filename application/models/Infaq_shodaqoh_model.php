@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Penyaluran_model extends CI_Model
+class Infaq_shodaqoh_model extends CI_Model
 {
-    protected $table = 'penyaluran';
+    protected $table = 'infaq_shodaqoh';
 
     private function _apply_search($search = '')
     {
@@ -13,18 +13,11 @@ class Penyaluran_model extends CI_Model
         }
 
         $this->db->group_start()
-            ->like('nomor_penyaluran', $search)
-            ->or_like('jenis_sumber', $search)
+            ->like('nomor_transaksi', $search)
+            ->or_like('nama_donatur', $search)
+            ->or_like('jenis_dana', $search)
             ->or_like('status', $search)
             ->group_end();
-    }
-
-    public function get_all()
-    {
-        return $this->db
-            ->order_by('id', 'DESC')
-            ->get($this->table)
-            ->result();
     }
 
     public function count_all()
@@ -54,12 +47,26 @@ class Penyaluran_model extends CI_Model
     {
         $stats = array(
             'total' => $this->count_all(),
+            'infaq' => 0,
+            'shodaqoh' => 0,
             'draft' => 0,
-            'disalurkan' => 0,
+            'diterima' => 0,
             'batal' => 0,
-            'total_uang' => 0.0,
-            'total_beras' => 0.0
+            'total_nominal' => 0.0
         );
+
+        $jenis_rows = $this->db
+            ->select('jenis_dana, COUNT(*) AS jumlah', FALSE)
+            ->from($this->table)
+            ->group_by('jenis_dana')
+            ->get()
+            ->result();
+        foreach ($jenis_rows as $item) {
+            $key = (string) $item->jenis_dana;
+            if (isset($stats[$key])) {
+                $stats[$key] = (int) $item->jumlah;
+            }
+        }
 
         $status_rows = $this->db
             ->select('status, COUNT(*) AS jumlah', FALSE)
@@ -74,14 +81,14 @@ class Penyaluran_model extends CI_Model
             }
         }
 
-        $sum_row = $this->db
-            ->select('COALESCE(SUM(total_uang),0) AS total_uang, COALESCE(SUM(total_beras_kg),0) AS total_beras', FALSE)
+        $sum = $this->db
+            ->select('COALESCE(SUM(nominal_uang),0) AS total_nominal', FALSE)
             ->from($this->table)
+            ->where('status', 'diterima')
             ->get()
             ->row();
-        if ($sum_row) {
-            $stats['total_uang'] = (float) $sum_row->total_uang;
-            $stats['total_beras'] = (float) $sum_row->total_beras;
+        if ($sum) {
+            $stats['total_nominal'] = (float) $sum->total_nominal;
         }
 
         return $stats;
@@ -93,18 +100,6 @@ class Penyaluran_model extends CI_Model
             ->where('id', (int) $id)
             ->get($this->table)
             ->row();
-    }
-
-    public function get_detail_rows($penyaluranId)
-    {
-        return $this->db
-            ->select('pd.*, m.nama AS nama_mustahik')
-            ->from('penyaluran_detail pd')
-            ->join('mustahik m', 'm.id = pd.mustahik_id', 'left')
-            ->where('pd.penyaluran_id', (int) $penyaluranId)
-            ->order_by('pd.id', 'ASC')
-            ->get()
-            ->result();
     }
 
     public function insert($data)
@@ -126,25 +121,9 @@ class Penyaluran_model extends CI_Model
             ->delete($this->table);
     }
 
-    public function replace_detail_rows($penyaluranId, array $rows)
-    {
-        $this->db->where('penyaluran_id', (int) $penyaluranId)->delete('penyaluran_detail');
-
-        if (empty($rows)) {
-            return TRUE;
-        }
-
-        foreach ($rows as &$row) {
-            $row['penyaluran_id'] = (int) $penyaluranId;
-        }
-        unset($row);
-
-        return $this->db->insert_batch('penyaluran_detail', $rows);
-    }
-
     public function exists_nomor($nomor, $excludeId = NULL)
     {
-        $this->db->from($this->table)->where('nomor_penyaluran', $nomor);
+        $this->db->from($this->table)->where('nomor_transaksi', $nomor);
         if ($excludeId !== NULL) {
             $this->db->where('id !=', (int) $excludeId);
         }
@@ -152,42 +131,24 @@ class Penyaluran_model extends CI_Model
         return $this->db->count_all_results() > 0;
     }
 
-    public function get_mustahik_options()
-    {
-        $rows = $this->db
-            ->select('id, kode_mustahik, nama')
-            ->from('mustahik')
-            ->where('aktif', 1)
-            ->order_by('nama', 'ASC')
-            ->get()
-            ->result();
-
-        $options = array();
-        foreach ($rows as $r) {
-            $options[$r->id] = $r->kode_mustahik . ' - ' . $r->nama;
-        }
-
-        return $options;
-    }
-
     public function generate_next_nomor($date = NULL)
     {
         $date = $date ?: date('Y-m-d');
         $dateToken = date('Ymd', strtotime($date));
-        $prefix = 'PS-' . $dateToken . '-';
+        $prefix = 'IS-' . $dateToken . '-';
 
         $last = $this->db
-            ->select('nomor_penyaluran')
+            ->select('nomor_transaksi')
             ->from($this->table)
-            ->like('nomor_penyaluran', $prefix, 'after')
-            ->order_by('nomor_penyaluran', 'DESC')
+            ->like('nomor_transaksi', $prefix, 'after')
+            ->order_by('nomor_transaksi', 'DESC')
             ->limit(1)
             ->get()
             ->row();
 
         $next = 1;
-        if ($last && isset($last->nomor_penyaluran)) {
-            $parts = explode('-', $last->nomor_penyaluran);
+        if ($last && isset($last->nomor_transaksi)) {
+            $parts = explode('-', $last->nomor_transaksi);
             $suffix = end($parts);
             if (is_numeric($suffix)) {
                 $next = ((int) $suffix) + 1;

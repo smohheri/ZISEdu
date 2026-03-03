@@ -1,6 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
-<!-- Flash Messages -->
 <?php if ($this->session->flashdata('success')): ?>
 	<div class="alert alert-success alert-dismissible fade show" id="alert-success">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -14,7 +13,6 @@
 	</div>
 <?php endif; ?>
 
-<!-- Statistics Cards -->
 <div class="row">
 	<div class="col-lg-3 col-6">
 		<div class="small-box bg-gradient-primary">
@@ -62,7 +60,6 @@
 	</div>
 </div>
 
-<!-- Secondary Stats Row -->
 <div class="row mb-3">
 	<div class="col-md-6">
 		<div class="card border-left-success shadow h-100 py-2">
@@ -96,31 +93,39 @@
 	</div>
 </div>
 
-<!-- Main Card -->
 <div class="card">
-	<div class="card-header d-flex justify-content-between align-items-center">
+	<div class="card-header">
 		<h3 class="card-title mb-0">
 			<i class="fas fa-users mr-2"></i>Data Users / Amil
 		</h3>
-		<a href="<?php echo site_url('users/create'); ?>" class="btn btn-primary btn-sm">
+		<a href="<?php echo site_url('users/create'); ?>" class="btn btn-primary btn-sm float-right">
 			<i class="fas fa-plus"></i> Tambah User
 		</a>
 	</div>
 	<div class="card-body">
-		<!-- Search Box -->
-		<div class="row mb-3">
-			<div class="col-md-6">
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"><i class="fas fa-search"></i></span>
+		<form method="get" action="<?php echo site_url('users'); ?>" class="mb-3">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="input-group input-group-sm">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-search"></i></span>
+						</div>
+						<input type="text" name="q" class="form-control" placeholder="Cari user..."
+							value="<?php echo html_escape(isset($search) ? $search : ''); ?>">
+						<div class="input-group-append">
+							<button type="submit" class="btn btn-primary">
+								<i class="fas fa-search mr-1"></i>Cari
+							</button>
+							<a href="<?php echo site_url('users'); ?>" class="btn btn-default">
+								<i class="fas fa-sync-alt mr-1"></i>Reset
+							</a>
+						</div>
 					</div>
-					<input type="text" id="search-input" class="form-control" placeholder="Cari user...">
 				</div>
 			</div>
-		</div>
+		</form>
 
-		<!-- Table -->
-		<table id="users-table" class="table table-bordered table-striped table-hover" style="width:100%">
+		<table id="users-table" class="table table-sm table-bordered table-striped table-hover" style="width:100%">
 			<thead>
 				<tr>
 					<th width="50">No</th>
@@ -134,17 +139,92 @@
 				</tr>
 			</thead>
 			<tbody>
+				<?php if (!empty($rows)): ?>
+					<?php $no = isset($paging['offset']) ? ((int) $paging['offset'] + 1) : 1; ?>
+					<?php foreach ($rows as $row): ?>
+						<?php
+						$nama = (string) $row->nama_lengkap;
+						$parts = preg_split('/\s+/', trim($nama));
+						$initials = '';
+						foreach ($parts as $part) {
+							if ($part !== '') {
+								$initials .= strtoupper(substr($part, 0, 1));
+							}
+							if (strlen($initials) >= 2) {
+								break;
+							}
+						}
+						if ($initials === '') {
+							$initials = 'U';
+						}
+						$colors = array('#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6c757d', '#6610f2', '#e83e8c');
+						$color = $colors[((int) $row->id) % count($colors)];
+						?>
+						<tr>
+							<td><?php echo $no++; ?></td>
+							<td>
+								<div class="user-avatar d-inline-flex align-items-center">
+									<div class="avatar-circle mr-2" style="background-color: <?php echo $color; ?>">
+										<?php echo html_escape($initials); ?>
+									</div>
+									<span><?php echo html_escape($row->nama_lengkap); ?></span>
+								</div>
+							</td>
+							<td><?php echo html_escape($row->username); ?></td>
+							<td><?php echo html_escape($row->email ? $row->email : '-'); ?></td>
+							<td>
+								<?php if ($row->role === 'super_admin'): ?>
+									<span class="badge badge-danger"><i class="fas fa-shield-alt mr-1"></i>Super Admin</span>
+								<?php elseif ($row->role === 'amil'): ?>
+									<span class="badge badge-info"><i class="fas fa-hands-helping mr-1"></i>Amil</span>
+								<?php else: ?>
+									<span class="badge badge-secondary"><i class="fas fa-cog mr-1"></i>Operator</span>
+								<?php endif; ?>
+							</td>
+							<td>
+								<?php if ((int) $row->is_active === 1): ?>
+									<span class="badge badge-success"><i class="fas fa-check mr-1"></i>Aktif</span>
+								<?php else: ?>
+									<span class="badge badge-danger"><i class="fas fa-times mr-1"></i>Nonaktif</span>
+								<?php endif; ?>
+							</td>
+							<td><?php echo $row->last_login ? html_escape($row->last_login) : '-'; ?></td>
+							<td class="text-center">
+								<div class="btn-group btn-group-sm" role="group" aria-label="Aksi" style="display:inline-flex;">
+									<a class="btn btn-warning" href="<?php echo site_url('users/edit/' . $row->id); ?>" title="Edit">
+										<i class="fas fa-edit"></i>
+									</a>
+									<a class="btn btn-danger delete-btn" href="#"
+										data-id="<?php echo (int) $row->id; ?>"
+										data-name="<?php echo html_escape($row->nama_lengkap); ?>" title="Hapus">
+										<i class="fas fa-trash"></i>
+									</a>
+								</div>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php else: ?>
+					<tr>
+						<td colspan="8" class="text-center text-muted">Belum ada data user.</td>
+					</tr>
+				<?php endif; ?>
 			</tbody>
 		</table>
 
-		<!-- Pagination Info -->
-		<div class="mt-2">
-			<span id="table-info" class="text-muted"></span>
+		<div class="d-flex justify-content-between align-items-center mt-2">
+			<span class="text-muted">
+				<?php
+				$total_rows = isset($paging['total_rows']) ? (int) $paging['total_rows'] : 0;
+				$offset = isset($paging['offset']) ? (int) $paging['offset'] : 0;
+				$shown = !empty($rows) ? count($rows) : 0;
+				echo 'Menampilkan ' . ($shown > 0 ? ($offset + 1) : 0) . ' - ' . ($offset + $shown) . ' dari ' . $total_rows . ' data';
+				?>
+			</span>
+			<div><?php echo isset($paging_links) ? $paging_links : ''; ?></div>
 		</div>
 	</div>
 </div>
 
-<!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 	aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -173,137 +253,8 @@
 	</div>
 </div>
 
-<!-- DataTables CSS & JS -->
-<link rel="stylesheet"
-	href="<?php echo base_url('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'); ?>">
-<script src="<?php echo base_url('adminlte/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
-<script src="<?php echo base_url('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'); ?>"></script>
-
 <script>
 	$(document).ready(function () {
-		// Get CSRF token name and hash
-		var csrfName = '<?php echo $this->security->get_csrf_token_name(); ?>';
-		var csrfHash = '<?php echo $this->security->get_csrf_hash(); ?>';
-
-		// Initialize DataTable
-		var table = $('#users-table').DataTable({
-			processing: true,
-			serverSide: true,
-			ajax: {
-				url: '<?php echo site_url('users/ajax_list'); ?>',
-				type: 'POST',
-				data: function (d) {
-					d.search = $('#search-input').val();
-					d[csrfName] = csrfHash;
-				},
-				dataSrc: function (json) {
-					// Update CSRF token after each request
-					if (json.csrf_hash) {
-						csrfHash = json.csrf_hash;
-					}
-					return json.data;
-				},
-				error: function (xhr, error, thrown) {
-					console.log('Ajax Error:', xhr.responseText);
-					alert('Error loading data: ' + thrown);
-				}
-			},
-			columns: [
-				{
-					data: null,
-					render: function (data, type, row, meta) {
-						return meta.row + meta.settings._iDisplayStart + 1;
-					},
-					orderable: false,
-					searchable: false
-				},
-				{
-					data: 'nama_lengkap',
-					render: function (data, type, row) {
-						// Create avatar with initials
-						var initials = data.split(' ').map(function (n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
-						var colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6c757d', '#6610f2', '#e83e8c'];
-						var colorIndex = row.id % colors.length;
-
-						return '<div class="user-avatar d-inline-flex align-items-center">' +
-							'<div class="avatar-circle mr-2" style="background-color: ' + colors[colorIndex] + '">' +
-							initials + '</div>' +
-							'<span>' + data + '</span></div>';
-					}
-				},
-				{ data: 'username' },
-				{ data: 'email' },
-				{
-					data: 'role',
-					render: function (data) {
-						var badges = {
-							'super_admin': '<span class="badge badge-danger"><i class="fas fa-shield-alt mr-1"></i>Super Admin</span>',
-							'amil': '<span class="badge badge-info"><i class="fas fa-hands-helping mr-1"></i>Amil</span>',
-							'operator': '<span class="badge badge-secondary"><i class="fas fa-cog mr-1"></i>Operator</span>'
-						};
-						return badges[data] || data;
-					}
-				},
-				{
-					data: 'is_active',
-					render: function (data) {
-						return data === 1
-							? '<span class="badge badge-success"><i class="fas fa-check mr-1"></i>Aktif</span>'
-							: '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i>Nonaktif</span>';
-					}
-				},
-				{ data: 'last_login' },
-				{
-					data: null,
-					render: function (data, type, row) {
-						return '<div class="btn-group">' +
-							'<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">' +
-							'<i class="fas fa-ellipsis-v"></i></button>' +
-							'<div class="dropdown-menu">' +
-							'<a class="dropdown-item" href="<?php echo site_url('users/edit/'); ?>' + row.id + '">' +
-							'<i class="fas fa-edit mr-2 text-warning"></i>Edit</a>' +
-							'<div class="dropdown-divider"></div>' +
-							'<a class="dropdown-item delete-btn" href="#" data-id="' + row.id + '" data-name="' + row.nama_lengkap + '">' +
-							'<i class="fas fa-trash mr-2 text-danger"></i>Hapus</a>' +
-							'</div></div>';
-					},
-					orderable: false,
-					searchable: false
-				}
-			],
-			order: [[0, 'desc']],
-			language: {
-				emptyTable: 'Belum ada data user.',
-				info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
-				infoEmpty: 'Menampilkan 0 sampai 0 dari 0 data',
-				lengthMenu: 'Tampilkan _MENU_ data per halaman',
-				loadingRecords: 'Memuat data...',
-				processing: 'Memproses data...',
-				search: 'Cari:',
-				zeroRecords: 'Tidak ada data yang cocok.',
-				paginate: {
-					first: 'Pertama',
-					last: 'Terakhir',
-					next: 'Berikutnya',
-					previous: 'Sebelumnya'
-				}
-			},
-			drawCallback: function (settings) {
-				var info = table.page.info();
-				$('#table-info').text('Halaman ' + (info.page + 1) + ' dari ' + info.pages + ' halaman');
-			}
-		});
-
-		// Custom search delay
-		var searchTimeout = null;
-		$('#search-input').on('keyup', function () {
-			clearTimeout(searchTimeout);
-			searchTimeout = setTimeout(function () {
-				table.draw();
-			}, 300);
-		});
-
-		// Delete modal
 		$(document).on('click', '.delete-btn', function (e) {
 			e.preventDefault();
 			var id = $(this).data('id');
@@ -313,7 +264,6 @@
 			$('#deleteModal').modal('show');
 		});
 
-		// Auto-hide alerts after 5 seconds
 		setTimeout(function () {
 			$('#alert-success, #alert-error').fadeOut('slow');
 		}, 5000);
@@ -357,11 +307,6 @@
 		border-left: 0.25rem solid #dc3545 !important;
 	}
 
-	.btn-group .dropdown-menu {
-		min-width: 120px;
-	}
-
-	/* Responsive adjustments */
 	@media screen and (max-width: 768px) {
 		.small-box h3 {
 			font-size: 1.5rem;
@@ -392,3 +337,4 @@
 		}
 	}
 </style>
+

@@ -77,6 +77,10 @@ $sidebarBrandText = !empty($sidebarLembaga->nama_lembaga)
 							class="nav-icon fas fa-share-square"></i>
 						<p>Penyaluran</p>
 					</a></li>
+				<li class="nav-item"><a href="<?php echo site_url('infaq_shodaqoh'); ?>" class="nav-link"><i
+							class="nav-icon fas fa-hand-holding-usd"></i>
+						<p>Infaq & Shodaqoh</p>
+					</a></li>
 
 				<li class="nav-header">LAPORAN</li>
 				<li class="nav-item"><a href="<?php echo site_url('laporan'); ?>" class="nav-link"><i

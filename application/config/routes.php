@@ -50,8 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'auth';
-$route['login'] = 'auth/login';
+$route['auth'] = 'auth/index';
+$route['login'] = 'auth/index';
+$route['login/process'] = 'auth/login';
 $route['logout'] = 'auth/logout';
+$route['auth/login'] = 'auth/login';
+$route['auth/logout'] = 'auth/logout';
 $route['laporan'] = 'laporan/index';
 $route['laporan/export_pdf'] = 'laporan/export_pdf';
 $route['pengaturan_zakat'] = 'pengaturan_zakat/index';
@@ -109,5 +113,11 @@ $route['penyaluran/detail/(:num)'] = 'penyaluran/detail/$1';
 $route['penyaluran/edit/(:num)'] = 'penyaluran/edit/$1';
 $route['penyaluran/update/(:num)'] = 'penyaluran/update/$1';
 $route['penyaluran/delete/(:num)'] = 'penyaluran/delete/$1';
+$route['infaq_shodaqoh'] = 'infaq_shodaqoh/index';
+$route['infaq_shodaqoh/create'] = 'infaq_shodaqoh/create';
+$route['infaq_shodaqoh/store'] = 'infaq_shodaqoh/store';
+$route['infaq_shodaqoh/edit/(:num)'] = 'infaq_shodaqoh/edit/$1';
+$route['infaq_shodaqoh/update/(:num)'] = 'infaq_shodaqoh/update/$1';
+$route['infaq_shodaqoh/delete/(:num)'] = 'infaq_shodaqoh/delete/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

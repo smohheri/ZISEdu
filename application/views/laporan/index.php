@@ -10,7 +10,7 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
 
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Filter Laporan</h3>
+        <h3 class="card-title"><i class="fas fa-filter mr-2"></i>Filter Laporan</h3>
     </div>
     <div class="card-body">
         <?php echo form_open('laporan', array('method' => 'get', 'class' => 'form-inline')); ?>
@@ -38,6 +38,9 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
                 <h4>Rp <?php echo number_format($fitrahUang, 0, ',', '.'); ?></h4>
                 <p>Total Fitrah (Uang)</p>
             </div>
+            <div class="icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-3 col-6">
@@ -45,6 +48,9 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
             <div class="inner">
                 <h4><?php echo number_format($fitrahBeras, 2, ',', '.'); ?> Kg</h4>
                 <p>Total Fitrah (Beras)</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-seedling"></i>
             </div>
         </div>
     </div>
@@ -54,6 +60,9 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
                 <h4>Rp <?php echo number_format($malUang, 0, ',', '.'); ?></h4>
                 <p>Total Zakat Mal</p>
             </div>
+            <div class="icon">
+                <i class="fas fa-coins"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-3 col-6">
@@ -62,12 +71,15 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
                 <h4>Rp <?php echo number_format($penyaluranUang, 0, ',', '.'); ?></h4>
                 <p>Total Penyaluran Uang</p>
             </div>
+            <div class="icon">
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="card">
-    <div class="card-header"><h3 class="card-title mb-0">Laporan Zakat Fitrah</h3></div>
+    <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-hand-holding-usd mr-2"></i>Laporan Zakat Fitrah</h3></div>
     <div class="card-body table-responsive p-0">
         <table class="table table-sm table-hover mb-0">
             <thead>
@@ -107,7 +119,7 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
 </div>
 
 <div class="card">
-    <div class="card-header"><h3 class="card-title mb-0">Laporan Zakat Mal</h3></div>
+    <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-file-invoice-dollar mr-2"></i>Laporan Zakat Mal</h3></div>
     <div class="card-body table-responsive p-0">
         <table class="table table-sm table-hover mb-0">
             <thead>
@@ -141,7 +153,7 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
 </div>
 
 <div class="card">
-    <div class="card-header"><h3 class="card-title mb-0">Laporan Penyaluran</h3></div>
+    <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-donate mr-2"></i>Laporan Penyaluran</h3></div>
     <div class="card-body table-responsive p-0">
         <table class="table table-sm table-hover mb-0">
             <thead>

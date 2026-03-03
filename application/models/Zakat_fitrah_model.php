@@ -5,6 +5,29 @@ class Zakat_fitrah_model extends CI_Model
 {
     protected $table = 'zakat_fitrah';
 
+    private function _base_query()
+    {
+        return $this->db
+            ->select('zf.*, m.nama AS nama_muzakki')
+            ->from($this->table . ' zf')
+            ->join('muzakki m', 'm.id = zf.muzakki_id', 'inner');
+    }
+
+    private function _apply_search($search = '')
+    {
+        $search = trim((string) $search);
+        if ($search === '') {
+            return;
+        }
+
+        $this->db->group_start()
+            ->like('zf.nomor_transaksi', $search)
+            ->or_like('m.nama', $search)
+            ->or_like('zf.metode_tunaikan', $search)
+            ->or_like('zf.status', $search)
+            ->group_end();
+    }
+
     public function get_muzakki_info($muzakkiId)
     {
         $muzakki = $this->db
@@ -39,13 +62,73 @@ class Zakat_fitrah_model extends CI_Model
 
     public function get_all()
     {
-        return $this->db
-            ->select('zf.*, m.nama AS nama_muzakki')
-            ->from($this->table . ' zf')
-            ->join('muzakki m', 'm.id = zf.muzakki_id', 'inner')
+        return $this->_base_query()
             ->order_by('zf.id', 'DESC')
             ->get()
             ->result();
+    }
+
+    public function count_all()
+    {
+        return (int) $this->db->count_all($this->table);
+    }
+
+    public function count_filtered($search = '')
+    {
+        $this->_base_query();
+        $this->_apply_search($search);
+        return (int) $this->db->count_all_results();
+    }
+
+    public function get_paginated($limit, $offset, $search = '')
+    {
+        $this->_base_query();
+        $this->_apply_search($search);
+        return $this->db
+            ->order_by('zf.id', 'DESC')
+            ->limit((int) $limit, (int) $offset)
+            ->get()
+            ->result();
+    }
+
+    public function get_statistics()
+    {
+        $stats = array(
+            'total' => $this->count_all(),
+            'uang' => 0,
+            'beras' => 0,
+            'lunas' => 0,
+            'draft' => 0,
+            'batal' => 0
+        );
+
+        $metode_rows = $this->db
+            ->select('metode_tunaikan, COUNT(*) AS jumlah', FALSE)
+            ->from($this->table)
+            ->group_by('metode_tunaikan')
+            ->get()
+            ->result();
+        foreach ($metode_rows as $item) {
+            $key = (string) $item->metode_tunaikan;
+            if (isset($stats[$key])) {
+                $stats[$key] = (int) $item->jumlah;
+            }
+        }
+
+        $status_rows = $this->db
+            ->select('status, COUNT(*) AS jumlah', FALSE)
+            ->from($this->table)
+            ->group_by('status')
+            ->get()
+            ->result();
+        foreach ($status_rows as $item) {
+            $key = (string) $item->status;
+            if (isset($stats[$key])) {
+                $stats[$key] = (int) $item->jumlah;
+            }
+        }
+
+        return $stats;
     }
 
     public function get_by_id($id)

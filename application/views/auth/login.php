@@ -8,6 +8,7 @@
 	<?php
 	$baseTitle = isset($page_title) && $page_title !== '' ? $page_title : 'Login';
 	$documentTitle = (stripos($baseTitle, 'ZISEdu') !== FALSE) ? $baseTitle : $baseTitle . ' - ZISEdu';
+	$appVersion = config_item('app_version') ? config_item('app_version') : 'v1.0.0';
 
 	$CI =& get_instance();
 	$CI->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi_login');
@@ -298,7 +299,7 @@
 								</div>
 							<?php endif; ?>
 
-							<?php echo form_open(current_url()); ?>
+							<?php echo form_open('login/process'); ?>
 							<div class="input-group mb-3">
 								<input type="text" class="form-control" name="username" placeholder="Username"
 									autocomplete="username" value="<?php echo set_value('username'); ?>" required>
@@ -331,6 +332,9 @@
 								</div>
 							</div>
 							<?php echo form_close(); ?>
+							<div class="text-center mt-3 text-muted">
+								<small>Versi <?php echo html_escape($appVersion); ?></small>
+							</div>
 						</div>
 					</div>
 				</div>

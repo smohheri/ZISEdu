@@ -37,7 +37,8 @@ class Welcome extends CI_Controller
 			'summary' => $summary,
 			'monthly_chart' => $this->dashboard->get_monthly_chart_data(6),
 			'recent_fitrah' => $this->dashboard->get_recent_fitrah(5),
-			'recent_penyaluran' => $this->dashboard->get_recent_penyaluran(5)
+			'recent_penyaluran' => $this->dashboard->get_recent_penyaluran(5),
+			'recent_infaq_shodaqoh' => $this->dashboard->get_recent_infaq_shodaqoh(5)
 		);
 
 		$this->load->view('layouts/adminlte', $data);

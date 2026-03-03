@@ -12,10 +12,26 @@ class Tanggungan_fitrah extends CI_Controller
 
     public function index()
     {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->tanggungan->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('tanggungan_fitrah'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
         $data = array(
             'page_title' => 'Tanggungan Fitrah',
             'content_view' => 'tanggungan_fitrah/index',
-            'rows' => $this->tanggungan->get_all()
+            'rows' => $this->tanggungan->get_paginated($paging['limit'], $paging['offset'], $search),
+            'stats' => $this->tanggungan->get_statistics(),
+            'paging' => $paging,
+            'paging_links' => $paging['links'],
+            'search' => $search
         );
 
         $this->load->view('layouts/adminlte', $data);

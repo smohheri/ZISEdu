@@ -14,6 +14,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS penyaluran_detail;
 DROP TABLE IF EXISTS penyaluran;
+DROP TABLE IF EXISTS infaq_shodaqoh;
 DROP TABLE IF EXISTS zakat_mal_detail;
 DROP TABLE IF EXISTS zakat_mal;
 DROP TABLE IF EXISTS jenis_harta_mal;
@@ -294,6 +295,31 @@ CREATE TABLE penyaluran_detail (
     ON UPDATE CASCADE ON DELETE RESTRICT,
   INDEX idx_penyaluran_detail_header (penyaluran_id),
   INDEX idx_penyaluran_detail_mustahik (mustahik_id)
+) ENGINE=InnoDB;
+
+-- =============================================
+-- 12) Transaksi Infaq & Shodaqoh
+-- =============================================
+CREATE TABLE infaq_shodaqoh (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nomor_transaksi VARCHAR(40) NOT NULL UNIQUE,
+  tanggal_transaksi DATE NOT NULL,
+  jenis_dana ENUM('infaq','shodaqoh') NOT NULL,
+  nama_donatur VARCHAR(150) NOT NULL,
+  no_hp VARCHAR(25) NULL,
+  nominal_uang DECIMAL(18,2) NOT NULL DEFAULT 0,
+  metode_bayar ENUM('tunai','transfer','qris','lainnya') NOT NULL DEFAULT 'tunai',
+  keterangan TEXT NULL,
+  status ENUM('draft','diterima','batal') NOT NULL DEFAULT 'diterima',
+  created_by BIGINT UNSIGNED NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_infaq_shodaqoh_user
+    FOREIGN KEY (created_by) REFERENCES users(id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
+  INDEX idx_infaq_shodaqoh_tanggal (tanggal_transaksi),
+  INDEX idx_infaq_shodaqoh_jenis (jenis_dana),
+  INDEX idx_infaq_shodaqoh_nama (nama_donatur)
 ) ENGINE=InnoDB;
 
 -- =============================================

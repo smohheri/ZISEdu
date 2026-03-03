@@ -12,76 +12,29 @@ class Users extends CI_Controller
 
 	public function index()
 	{
+		$search = trim((string) $this->input->get('q', TRUE));
+		$per_page = 10;
+		$total_filtered = $this->users->count_filtered($search);
+		$paging = zisedu_build_paging(array(
+			'base_url' => site_url('users'),
+			'total_rows' => $total_filtered,
+			'per_page' => $per_page,
+			'page_query_string' => TRUE,
+			'query_string_segment' => 'page',
+			'reuse_query_string' => TRUE
+		));
+
 		$data = array(
 			'page_title' => 'Users',
 			'content_view' => 'users/index',
-			'rows' => $this->users->get_all(),
-			'stats' => $this->users->get_statistics()
+			'rows' => $this->users->get_paginated($paging['limit'], $paging['offset'], $search),
+			'stats' => $this->users->get_statistics(),
+			'paging' => $paging,
+			'paging_links' => $paging['links'],
+			'search' => $search
 		);
 
 		$this->load->view('layouts/adminlte', $data);
-	}
-
-	/**
-	 * AJAX handler for DataTables
-	 */
-	public function ajax_list()
-	{
-		// Check if AJAX request
-		if (!$this->input->is_ajax_request()) {
-			show_404();
-		}
-
-		$search = $this->input->post('search', TRUE);
-		$search = $search ? $search['value'] : '';
-
-		$start = (int) $this->input->post('start', TRUE);
-		$length = (int) $this->input->post('length', TRUE);
-		$length = $length > 0 ? $length : 10;
-
-		$order_column = $this->input->post('order', TRUE);
-		$order_column = isset($order_column[0]['column']) ? (int) $order_column[0]['column'] : 0;
-		$order_dir = isset($order_column[0]['dir']) ? $order_column[0]['dir'] : 'DESC';
-
-		// Map column index to column name
-		$columns = array('id', 'nama_lengkap', 'username', 'email', 'role', 'is_active', 'last_login');
-		$order_column_name = isset($columns[$order_column]) ? $columns[$order_column] : 'id';
-
-		$result = $this->users->get_datatables($search, $start, $length, $order_column_name, $order_dir);
-
-		$data = array();
-		foreach ($result['data'] as $row) {
-			$data[] = array(
-				'id' => $row->id,
-				'nama_lengkap' => html_escape($row->nama_lengkap),
-				'username' => html_escape($row->username),
-				'email' => html_escape($row->email),
-				'role' => html_escape($row->role),
-				'is_active' => (int) $row->is_active,
-				'last_login' => $row->last_login ? html_escape($row->last_login) : '-'
-			);
-		}
-
-		echo json_encode(array(
-			'draw' => (int) $this->input->post('draw', TRUE),
-			'recordsTotal' => $result['total'],
-			'recordsFiltered' => $result['total_filtered'],
-			'data' => $data,
-			'csrf_hash' => $this->security->get_csrf_hash()
-		));
-	}
-
-	/**
-	 * Get statistics for cards
-	 */
-	public function ajax_stats()
-	{
-		if (!$this->input->is_ajax_request()) {
-			show_404();
-		}
-
-		$stats = $this->users->get_statistics();
-		echo json_encode($stats);
 	}
 
 	public function create()

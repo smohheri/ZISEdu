@@ -1,0 +1,191 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Infaq_shodaqoh extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('Infaq_shodaqoh_model', 'infaq_shodaqoh');
+        $this->_require_login();
+    }
+
+    public function index()
+    {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->infaq_shodaqoh->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('infaq_shodaqoh'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
+        $data = array(
+            'page_title' => 'Infaq & Shodaqoh',
+            'content_view' => 'infaq_shodaqoh/index',
+            'rows' => $this->infaq_shodaqoh->get_paginated($paging['limit'], $paging['offset'], $search),
+            'stats' => $this->infaq_shodaqoh->get_statistics(),
+            'paging' => $paging,
+            'paging_links' => $paging['links'],
+            'search' => $search
+        );
+
+        $this->load->view('layouts/adminlte', $data);
+    }
+
+    public function create()
+    {
+        $data = array(
+            'page_title' => 'Tambah Transaksi Infaq & Shodaqoh',
+            'content_view' => 'infaq_shodaqoh/form',
+            'form_action' => 'infaq_shodaqoh/store',
+            'auto_nomor' => $this->infaq_shodaqoh->generate_next_nomor()
+        );
+
+        $this->load->view('layouts/adminlte', $data);
+    }
+
+    public function store()
+    {
+        if ($this->input->method(TRUE) !== 'POST') {
+            show_404();
+        }
+
+        $this->_set_form_rules();
+        if ($this->form_validation->run() === FALSE) {
+            return $this->create();
+        }
+
+        $nomor = trim((string) $this->input->post('nomor_transaksi', TRUE));
+        if ($nomor === '') {
+            $nomor = $this->infaq_shodaqoh->generate_next_nomor($this->input->post('tanggal_transaksi', TRUE));
+        }
+
+        if ($this->infaq_shodaqoh->exists_nomor($nomor)) {
+            $nomor = $this->infaq_shodaqoh->generate_next_nomor($this->input->post('tanggal_transaksi', TRUE));
+            if ($this->infaq_shodaqoh->exists_nomor($nomor)) {
+                $this->session->set_flashdata('error', 'Gagal membuat nomor transaksi otomatis.');
+                return $this->create();
+            }
+        }
+
+        $payload = $this->_build_payload($nomor);
+        $this->infaq_shodaqoh->insert($payload);
+
+        $this->session->set_flashdata('success', 'Transaksi infaq/shodaqoh berhasil ditambahkan.');
+        redirect('infaq_shodaqoh');
+    }
+
+    public function edit($id = NULL)
+    {
+        $row = $this->infaq_shodaqoh->get_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $data = array(
+            'page_title' => 'Edit Transaksi Infaq & Shodaqoh',
+            'content_view' => 'infaq_shodaqoh/form',
+            'form_action' => 'infaq_shodaqoh/update/' . (int) $row->id,
+            'row' => $row
+        );
+
+        $this->load->view('layouts/adminlte', $data);
+    }
+
+    public function update($id = NULL)
+    {
+        if ($this->input->method(TRUE) !== 'POST') {
+            show_404();
+        }
+
+        $row = $this->infaq_shodaqoh->get_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $this->_set_form_rules();
+        if ($this->form_validation->run() === FALSE) {
+            return $this->edit($id);
+        }
+
+        $nomor = trim((string) $this->input->post('nomor_transaksi', TRUE));
+        if ($nomor === '') {
+            $this->session->set_flashdata('error', 'Nomor transaksi wajib terisi.');
+            return $this->edit($id);
+        }
+
+        if ($this->infaq_shodaqoh->exists_nomor($nomor, $id)) {
+            $this->session->set_flashdata('error', 'Nomor transaksi sudah digunakan.');
+            return $this->edit($id);
+        }
+
+        $payload = $this->_build_payload($nomor, FALSE);
+        $this->infaq_shodaqoh->update($id, $payload);
+
+        $this->session->set_flashdata('success', 'Transaksi infaq/shodaqoh berhasil diperbarui.');
+        redirect('infaq_shodaqoh');
+    }
+
+    public function delete($id = NULL)
+    {
+        $row = $this->infaq_shodaqoh->get_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $this->infaq_shodaqoh->delete($id);
+        $this->session->set_flashdata('success', 'Transaksi infaq/shodaqoh berhasil dihapus.');
+        redirect('infaq_shodaqoh');
+    }
+
+    private function _build_payload($nomor, $includeCreatedBy = TRUE)
+    {
+        $payload = array(
+            'nomor_transaksi' => $nomor,
+            'tanggal_transaksi' => (string) $this->input->post('tanggal_transaksi', TRUE),
+            'jenis_dana' => (string) $this->input->post('jenis_dana', TRUE),
+            'nama_donatur' => trim((string) $this->input->post('nama_donatur', TRUE)),
+            'no_hp' => $this->_null_if_empty($this->input->post('no_hp', TRUE)),
+            'nominal_uang' => (float) $this->input->post('nominal_uang', TRUE),
+            'metode_bayar' => (string) $this->input->post('metode_bayar', TRUE),
+            'keterangan' => $this->_null_if_empty($this->input->post('keterangan', TRUE)),
+            'status' => (string) $this->input->post('status', TRUE)
+        );
+
+        if ($includeCreatedBy) {
+            $payload['created_by'] = (int) $this->session->userdata('user_id');
+        }
+
+        return $payload;
+    }
+
+    private function _null_if_empty($value)
+    {
+        $value = trim((string) $value);
+        return $value === '' ? NULL : $value;
+    }
+
+    private function _set_form_rules()
+    {
+        $this->form_validation->set_rules('nomor_transaksi', 'Nomor Transaksi', 'trim|max_length[40]');
+        $this->form_validation->set_rules('tanggal_transaksi', 'Tanggal Transaksi', 'trim|required');
+        $this->form_validation->set_rules('jenis_dana', 'Jenis Dana', 'trim|required|in_list[infaq,shodaqoh]');
+        $this->form_validation->set_rules('nama_donatur', 'Nama Donatur', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('no_hp', 'No HP', 'trim|max_length[25]');
+        $this->form_validation->set_rules('nominal_uang', 'Nominal Uang', 'trim|required|numeric|greater_than[0]');
+        $this->form_validation->set_rules('metode_bayar', 'Metode Bayar', 'trim|required|in_list[tunai,transfer,qris,lainnya]');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required|in_list[draft,diterima,batal]');
+    }
+
+    private function _require_login()
+    {
+        if ($this->session->userdata('is_logged_in') !== TRUE) {
+            redirect('login');
+        }
+    }
+}

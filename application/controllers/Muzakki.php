@@ -12,10 +12,27 @@ class Muzakki extends CI_Controller
 
     public function index()
     {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->muzakki->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('muzakki'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
         $data = array(
             'page_title' => 'Muzakki',
             'content_view' => 'muzakki/index',
-            'rows' => $this->muzakki->get_all()
+            'rows' => $this->muzakki->get_paginated($paging['limit'], $paging['offset'], $search),
+            'stats' => $this->muzakki->get_statistics(),
+            'paging' => $paging,
+            'paging_links' => $paging['links'],
+            'search' => $search,
+            'total_rows' => $this->muzakki->count_all()
         );
 
         $this->load->view('layouts/adminlte', $data);

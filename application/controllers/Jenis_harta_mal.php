@@ -12,10 +12,26 @@ class Jenis_harta_mal extends CI_Controller
 
     public function index()
     {
+        $search = trim((string) $this->input->get('q', TRUE));
+        $per_page = 10;
+        $total_filtered = $this->jenis_harta->count_filtered($search);
+        $paging = zisedu_build_paging(array(
+            'base_url' => site_url('jenis_harta_mal'),
+            'total_rows' => $total_filtered,
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page',
+            'reuse_query_string' => TRUE
+        ));
+
         $data = array(
             'page_title' => 'Jenis Harta Mal',
             'content_view' => 'jenis_harta_mal/index',
-            'rows' => $this->jenis_harta->get_all()
+            'rows' => $this->jenis_harta->get_paginated($paging['limit'], $paging['offset'], $search),
+            'stats' => $this->jenis_harta->get_statistics(),
+            'paging' => $paging,
+            'paging_links' => $paging['links'],
+            'search' => $search
         );
 
         $this->load->view('layouts/adminlte', $data);
