@@ -67,7 +67,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Data Dengan NIK</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($stats['punya_nik']) ? (int) $stats['punya_nik'] : 0; ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php echo isset($stats['punya_nik']) ? (int) $stats['punya_nik'] : 0; ?></div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-id-card fa-2x text-gray-300"></i>
@@ -82,7 +83,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Data Dengan No HP</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($stats['punya_no_hp']) ? (int) $stats['punya_no_hp'] : 0; ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php echo isset($stats['punya_no_hp']) ? (int) $stats['punya_no_hp'] : 0; ?></div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-phone fa-2x text-gray-300"></i>
@@ -110,7 +112,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
                         </div>
-                        <input type="text" name="q" class="form-control" placeholder="Cari kode, nama, jenis, NIK, HP, alamat..."
+                        <input type="text" name="q" class="form-control"
+                            placeholder="Cari kode, nama, jenis, NIK, HP, alamat..."
                             value="<?php echo html_escape(isset($search) ? $search : ''); ?>">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">
@@ -133,10 +136,8 @@
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Jenis</th>
-                        <th>NIK</th>
                         <th>No HP</th>
-                        <th>Alamat</th>
-                        <th width="120">Aksi</th>
+                        <th width="160">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,14 +147,30 @@
                             <tr>
                                 <td><?php echo $no++; ?></td>
                                 <td><?php echo html_escape($row->kode_muzakki); ?></td>
-                                <td><?php echo html_escape($row->nama); ?></td>
+                                <td>
+                                    <?php echo html_escape($row->nama); ?><br>
+                                    <small class="text-muted">NIK:
+                                        <?php echo html_escape($row->nik ? $row->nik : '-'); ?></small>
+                                </td>
                                 <td><?php echo html_escape($row->jenis_muzakki); ?></td>
-                                <td><?php echo html_escape($row->nik ? $row->nik : '-'); ?></td>
                                 <td><?php echo html_escape($row->no_hp ? $row->no_hp : '-'); ?></td>
-                                <td><?php echo html_escape($row->alamat ? $row->alamat : '-'); ?></td>
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-                                        <a class="btn btn-warning" href="<?php echo site_url('muzakki/edit/' . $row->id); ?>" title="Edit">
+                                        <button type="button" class="btn btn-info btn-detail-muzakki" data-toggle="modal"
+                                            data-target="#modal-detail-muzakki"
+                                            data-kode="<?php echo html_escape($row->kode_muzakki); ?>"
+                                            data-nama="<?php echo html_escape($row->nama); ?>"
+                                            data-jenis="<?php echo html_escape($row->jenis_muzakki); ?>"
+                                            data-nik="<?php echo html_escape($row->nik ? $row->nik : '-'); ?>"
+                                            data-nohp="<?php echo html_escape($row->no_hp ? $row->no_hp : '-'); ?>"
+                                            data-email="<?php echo html_escape($row->email ? $row->email : '-'); ?>"
+                                            data-pekerjaan="<?php echo html_escape($row->pekerjaan ? $row->pekerjaan : '-'); ?>"
+                                            data-alamat="<?php echo html_escape($row->alamat ? $row->alamat : '-'); ?>"
+                                            title="Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <a class="btn btn-warning" href="<?php echo site_url('muzakki/edit/' . $row->id); ?>"
+                                            title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a class="btn btn-danger" href="<?php echo site_url('muzakki/delete/' . $row->id); ?>"
@@ -166,7 +183,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="8" class="text-center text-muted">Belum ada data muzakki.</td>
+                            <td colspan="6" class="text-center text-muted">Belum ada data muzakki.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -187,11 +204,51 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-muzakki" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Muzakki</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mb-2"><strong>Kode:</strong> <span id="detail-kode">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Jenis:</strong> <span id="detail-jenis">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Nama:</strong> <span id="detail-nama">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>NIK:</strong> <span id="detail-nik">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>No HP:</strong> <span id="detail-nohp">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Email:</strong> <span id="detail-email">-</span></div>
+                    <div class="col-md-12 mb-2"><strong>Pekerjaan:</strong> <span id="detail-pekerjaan">-</span></div>
+                    <div class="col-md-12 mb-2"><strong>Alamat:</strong><br><span id="detail-alamat">-</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         setTimeout(function () {
             $('#alert-success, #alert-error').fadeOut('slow');
         }, 5000);
+
+        $('.btn-detail-muzakki').on('click', function () {
+            const btn = $(this);
+            $('#detail-kode').text(btn.data('kode') || '-');
+            $('#detail-jenis').text(btn.data('jenis') || '-');
+            $('#detail-nama').text(btn.data('nama') || '-');
+            $('#detail-nik').text(btn.data('nik') || '-');
+            $('#detail-nohp').text(btn.data('nohp') || '-');
+            $('#detail-email').text(btn.data('email') || '-');
+            $('#detail-pekerjaan').text(btn.data('pekerjaan') || '-');
+            $('#detail-alamat').text(btn.data('alamat') || '-');
+        });
     });
 </script>
 

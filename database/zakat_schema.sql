@@ -158,6 +158,7 @@ CREATE TABLE mustahik (
 CREATE TABLE zakat_fitrah (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nomor_transaksi VARCHAR(40) NOT NULL UNIQUE,
+  no_kwitansi VARCHAR(50) NULL UNIQUE,
   muzakki_id BIGINT UNSIGNED NOT NULL,
   tanggal_bayar DATE NOT NULL,
   tahun_hijriah VARCHAR(10) NULL,
@@ -204,6 +205,7 @@ CREATE TABLE jenis_harta_mal (
 CREATE TABLE zakat_mal (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nomor_transaksi VARCHAR(40) NOT NULL UNIQUE,
+  no_kwitansi VARCHAR(50) NULL UNIQUE,
   muzakki_id BIGINT UNSIGNED NOT NULL,
   tanggal_hitung DATE NOT NULL,
   tanggal_bayar DATE NULL,
@@ -303,6 +305,7 @@ CREATE TABLE penyaluran_detail (
 CREATE TABLE infaq_shodaqoh (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nomor_transaksi VARCHAR(40) NOT NULL UNIQUE,
+  no_kwitansi VARCHAR(50) NULL UNIQUE,
   tanggal_transaksi DATE NOT NULL,
   jenis_dana ENUM('infaq','shodaqoh') NOT NULL,
   nama_donatur VARCHAR(150) NOT NULL,

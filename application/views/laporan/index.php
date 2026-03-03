@@ -184,6 +184,40 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
     </div>
 </div>
 
+<div class="card">
+    <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-coins mr-2"></i>Laporan Infaq & Shodaqoh</h3></div>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-sm table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>No Transaksi</th>
+                    <th>Tanggal</th>
+                    <th>Jenis Dana</th>
+                    <th>Donatur</th>
+                    <th>Nominal</th>
+                    <th>Metode</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($rows_infaq_shodaqoh)): foreach ($rows_infaq_shodaqoh as $row): ?>
+                    <tr>
+                        <td><?php echo html_escape($row->nomor_transaksi); ?></td>
+                        <td><?php echo html_escape(indo_date($row->tanggal_transaksi)); ?></td>
+                        <td><?php echo ucfirst(html_escape($row->jenis_dana)); ?></td>
+                        <td><?php echo html_escape($row->nama_donatur); ?></td>
+                        <td>Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></td>
+                        <td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
+                        <td><?php echo html_escape($row->status); ?></td>
+                    </tr>
+                <?php endforeach; else: ?>
+                    <tr><td colspan="7" class="text-center text-muted">Tidak ada data.</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="alert alert-light border">
     <strong>Info:</strong> Total penyaluran beras periode ini: <strong><?php echo number_format($penyaluranBeras, 2, ',', '.'); ?> Kg</strong>
 </div>

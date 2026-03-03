@@ -88,6 +88,13 @@ class Zakat_fitrah extends CI_Controller
         }
 
         $this->zakat_fitrah->insert($payload);
+        $fitrahId = (int) $this->db->insert_id();
+        if ($fitrahId > 0 && $this->db->field_exists('no_kwitansi', 'zakat_fitrah')) {
+            $this->zakat_fitrah->update($fitrahId, array(
+                'no_kwitansi' => $this->_generate_no_kwitansi($fitrahId, $payload['tanggal_bayar'], 'KW/FTR')
+            ));
+        }
+
         $this->session->set_flashdata('success', 'Transaksi zakat fitrah berhasil ditambahkan.');
         redirect('zakat_fitrah');
     }
@@ -178,18 +185,80 @@ class Zakat_fitrah extends CI_Controller
         $lembaga = $this->pengaturan_aplikasi->get_first();
         $tanggungan = $this->zakat_fitrah->get_tanggungan_aktif((int) $row->muzakki_id);
 
-        $tanggalKwitansi = !empty($row->tanggal_bayar) ? $row->tanggal_bayar : date('Y-m-d');
-        $noKwitansi = 'KW/FTR/' . date('Ym', strtotime($tanggalKwitansi)) . '/' . str_pad((string) ((int) $row->id), 4, '0', STR_PAD_LEFT);
+        $noKwitansi = $this->_resolve_no_kwitansi($row, 'KW/FTR');
+        $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
+        if ($namaPenerima === '') {
+            $namaPenerima = trim((string) $this->session->userdata('username'));
+        }
 
         $data = array(
             'page_title' => 'Kwitansi Penerimaan Zakat Fitrah',
             'row' => $row,
             'no_kwitansi' => $noKwitansi,
             'lembaga' => $lembaga,
-            'tanggungan' => $tanggungan
+            'tanggungan' => $tanggungan,
+            'nama_penerima' => $namaPenerima
         );
 
         $this->load->view('zakat_fitrah/kwitansi', $data);
+    }
+
+    public function export_pdf($id = NULL)
+    {
+        $row = $this->zakat_fitrah->get_receipt_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
+        $lembaga = $this->pengaturan_aplikasi->get_first();
+        $tanggungan = $this->zakat_fitrah->get_tanggungan_aktif((int) $row->muzakki_id);
+
+        $noKwitansi = $this->_resolve_no_kwitansi($row, 'KW/FTR');
+
+        $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
+        if ($namaPenerima === '') {
+            $namaPenerima = trim((string) $this->session->userdata('username'));
+        }
+
+        $logoImageSrc = NULL;
+        if ($lembaga && !empty($lembaga->logo_path)) {
+            $logoFullPath = FCPATH . ltrim($lembaga->logo_path, '/\\');
+            if (is_file($logoFullPath)) {
+                $logoImageSrc = 'file:///' . str_replace('\\', '/', $logoFullPath);
+            }
+        }
+
+        $viewData = array(
+            'row' => $row,
+            'no_kwitansi' => $noKwitansi,
+            'lembaga' => $lembaga,
+            'tanggungan' => $tanggungan,
+            'nama_penerima' => $namaPenerima,
+            'logo_image_src' => $logoImageSrc
+        );
+
+        $vendorAutoload = FCPATH . 'vendor/autoload.php';
+        if (!is_file($vendorAutoload)) {
+            show_error('Autoload Composer tidak ditemukan. Pastikan dependency mPDF sudah terpasang.');
+        }
+
+        require_once $vendorAutoload;
+
+        $html = $this->load->view('zakat_fitrah/kwitansi_pdf', $viewData, TRUE);
+        $mpdf = new \Mpdf\Mpdf(array(
+            'format' => array(241.3, 279.4),
+            'margin_left' => 8,
+            'margin_right' => 8,
+            'margin_top' => 8,
+            'margin_bottom' => 8
+        ));
+
+        $mpdf->SetTitle('Kwitansi Zakat Fitrah - ' . $row->nomor_transaksi);
+        $mpdf->WriteHTML($html);
+
+        $filename = 'kwitansi-zakat-fitrah-' . (int) $row->id . '.pdf';
+        $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
     }
 
     public function muzakki_info($muzakkiId = NULL)
@@ -236,6 +305,28 @@ class Zakat_fitrah extends CI_Controller
         }
 
         return $payload;
+    }
+
+    private function _generate_no_kwitansi($id, $tanggal, $prefix)
+    {
+        $tanggal = !empty($tanggal) ? $tanggal : date('Y-m-d');
+        return $prefix . '/' . date('Y', strtotime($tanggal)) . '/' . str_pad((string) ((int) $id), 4, '0', STR_PAD_LEFT);
+    }
+
+    private function _resolve_no_kwitansi($row, $prefix)
+    {
+        $existing = isset($row->no_kwitansi) ? trim((string) $row->no_kwitansi) : '';
+        if ($existing !== '') {
+            return $existing;
+        }
+
+        $generated = $this->_generate_no_kwitansi((int) $row->id, isset($row->tanggal_bayar) ? $row->tanggal_bayar : NULL, $prefix);
+
+        if ($this->db->field_exists('no_kwitansi', 'zakat_fitrah')) {
+            $this->zakat_fitrah->update((int) $row->id, array('no_kwitansi' => $generated));
+        }
+
+        return $generated;
     }
 
     private function _apply_auto_jumlah_jiwa(array &$payload)

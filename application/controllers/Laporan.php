@@ -23,7 +23,8 @@ class Laporan extends CI_Controller
             'ringkasan' => $reportData['ringkasan'],
             'rows_fitrah' => $reportData['rows_fitrah'],
             'rows_mal' => $reportData['rows_mal'],
-            'rows_penyaluran' => $reportData['rows_penyaluran']
+            'rows_penyaluran' => $reportData['rows_penyaluran'],
+            'rows_mustahik' => $reportData['rows_mustahik']
         );
 
         $this->load->view('layouts/adminlte', $data);
@@ -60,6 +61,7 @@ class Laporan extends CI_Controller
             'rows_fitrah' => $reportData['rows_fitrah'],
             'rows_mal' => $reportData['rows_mal'],
             'rows_penyaluran' => $reportData['rows_penyaluran'],
+            'rows_mustahik' => $reportData['rows_mustahik'],
             'lembaga' => $lembaga,
             'logo_image_src' => $logoImageSrc,
             'kop_image_src' => $kopImageSrc
@@ -119,7 +121,9 @@ class Laporan extends CI_Controller
             'ringkasan' => $this->laporan->get_ringkasan($startDate, $endDate),
             'rows_fitrah' => $this->laporan->get_laporan_fitrah($startDate, $endDate),
             'rows_mal' => $this->laporan->get_laporan_mal($startDate, $endDate),
-            'rows_penyaluran' => $this->laporan->get_laporan_penyaluran($startDate, $endDate)
+            'rows_penyaluran' => $this->laporan->get_laporan_penyaluran($startDate, $endDate),
+            'rows_mustahik' => $this->laporan->get_laporan_mustahik_penerima($startDate, $endDate),
+            'rows_infaq_shodaqoh' => $this->laporan->get_laporan_infaq_shodaqoh($startDate, $endDate)
         );
     }
 

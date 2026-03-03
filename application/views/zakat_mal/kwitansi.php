@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php $lembaga = isset($lembaga) ? $lembaga : NULL; ?>
+<?php $namaPenerima = isset($nama_penerima) && trim((string) $nama_penerima) !== '' ? $nama_penerima : '-'; ?>
+<?php $namaMuzakkiTtd = isset($row->nama_muzakki) && trim((string) $row->nama_muzakki) !== '' ? $row->nama_muzakki : '-'; ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -44,7 +46,20 @@
 			line-height: 1.2;
 		}
 
+		@page {
+			size: 9.5in 11in;
+			margin: 8mm 10mm;
+		}
+
 		@media print {
+
+			html,
+			body {
+				width: 9.5in;
+				height: 11in;
+				font-size: 12px;
+			}
+
 			body {
 				background: #fff;
 			}
@@ -62,6 +77,10 @@
 				margin: 0;
 				max-width: 100%;
 			}
+
+			.card-body {
+				padding: 12px;
+			}
 		}
 	</style>
 </head>
@@ -71,6 +90,9 @@
 		<div class="mb-3 no-print text-right">
 			<button type="button" class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Cetak
 				Kwitansi</button>
+			<a href="<?php echo site_url('zakat_mal/export_pdf/' . (int) $row->id); ?>" class="btn btn-danger">
+				<i class="fas fa-file-pdf"></i> Export PDF
+			</a>
 			<a href="<?php echo site_url('zakat_mal'); ?>" class="btn btn-default">Kembali</a>
 		</div>
 
@@ -175,11 +197,11 @@
 				<div class="row mt-5">
 					<div class="col-6 text-center">
 						<p class="mb-5">Muzakki,</p>
-						<p>__________________________</p>
+						<p><strong>(<?php echo html_escape($namaMuzakkiTtd); ?>)</strong></p>
 					</div>
 					<div class="col-6 text-center">
 						<p class="mb-5">Penerima,</p>
-						<p>__________________________</p>
+						<p><strong>(<?php echo html_escape($namaPenerima); ?>)</strong></p>
 					</div>
 				</div>
 			</div>

@@ -204,5 +204,61 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
             <?php endif; ?>
         </tbody>
     </table>
+
+    <h3>4. Laporan Infaq & Shodaqoh</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>No Transaksi</th>
+                <th>Tanggal</th>
+                <th>Jenis Dana</th>
+                <th>Donatur</th>
+                <th>Nominal</th>
+                <th>Metode</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($rows_infaq_shodaqoh)): foreach ($rows_infaq_shodaqoh as $row): ?>
+                <tr>
+                    <td><?php echo html_escape($row->nomor_transaksi); ?></td>
+                    <td><?php echo html_escape(indo_date($row->tanggal_transaksi)); ?></td>
+                    <td><?php echo ucfirst(html_escape($row->jenis_dana)); ?></td>
+                    <td><?php echo html_escape($row->nama_donatur); ?></td>
+                    <td class="text-right">Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></td>
+                    <td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
+                    <td><?php echo html_escape($row->status); ?></td>
+                </tr>
+            <?php endforeach; else: ?>
+                <tr><td colspan="7" class="text-center">Tidak ada data.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <h3>5. List Mustahik Penerima</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Kode Mustahik</th>
+                <th>Nama Mustahik</th>
+                <th>Jumlah Penerimaan</th>
+                <th>Total Uang Diterima</th>
+                <th>Total Beras Diterima</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($rows_mustahik)): foreach ($rows_mustahik as $row): ?>
+                <tr>
+                    <td><?php echo html_escape(!empty($row->kode_mustahik) ? $row->kode_mustahik : '-'); ?></td>
+                    <td><?php echo html_escape(!empty($row->nama_mustahik) ? $row->nama_mustahik : '-'); ?></td>
+                    <td class="text-center"><?php echo (int) $row->jumlah_penerimaan; ?></td>
+                    <td class="text-right">Rp <?php echo number_format((float) $row->total_nominal_uang, 0, ',', '.'); ?></td>
+                    <td class="text-right"><?php echo number_format((float) $row->total_beras_kg, 2, ',', '.'); ?> Kg</td>
+                </tr>
+            <?php endforeach; else: ?>
+                <tr><td colspan="5" class="text-center">Tidak ada data.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </body>
 </html>

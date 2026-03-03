@@ -83,6 +83,14 @@ class Zakat_mal extends CI_Controller
         $this->db->trans_begin();
         $this->zakat_mal->insert($payload);
         $zakatMalId = (int) $this->db->insert_id();
+
+        if ($zakatMalId > 0 && $this->db->field_exists('no_kwitansi', 'zakat_mal')) {
+            $tanggalKwitansi = !empty($payload['tanggal_bayar']) ? $payload['tanggal_bayar'] : $payload['tanggal_hitung'];
+            $this->zakat_mal->update($zakatMalId, array(
+                'no_kwitansi' => $this->_generate_no_kwitansi($zakatMalId, $tanggalKwitansi, 'KW/MAL')
+            ));
+        }
+
         $this->zakat_mal->replace_detail_rows($zakatMalId, $detailRows);
 
         if ($this->db->trans_status() === FALSE) {
@@ -189,10 +197,11 @@ class Zakat_mal extends CI_Controller
         $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
         $lembaga = $this->pengaturan_aplikasi->get_first();
 
-        $tanggalKwitansi = !empty($row->tanggal_bayar)
-            ? $row->tanggal_bayar
-            : (!empty($row->tanggal_hitung) ? $row->tanggal_hitung : date('Y-m-d'));
-        $noKwitansi = 'KW/MAL/' . date('Ym', strtotime($tanggalKwitansi)) . '/' . str_pad((string) ((int) $row->id), 4, '0', STR_PAD_LEFT);
+        $noKwitansi = $this->_resolve_no_kwitansi($row, 'KW/MAL');
+        $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
+        if ($namaPenerima === '') {
+            $namaPenerima = trim((string) $this->session->userdata('username'));
+        }
 
         $detailRows = $this->zakat_mal->get_detail_rows((int) $row->id);
         $jenisHarta = $this->zakat_mal->get_jenis_harta_options();
@@ -203,10 +212,72 @@ class Zakat_mal extends CI_Controller
             'no_kwitansi' => $noKwitansi,
             'lembaga' => $lembaga,
             'detail_rows' => $detailRows,
-            'jenis_harta_options' => $jenisHarta
+            'jenis_harta_options' => $jenisHarta,
+            'nama_penerima' => $namaPenerima
         );
 
         $this->load->view('zakat_mal/kwitansi', $data);
+    }
+
+    public function export_pdf($id = NULL)
+    {
+        $row = $this->zakat_mal->get_receipt_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
+        $lembaga = $this->pengaturan_aplikasi->get_first();
+
+        $noKwitansi = $this->_resolve_no_kwitansi($row, 'KW/MAL');
+
+        $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
+        if ($namaPenerima === '') {
+            $namaPenerima = trim((string) $this->session->userdata('username'));
+        }
+
+        $detailRows = $this->zakat_mal->get_detail_rows((int) $row->id);
+        $jenisHarta = $this->zakat_mal->get_jenis_harta_options();
+
+        $logoImageSrc = NULL;
+        if ($lembaga && !empty($lembaga->logo_path)) {
+            $logoFullPath = FCPATH . ltrim($lembaga->logo_path, '/\\');
+            if (is_file($logoFullPath)) {
+                $logoImageSrc = 'file:///' . str_replace('\\', '/', $logoFullPath);
+            }
+        }
+
+        $viewData = array(
+            'row' => $row,
+            'no_kwitansi' => $noKwitansi,
+            'lembaga' => $lembaga,
+            'detail_rows' => $detailRows,
+            'jenis_harta_options' => $jenisHarta,
+            'nama_penerima' => $namaPenerima,
+            'logo_image_src' => $logoImageSrc
+        );
+
+        $vendorAutoload = FCPATH . 'vendor/autoload.php';
+        if (!is_file($vendorAutoload)) {
+            show_error('Autoload Composer tidak ditemukan. Pastikan dependency mPDF sudah terpasang.');
+        }
+
+        require_once $vendorAutoload;
+
+        $html = $this->load->view('zakat_mal/kwitansi_pdf', $viewData, TRUE);
+        $mpdf = new \Mpdf\Mpdf(array(
+            'format' => array(241.3, 279.4),
+            'margin_left' => 8,
+            'margin_right' => 8,
+            'margin_top' => 8,
+            'margin_bottom' => 8
+        ));
+
+        $mpdf->SetTitle('Kwitansi Zakat Mal - ' . $row->nomor_transaksi);
+        $mpdf->WriteHTML($html);
+
+        $filename = 'kwitansi-zakat-mal-' . (int) $row->id . '.pdf';
+        $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
     }
 
     private function _build_payload($nomor, $includeCreatedBy = TRUE)
@@ -233,6 +304,29 @@ class Zakat_mal extends CI_Controller
         }
 
         return $payload;
+    }
+
+    private function _generate_no_kwitansi($id, $tanggal, $prefix)
+    {
+        $tanggal = !empty($tanggal) ? $tanggal : date('Y-m-d');
+        return $prefix . '/' . date('Y', strtotime($tanggal)) . '/' . str_pad((string) ((int) $id), 4, '0', STR_PAD_LEFT);
+    }
+
+    private function _resolve_no_kwitansi($row, $prefix)
+    {
+        $existing = isset($row->no_kwitansi) ? trim((string) $row->no_kwitansi) : '';
+        if ($existing !== '') {
+            return $existing;
+        }
+
+        $tanggal = !empty($row->tanggal_bayar) ? $row->tanggal_bayar : (!empty($row->tanggal_hitung) ? $row->tanggal_hitung : NULL);
+        $generated = $this->_generate_no_kwitansi((int) $row->id, $tanggal, $prefix);
+
+        if ($this->db->field_exists('no_kwitansi', 'zakat_mal')) {
+            $this->zakat_mal->update((int) $row->id, array('no_kwitansi' => $generated));
+        }
+
+        return $generated;
     }
 
     private function _apply_auto_calculation(array &$payload)

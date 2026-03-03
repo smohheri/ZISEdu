@@ -75,6 +75,13 @@ class Infaq_shodaqoh extends CI_Controller
 
         $payload = $this->_build_payload($nomor);
         $this->infaq_shodaqoh->insert($payload);
+        $infaqId = (int) $this->db->insert_id();
+
+        if ($infaqId > 0 && $this->db->field_exists('no_kwitansi', 'infaq_shodaqoh')) {
+            $this->infaq_shodaqoh->update($infaqId, array(
+                'no_kwitansi' => $this->_generate_no_kwitansi($infaqId, $payload['tanggal_transaksi'])
+            ));
+        }
 
         $this->session->set_flashdata('success', 'Transaksi infaq/shodaqoh berhasil ditambahkan.');
         redirect('infaq_shodaqoh');
@@ -162,6 +169,12 @@ class Infaq_shodaqoh extends CI_Controller
         }
 
         return $payload;
+    }
+
+    private function _generate_no_kwitansi($id, $tanggal)
+    {
+        $tanggal = !empty($tanggal) ? $tanggal : date('Y-m-d');
+        return 'KW/IS/' . date('Y', strtotime($tanggal)) . '/' . str_pad((string) ((int) $id), 4, '0', STR_PAD_LEFT);
     }
 
     private function _null_if_empty($value)

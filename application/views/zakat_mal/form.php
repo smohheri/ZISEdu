@@ -22,12 +22,15 @@
                     class="form-control" value="<?php echo set_value('nomor_transaksi', $nomorTransaksi); ?>" readonly
                     required></div>
             <div class="col-md-4 form-group"><label>Tanggal Hitung</label><input type="date" name="tanggal_hitung"
-                    class="form-control"
-                    value="<?php echo set_value('tanggal_hitung', isset($row->tanggal_hitung) ? $row->tanggal_hitung : date('Y-m-d')); ?>"
-                    required></div>
+                    class="form-control" value="<?php
+                    $tanggalHitung = set_value('tanggal_hitung', isset($row->tanggal_hitung) ? $row->tanggal_hitung : date('Y-m-d'));
+                    echo html_escape(trim((string) $tanggalHitung) !== '' ? $tanggalHitung : date('Y-m-d'));
+                    ?>" required></div>
             <div class="col-md-4 form-group"><label>Tanggal Bayar</label><input type="date" name="tanggal_bayar"
-                    class="form-control"
-                    value="<?php echo set_value('tanggal_bayar', isset($row->tanggal_bayar) ? $row->tanggal_bayar : ''); ?>">
+                    class="form-control" value="<?php
+                    $tanggalBayar = set_value('tanggal_bayar', isset($row->tanggal_bayar) ? $row->tanggal_bayar : date('Y-m-d'));
+                    echo html_escape(trim((string) $tanggalBayar) !== '' ? $tanggalBayar : date('Y-m-d'));
+                    ?>">
             </div>
         </div>
 

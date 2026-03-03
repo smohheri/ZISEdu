@@ -4,10 +4,19 @@ Aplikasi ini digunakan untuk pendataan dan pengelolaan **zakat fitrah** serta **
 
 ## Informasi Rilis
 
-- Versi rilis: **v1.0.0**
-- Tanggal rilis: **2026-03-03**
-- Status: **First Release (rilis pertama)**
-- Release notes: **RELEASE_NOTES_v1.0.0.md**
+- Versi rilis: **v1.1.1**
+- Tanggal rilis: **2026-03-04**
+- Status: **Stable Update**
+- Riwayat perubahan: **CHANGELOG.md**
+- Release notes rilis pertama: **RELEASE_NOTES_v1.0.0.md**
+
+### Highlight v1.1.1
+- Detail data pada list `muzakki`, `zakat_mal`, dan `penyaluran` menggunakan modal.
+- Kwitansi fitrah/mal mendukung `Cetak` dan `Export PDF` dengan auto isi tanda tangan (muzakki & penerima login).
+- Laporan ditingkatkan dengan bagian `Infaq & Shodaqoh` serta `List Mustahik Penerima` pada export PDF.
+- Format nomor transaksi/penyaluran dan nomor kwitansi disederhanakan ke token tahun (`YYYY`).
+- Default tanggal input transaksi diseragamkan ke tanggal hari ini saat nilai kosong.
+- Nomor kwitansi (`no_kwitansi`) disimpan ke database agar konsisten saat cetak ulang/export.
 
 ## Ringkasan Fitur
 
@@ -50,21 +59,23 @@ Aplikasi ini digunakan untuk pendataan dan pengelolaan **zakat fitrah** serta **
   - nomor transaksi otomatis,
   - metode tunaikan beras/uang,
   - penyesuaian jumlah jiwa otomatis berdasarkan jenis muzakki,
-  - cetak kwitansi.
+  - cetak kwitansi + export PDF.
 - **Zakat Mal**
   - nomor transaksi otomatis,
   - input detail aset (`zakat_mal_detail`),
   - kalkulasi otomatis harta bersih & total zakat,
-  - cetak kwitansi.
+  - cetak kwitansi + export PDF.
 - **Penyaluran**
   - nomor penyaluran otomatis,
   - detail distribusi per mustahik,
-  - dukungan bentuk bantuan uang/beras/paket.
+  - dukungan bentuk bantuan uang/beras/paket,
+  - validasi alokasi detail penerima agar sesuai total uang/beras.
 
 ### 6. Laporan
 - Filter laporan per rentang tanggal.
 - Ringkasan pemasukan & penyaluran (uang dan beras).
-- Detail laporan zakat fitrah, zakat mal, dan penyaluran.
+- Detail laporan zakat fitrah, zakat mal, penyaluran, dan infaq/shodaqoh.
+- Rekap list mustahik penerima pada export PDF laporan.
 - Ekspor **PDF** menggunakan `mpdf/mpdf`.
 
 ---
@@ -105,6 +116,7 @@ Aplikasi ini digunakan untuk pendataan dan pengelolaan **zakat fitrah** serta **
 - `database/zakat_schema.sql` membuat database bernama `zakat_db`.
 - konfigurasi aktif di `application/config/database.php` saat ini menggunakan `zakat`.
 - Samakan salah satunya agar koneksi berhasil.
+- Untuk database lama, jalankan skrip tambahan `database/alter_no_kwitansi.sql` agar kolom `no_kwitansi` tersedia.
 
 ---
 
@@ -131,13 +143,18 @@ Password default tidak didokumentasikan dalam plain text (menggunakan hash). Jik
 
 ## Status Pengembangan Saat Ini
 
-Fitur inti aplikasi telah tersedia dan berjalan pada rilis **v1.0.0**:
+Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.1**:
 - manajemen data master,
 - transaksi fitrah/mal,
 - penyaluran,
-- kwitansi,
+- kwitansi (cetak + export PDF),
 - laporan + ekspor PDF,
-- redesign halaman users (server-side DataTables + statistik).
+- redesign halaman users (server-side DataTables + statistik),
+- modul infaq/shodaqoh,
+- penyempurnaan UI/UX halaman muzakki,
+- modal detail pada zakat mal dan penyaluran,
+- standarisasi format nomor transaksi/kwitansi berbasis tahun (`YYYY`).
+- penyimpanan permanen nomor kwitansi di database (`no_kwitansi`).
 
 Detail perubahan terbaru tersedia pada file `CHANGELOG.md`.
 Ringkasan publik rilis tersedia pada `RELEASE_NOTES_v1.0.0.md`.

@@ -4,6 +4,65 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+## [v1.1.1] - 2026-03-04
+
+Penyempurnaan UX modul master, transaksi, kwitansi, dan laporan.
+
+### Added
+- Tombol **Detail** pada list muzakki dengan tampilan **modal** untuk melihat informasi lengkap tanpa pindah halaman.
+- Tombol **Export PDF** pada halaman kwitansi zakat fitrah dan zakat mal.
+- Endpoint export PDF baru:
+  - `zakat_fitrah/export_pdf/{id}`,
+  - `zakat_mal/export_pdf/{id}`.
+- Template PDF khusus kwitansi:
+  - `application/views/zakat_fitrah/kwitansi_pdf.php`,
+  - `application/views/zakat_mal/kwitansi_pdf.php`.
+- Modal detail pada list transaksi:
+  - `zakat_mal` (detail transaksi tanpa pindah halaman),
+  - `penyaluran` (detail transaksi tanpa pindah halaman).
+- Endpoint detail JSON penyaluran `penyaluran/detail_json/{id}` untuk memuat list mustahik penerima di modal.
+- Bagian laporan baru:
+  - **Laporan Infaq & Shodaqoh** (halaman laporan + export PDF),
+  - **List Mustahik Penerima** pada export PDF laporan.
+- Penyimpanan `no_kwitansi` di database untuk:
+  - `zakat_fitrah`,
+  - `zakat_mal`,
+  - `infaq_shodaqoh`.
+- Skrip migrasi database existing: `database/alter_no_kwitansi.sql`.
+
+### Changed
+- Layout form muzakki dirapikan agar lebih proporsional:
+  - susunan kolom identitas diperbaiki,
+  - `Pekerjaan`, `No HP`, dan `Email` ditampilkan dalam satu baris,
+  - bagian alamat dibuat lebih nyaman diisi.
+- Tabel list muzakki diperbarui:
+  - kolom `Alamat` dihapus dari tabel utama,
+  - `NIK` dipindahkan sebagai teks kecil di bawah nama.
+- Format kwitansi zakat mal disamakan dengan kwitansi fitrah (tampilan, aksi, dan PDF).
+- Tanda tangan pada kwitansi otomatis terisi:
+  - pihak **Muzakki** dari nama muzakki transaksi,
+  - pihak **Penerima** dari user login (`nama_lengkap`/`username`).
+- Pengaturan cetak kwitansi disesuaikan default kertas dot matrix Epson LX-310 (`9.5 x 11 in`).
+- Form penyaluran ditingkatkan:
+  - detail penerima bisa tambah/hapus baris dinamis,
+  - tampil indikator sisa alokasi uang/beras secara realtime,
+  - tombol simpan dinonaktifkan jika masih ada sisa alokasi.
+- Default tanggal form transaksi diseragamkan ke tanggal hari ini saat nilai kosong:
+  - zakat fitrah,
+  - zakat mal,
+  - penyaluran,
+  - infaq/shodaqoh.
+- Format nomor transaksi/penyaluran diubah:
+  - dari token tengah `YYYYMMDD` menjadi `YYYY`.
+- Format nomor kwitansi diubah:
+  - dari token tengah `YYYYMM` menjadi `YYYY`.
+- Nomor kwitansi kini bersifat persisten (tersimpan di kolom `no_kwitansi`) sehingga konsisten saat cetak ulang/export PDF.
+
+### Fixed
+- JavaScript toggle form pada pilihan `jenis_muzakki` diperbaiki sehingga section tanggungan otomatis muncul saat memilih `kepala_keluarga`.
+- Data `rows_mustahik` pada export PDF laporan diperbaiki agar list mustahik tidak kosong.
+- Zona waktu aplikasi diset agar default tanggal mengikuti waktu lokal (`Asia/Jakarta`).
+
 ## [v1.1.0] - 2026-03-03
 
 Pembaruan fitur transaksi non-zakat dan penyempurnaan tampilan aplikasi.

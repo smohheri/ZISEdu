@@ -96,4 +96,35 @@ class Laporan_model extends CI_Model
             ->get()
             ->result();
     }
+
+    public function get_laporan_mustahik_penerima($startDate, $endDate)
+    {
+        return $this->db
+            ->select('m.kode_mustahik, m.nama AS nama_mustahik, COUNT(pd.id) AS jumlah_penerimaan, COALESCE(SUM(pd.nominal_uang),0) AS total_nominal_uang, COALESCE(SUM(pd.beras_kg),0) AS total_beras_kg', FALSE)
+            ->from('penyaluran_detail pd')
+            ->join('penyaluran p', 'p.id = pd.penyaluran_id', 'inner')
+            ->join('mustahik m', 'm.id = pd.mustahik_id', 'left')
+            ->where('p.status', 'disalurkan')
+            ->where('p.tanggal_penyaluran >=', $startDate)
+            ->where('p.tanggal_penyaluran <=', $endDate)
+            ->group_by('pd.mustahik_id')
+            ->group_by('m.kode_mustahik')
+            ->group_by('m.nama')
+            ->order_by('m.nama', 'ASC')
+            ->get()
+            ->result();
+    }
+
+    public function get_laporan_infaq_shodaqoh($startDate, $endDate)
+    {
+        return $this->db
+            ->select('nomor_transaksi, tanggal_transaksi, jenis_dana, nama_donatur, nominal_uang, metode_bayar, status')
+            ->from('infaq_shodaqoh')
+            ->where('tanggal_transaksi >=', $startDate)
+            ->where('tanggal_transaksi <=', $endDate)
+            ->order_by('tanggal_transaksi', 'DESC')
+            ->order_by('id', 'DESC')
+            ->get()
+            ->result();
+    }
 }

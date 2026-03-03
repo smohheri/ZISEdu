@@ -550,4 +550,4 @@ $config['proxy_ips'] = '';
 | Application Version
 |--------------------------------------------------------------------------
 */
-$config['app_version'] = 'v1.0.0';
+$config['app_version'] = 'v1.1.1';

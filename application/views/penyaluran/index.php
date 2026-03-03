@@ -28,7 +28,9 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-gradient-info">
             <div class="inner">
-                <h3>Rp <?php echo number_format(isset($stats['total_uang']) ? (float) $stats['total_uang'] : 0, 0, ',', '.'); ?></h3>
+                <h3>Rp
+                    <?php echo number_format(isset($stats['total_uang']) ? (float) $stats['total_uang'] : 0, 0, ',', '.'); ?>
+                </h3>
                 <p>Total Uang Disalurkan</p>
             </div>
             <div class="icon">
@@ -39,7 +41,8 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-gradient-success">
             <div class="inner">
-                <h3><?php echo number_format(isset($stats['total_beras']) ? (float) $stats['total_beras'] : 0, 2, ',', '.'); ?> Kg</h3>
+                <h3><?php echo number_format(isset($stats['total_beras']) ? (float) $stats['total_beras'] : 0, 2, ',', '.'); ?>
+                    Kg</h3>
                 <p>Total Beras</p>
             </div>
             <div class="icon">
@@ -66,8 +69,10 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Transaksi Disalurkan</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($stats['disalurkan']) ? (int) $stats['disalurkan'] : 0; ?></div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Transaksi Disalurkan
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php echo isset($stats['disalurkan']) ? (int) $stats['disalurkan'] : 0; ?></div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -82,7 +87,9 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Draft / Batal</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo ((int) (isset($stats['draft']) ? $stats['draft'] : 0)) + ((int) (isset($stats['batal']) ? $stats['batal'] : 0)); ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php echo ((int) (isset($stats['draft']) ? $stats['draft'] : 0)) + ((int) (isset($stats['batal']) ? $stats['batal'] : 0)); ?>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
@@ -160,12 +167,22 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-                                    <a class="btn btn-warning" href="<?php echo site_url('penyaluran/edit/' . $row->id); ?>" title="Edit">
+                                    <a class="btn btn-warning" href="<?php echo site_url('penyaluran/edit/' . $row->id); ?>"
+                                        title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a class="btn btn-info" href="<?php echo site_url('penyaluran/detail/' . $row->id); ?>" title="Detail">
+                                    <button type="button" class="btn btn-info btn-detail-penyaluran" title="Detail"
+                                        data-toggle="modal" data-target="#modal-detail-penyaluran"
+                                        data-id="<?php echo (int) $row->id; ?>"
+                                        data-nomor="<?php echo html_escape($row->nomor_penyaluran); ?>"
+                                        data-tanggal="<?php echo html_escape(indo_date($row->tanggal_penyaluran)); ?>"
+                                        data-sumber="<?php echo html_escape($row->jenis_sumber); ?>"
+                                        data-total-uang="Rp <?php echo number_format((float) $row->total_uang, 0, ',', '.'); ?>"
+                                        data-total-beras="<?php echo number_format((float) $row->total_beras_kg, 2, ',', '.'); ?> Kg"
+                                        data-status="<?php echo html_escape(strtoupper($row->status)); ?>"
+                                        data-keterangan="<?php echo html_escape(!empty($row->keterangan) ? $row->keterangan : '-'); ?>">
                                         <i class="fas fa-eye"></i>
-                                    </a>
+                                    </button>
                                     <a class="btn btn-danger" href="<?php echo site_url('penyaluran/delete/' . $row->id); ?>"
                                         title="Hapus" onclick="return confirm('Hapus data?')">
                                         <i class="fas fa-trash"></i>
@@ -196,11 +213,116 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-penyaluran" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Penyaluran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mb-2"><strong>No Penyaluran:</strong> <span
+                            id="detail-nomor-penyaluran">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Tanggal:</strong> <span id="detail-tanggal-penyaluran">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Jenis Sumber:</strong> <span id="detail-jenis-sumber">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Status:</strong> <span id="detail-status-penyaluran">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Total Uang:</strong> <span
+                            id="detail-total-uang-penyaluran">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Total Beras:</strong> <span
+                            id="detail-total-beras-penyaluran">-</span></div>
+                    <div class="col-md-12 mb-2"><strong>Keterangan:</strong><br><span
+                            id="detail-keterangan-penyaluran">-</span></div>
+                </div>
+                <hr>
+                <h6 class="mb-2"><strong>List Mustahik Penerima</strong></h6>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered mb-0" id="detail-mustahik-table">
+                        <thead>
+                            <tr>
+                                <th width="50">No</th>
+                                <th>Mustahik</th>
+                                <th>Bentuk Bantuan</th>
+                                <th>Nominal Uang</th>
+                                <th>Beras (Kg)</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Belum ada data detail.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         setTimeout(function () {
             $('#alert-success, #alert-error').fadeOut('slow');
         }, 5000);
+
+        function formatRupiah(value) {
+            const number = parseFloat(value || 0);
+            return 'Rp ' + number.toLocaleString('id-ID');
+        }
+
+        function formatKg(value) {
+            const number = parseFloat(value || 0);
+            return number.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        $('.btn-detail-penyaluran').on('click', function () {
+            const btn = $(this);
+            const id = btn.data('id');
+            $('#detail-nomor-penyaluran').text(btn.data('nomor') || '-');
+            $('#detail-tanggal-penyaluran').text(btn.data('tanggal') || '-');
+            $('#detail-jenis-sumber').text(btn.data('sumber') || '-');
+            $('#detail-status-penyaluran').text(btn.data('status') || '-');
+            $('#detail-total-uang-penyaluran').text(btn.data('total-uang') || '-');
+            $('#detail-total-beras-penyaluran').text(btn.data('total-beras') || '-');
+            $('#detail-keterangan-penyaluran').text(btn.data('keterangan') || '-');
+
+            const tbody = $('#detail-mustahik-table tbody');
+            tbody.html('<tr><td colspan="6" class="text-center text-muted">Memuat data...</td></tr>');
+
+            $.getJSON('<?php echo site_url('penyaluran/detail_json'); ?>/' + id)
+                .done(function (response) {
+                    const details = response && response.details ? response.details : [];
+                    if (!details.length) {
+                        tbody.html('<tr><td colspan="6" class="text-center text-muted">Belum ada data detail mustahik.</td></tr>');
+                        return;
+                    }
+
+                    let rowsHtml = '';
+                    details.forEach(function (detail, index) {
+                        rowsHtml += '<tr>' +
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td>' + (detail.nama_mustahik || '-') + '</td>' +
+                            '<td>' + (detail.bentuk_bantuan || '-') + '</td>' +
+                            '<td>' + formatRupiah(detail.nominal_uang) + '</td>' +
+                            '<td>' + formatKg(detail.beras_kg) + '</td>' +
+                            '<td>' + (detail.keterangan || '-') + '</td>' +
+                            '</tr>';
+                    });
+                    tbody.html(rowsHtml);
+                })
+                .fail(function () {
+                    tbody.html('<tr><td colspan="6" class="text-center text-danger">Gagal memuat detail mustahik.</td></tr>');
+                });
+        });
     });
 </script>
 
@@ -248,4 +370,3 @@
         }
     }
 </style>
-

@@ -13,7 +13,7 @@
         <?php endif; ?>
 
         <div class="row">
-            <div class="col-md-4 form-group">
+            <div class="col-md-3 form-group">
                 <label>Kode Muzakki</label>
                 <?php
                 $kodeMuzakki = isset($row->kode_muzakki)
@@ -23,7 +23,7 @@
                 <input type="text" name="kode_muzakki" class="form-control"
                     value="<?php echo set_value('kode_muzakki', $kodeMuzakki); ?>" readonly required>
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-md-3 form-group">
                 <label>Jenis Muzakki</label>
                 <?php $jenis = set_value('jenis_muzakki', isset($row->jenis_muzakki) ? $row->jenis_muzakki : 'individu'); ?>
                 <select name="jenis_muzakki" class="form-control" required>
@@ -33,7 +33,7 @@
                         Keluarga</option>
                 </select>
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-md-6 form-group">
                 <label>Nama</label>
                 <input type="text" name="nama" class="form-control"
                     value="<?php echo set_value('nama', isset($row->nama) ? $row->nama : ''); ?>" required>
@@ -41,39 +41,41 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4 form-group"><label>NIK</label><input type="text" name="nik" class="form-control"
+            <div class="col-md-6 form-group"><label>NIK</label><input type="text" name="nik" class="form-control"
                     value="<?php echo set_value('nik', isset($row->nik) ? $row->nik : ''); ?>"></div>
-            <div class="col-md-4 form-group"><label>NPWP</label><input type="text" name="npwp" class="form-control"
+            <div class="col-md-6 form-group"><label>NPWP</label><input type="text" name="npwp" class="form-control"
                     value="<?php echo set_value('npwp', isset($row->npwp) ? $row->npwp : ''); ?>"></div>
+        </div>
+
+        <div class="row">
             <div class="col-md-4 form-group"><label>Pekerjaan</label><input type="text" name="pekerjaan"
                     class="form-control"
                     value="<?php echo set_value('pekerjaan', isset($row->pekerjaan) ? $row->pekerjaan : ''); ?>"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 form-group"><label>No HP</label><input type="text" name="no_hp" class="form-control"
+            <div class="col-md-4 form-group"><label>No HP</label><input type="text" name="no_hp" class="form-control"
                     value="<?php echo set_value('no_hp', isset($row->no_hp) ? $row->no_hp : ''); ?>"></div>
-            <div class="col-md-6 form-group"><label>Email</label><input type="email" name="email" class="form-control"
+            <div class="col-md-4 form-group"><label>Email</label><input type="email" name="email" class="form-control"
                     value="<?php echo set_value('email', isset($row->email) ? $row->email : ''); ?>"></div>
         </div>
 
-        <div class="form-group"><label>Alamat</label><textarea name="alamat" class="form-control"
+        <div class="form-group mb-3"><label>Alamat</label><textarea name="alamat" class="form-control"
                 rows="2"><?php echo set_value('alamat', isset($row->alamat) ? $row->alamat : ''); ?></textarea></div>
         <div class="row">
-            <div class="col-md-3 form-group"><label>Kelurahan</label><input type="text" name="kelurahan"
+            <div class="col-md-4 form-group"><label>Kelurahan</label><input type="text" name="kelurahan"
                     class="form-control"
                     value="<?php echo set_value('kelurahan', isset($row->kelurahan) ? $row->kelurahan : ''); ?>"></div>
-            <div class="col-md-3 form-group"><label>Kecamatan</label><input type="text" name="kecamatan"
+            <div class="col-md-4 form-group"><label>Kecamatan</label><input type="text" name="kecamatan"
                     class="form-control"
                     value="<?php echo set_value('kecamatan', isset($row->kecamatan) ? $row->kecamatan : ''); ?>"></div>
-            <div class="col-md-3 form-group"><label>Kota/Kabupaten</label><input type="text" name="kota_kabupaten"
+            <div class="col-md-4 form-group"><label>Kota/Kabupaten</label><input type="text" name="kota_kabupaten"
                     class="form-control"
                     value="<?php echo set_value('kota_kabupaten', isset($row->kota_kabupaten) ? $row->kota_kabupaten : ''); ?>">
             </div>
-            <div class="col-md-2 form-group"><label>Provinsi</label><input type="text" name="provinsi"
+        </div>
+        <div class="row">
+            <div class="col-md-8 form-group"><label>Provinsi</label><input type="text" name="provinsi"
                     class="form-control"
                     value="<?php echo set_value('provinsi', isset($row->provinsi) ? $row->provinsi : ''); ?>"></div>
-            <div class="col-md-1 form-group"><label>Kode Pos</label><input type="text" name="kode_pos"
+            <div class="col-md-4 form-group"><label>Kode Pos</label><input type="text" name="kode_pos"
                     class="form-control"
                     value="<?php echo set_value('kode_pos', isset($row->kode_pos) ? $row->kode_pos : ''); ?>"></div>
         </div>
@@ -133,7 +135,7 @@
 <?php echo form_close(); ?>
 
 <script>
-    (func tion () {
+    (function () {
         const jenisEl = document.querySelector('select[name="jenis_muzakki"]');
         const keluargaSection = document.getElementById('keluarga-section');
         const tableBody = document.querySelector('#anggota-table tbody');
@@ -164,12 +166,12 @@
         }
 
         if (tableBody) {
-            tableBody.addEventListener('click', fun ction (e) {
+            tableBody.addEventListener('click', function (e) {
                 if (e.target.classList.contains('btn-remove-anggota')) {
                     const rows = tableBody.querySelectorAll('tr');
                     if (rows.length <= 1) {
                         const inputs = rows[0].querySelectorAll('input');
-                        inputs.forEach(fu nction (input) { input.value = ''; });
+                        inputs.forEach(function (input) { input.value = ''; });
                         const select = rows[0].querySelector('select[name="anggota_aktif[]"]');
                         if (select) select.value = '1';
                         return;

@@ -28,7 +28,9 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-gradient-info">
             <div class="inner">
-                <h3>Rp <?php echo number_format(isset($stats['total_harta_bersih']) ? (float) $stats['total_harta_bersih'] : 0, 0, ',', '.'); ?></h3>
+                <h3>Rp
+                    <?php echo number_format(isset($stats['total_harta_bersih']) ? (float) $stats['total_harta_bersih'] : 0, 0, ',', '.'); ?>
+                </h3>
                 <p>Total Harta Bersih</p>
             </div>
             <div class="icon">
@@ -39,7 +41,9 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-gradient-success">
             <div class="inner">
-                <h3>Rp <?php echo number_format(isset($stats['total_zakat']) ? (float) $stats['total_zakat'] : 0, 0, ',', '.'); ?></h3>
+                <h3>Rp
+                    <?php echo number_format(isset($stats['total_zakat']) ? (float) $stats['total_zakat'] : 0, 0, ',', '.'); ?>
+                </h3>
                 <p>Total Zakat</p>
             </div>
             <div class="icon">
@@ -67,7 +71,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Transaksi Lunas</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo isset($stats['lunas']) ? (int) $stats['lunas'] : 0; ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php echo isset($stats['lunas']) ? (int) $stats['lunas'] : 0; ?></div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -82,7 +87,9 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Draft / Batal</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo ((int) (isset($stats['draft']) ? $stats['draft'] : 0)) + ((int) (isset($stats['batal']) ? $stats['batal'] : 0)); ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php echo ((int) (isset($stats['draft']) ? $stats['draft'] : 0)) + ((int) (isset($stats['batal']) ? $stats['batal'] : 0)); ?>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
@@ -146,7 +153,8 @@
                         <tr>
                             <td><?php echo $no++; ?></td>
                             <td><?php echo html_escape($row->nomor_transaksi); ?></td>
-                            <td><?php echo html_escape(isset($row->nama_muzakki) ? $row->nama_muzakki : $row->muzakki_id); ?></td>
+                            <td><?php echo html_escape(isset($row->nama_muzakki) ? $row->nama_muzakki : $row->muzakki_id); ?>
+                            </td>
                             <td><?php echo html_escape(indo_date($row->tanggal_hitung)); ?></td>
                             <td>Rp <?php echo number_format((float) $row->harta_bersih, 0, ',', '.'); ?></td>
                             <td>Rp <?php echo number_format((float) $row->nilai_nishab, 0, ',', '.'); ?></td>
@@ -162,15 +170,31 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-                                    <a class="btn btn-success" target="_blank" href="<?php echo site_url('zakat_mal/kwitansi/' . $row->id); ?>" title="Kwitansi">
+                                    <a class="btn btn-success" target="_blank"
+                                        href="<?php echo site_url('zakat_mal/kwitansi/' . $row->id); ?>" title="Kwitansi">
                                         <i class="fas fa-print"></i>
                                     </a>
-                                    <a class="btn btn-warning" href="<?php echo site_url('zakat_mal/edit/' . $row->id); ?>" title="Edit">
+                                    <a class="btn btn-warning" href="<?php echo site_url('zakat_mal/edit/' . $row->id); ?>"
+                                        title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a class="btn btn-info" href="<?php echo site_url('zakat_mal/detail/' . $row->id); ?>" title="Detail">
+                                    <button type="button" class="btn btn-info btn-detail-zakat-mal" title="Detail"
+                                        data-toggle="modal" data-target="#modal-detail-zakat-mal"
+                                        data-nomor="<?php echo html_escape($row->nomor_transaksi); ?>"
+                                        data-muzakki="<?php echo html_escape(isset($row->nama_muzakki) ? $row->nama_muzakki : $row->muzakki_id); ?>"
+                                        data-tanggal-hitung="<?php echo html_escape(indo_date($row->tanggal_hitung)); ?>"
+                                        data-tanggal-bayar="<?php echo html_escape(!empty($row->tanggal_bayar) ? indo_date($row->tanggal_bayar) : '-'); ?>"
+                                        data-total-harta="Rp <?php echo number_format((float) $row->total_harta, 0, ',', '.'); ?>"
+                                        data-total-hutang="Rp <?php echo number_format((float) $row->total_hutang_jatuh_tempo, 0, ',', '.'); ?>"
+                                        data-harta-bersih="Rp <?php echo number_format((float) $row->harta_bersih, 0, ',', '.'); ?>"
+                                        data-nishab="Rp <?php echo number_format((float) $row->nilai_nishab, 0, ',', '.'); ?>"
+                                        data-persentase="<?php echo number_format((float) $row->persentase_zakat, 2, ',', '.'); ?>%"
+                                        data-total-zakat="Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?>"
+                                        data-metode-bayar="<?php echo html_escape(ucfirst($row->metode_bayar)); ?>"
+                                        data-status="<?php echo html_escape(strtoupper($row->status)); ?>"
+                                        data-keterangan="<?php echo html_escape(!empty($row->keterangan) ? $row->keterangan : '-'); ?>">
                                         <i class="fas fa-eye"></i>
-                                    </a>
+                                    </button>
                                     <a class="btn btn-danger" href="<?php echo site_url('zakat_mal/delete/' . $row->id); ?>"
                                         title="Hapus" onclick="return confirm('Hapus data?')">
                                         <i class="fas fa-trash"></i>
@@ -201,11 +225,69 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-zakat-mal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Zakat Mal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mb-2"><strong>No Transaksi:</strong> <span id="detail-nomor">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Muzakki:</strong> <span id="detail-muzakki">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Tanggal Hitung:</strong> <span
+                            id="detail-tanggal-hitung">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Tanggal Bayar:</strong> <span id="detail-tanggal-bayar">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Total Harta:</strong> <span id="detail-total-harta">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Total Hutang:</strong> <span id="detail-total-hutang">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Harta Bersih:</strong> <span id="detail-harta-bersih">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Nishab:</strong> <span id="detail-nishab">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Persentase:</strong> <span id="detail-persentase">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Total Zakat:</strong> <span id="detail-total-zakat">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Metode Bayar:</strong> <span id="detail-metode-bayar">-</span>
+                    </div>
+                    <div class="col-md-6 mb-2"><strong>Status:</strong> <span id="detail-status">-</span></div>
+                    <div class="col-md-12 mb-2"><strong>Keterangan:</strong><br><span id="detail-keterangan">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         setTimeout(function () {
             $('#alert-success, #alert-error').fadeOut('slow');
         }, 5000);
+
+        $('.btn-detail-zakat-mal').on('click', function () {
+            const btn = $(this);
+            $('#detail-nomor').text(btn.data('nomor') || '-');
+            $('#detail-muzakki').text(btn.data('muzakki') || '-');
+            $('#detail-tanggal-hitung').text(btn.data('tanggal-hitung') || '-');
+            $('#detail-tanggal-bayar').text(btn.data('tanggal-bayar') || '-');
+            $('#detail-total-harta').text(btn.data('total-harta') || '-');
+            $('#detail-total-hutang').text(btn.data('total-hutang') || '-');
+            $('#detail-harta-bersih').text(btn.data('harta-bersih') || '-');
+            $('#detail-nishab').text(btn.data('nishab') || '-');
+            $('#detail-persentase').text(btn.data('persentase') || '-');
+            $('#detail-total-zakat').text(btn.data('total-zakat') || '-');
+            $('#detail-metode-bayar').text(btn.data('metode-bayar') || '-');
+            $('#detail-status').text(btn.data('status') || '-');
+            $('#detail-keterangan').text(btn.data('keterangan') || '-');
+        });
     });
 </script>
 
@@ -253,4 +335,3 @@
         }
     }
 </style>
-

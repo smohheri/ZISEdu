@@ -25,16 +25,18 @@
             </div>
             <div class="col-md-4 form-group">
                 <label>Tanggal Transaksi</label>
-                <input type="date" name="tanggal_transaksi" class="form-control"
-                    value="<?php echo set_value('tanggal_transaksi', isset($row->tanggal_transaksi) ? $row->tanggal_transaksi : date('Y-m-d')); ?>"
-                    required>
+                <input type="date" name="tanggal_transaksi" class="form-control" value="<?php
+                $tanggalTransaksi = set_value('tanggal_transaksi', isset($row->tanggal_transaksi) ? $row->tanggal_transaksi : date('Y-m-d'));
+                echo html_escape(trim((string) $tanggalTransaksi) !== '' ? $tanggalTransaksi : date('Y-m-d'));
+                ?>" required>
             </div>
             <?php $jenisDana = set_value('jenis_dana', isset($row->jenis_dana) ? $row->jenis_dana : 'infaq'); ?>
             <div class="col-md-4 form-group">
                 <label>Jenis Dana</label>
                 <select name="jenis_dana" class="form-control" required>
                     <option value="infaq" <?php echo ($jenisDana === 'infaq') ? 'selected' : ''; ?>>Infaq</option>
-                    <option value="shodaqoh" <?php echo ($jenisDana === 'shodaqoh') ? 'selected' : ''; ?>>Shodaqoh</option>
+                    <option value="shodaqoh" <?php echo ($jenisDana === 'shodaqoh') ? 'selected' : ''; ?>>Shodaqoh
+                    </option>
                 </select>
             </div>
         </div>
@@ -65,7 +67,8 @@
                 <label>Metode Bayar</label>
                 <select name="metode_bayar" class="form-control" required>
                     <option value="tunai" <?php echo ($metodeBayar === 'tunai') ? 'selected' : ''; ?>>Tunai</option>
-                    <option value="transfer" <?php echo ($metodeBayar === 'transfer') ? 'selected' : ''; ?>>Transfer</option>
+                    <option value="transfer" <?php echo ($metodeBayar === 'transfer') ? 'selected' : ''; ?>>Transfer
+                    </option>
                     <option value="qris" <?php echo ($metodeBayar === 'qris') ? 'selected' : ''; ?>>QRIS</option>
                     <option value="lainnya" <?php echo ($metodeBayar === 'lainnya') ? 'selected' : ''; ?>>Lainnya</option>
                 </select>

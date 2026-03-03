@@ -211,7 +211,7 @@ class Zakat_fitrah_model extends CI_Model
     public function generate_next_nomor($date = NULL)
     {
         $date = $date ?: date('Y-m-d');
-        $dateToken = date('Ymd', strtotime($date));
+        $dateToken = date('Y', strtotime($date));
         $prefix = 'ZF-' . $dateToken . '-';
 
         $last = $this->db

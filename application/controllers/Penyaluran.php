@@ -118,6 +118,33 @@ class Penyaluran extends CI_Controller
         return $this->edit($id);
     }
 
+    public function detail_json($id = NULL)
+    {
+        if ($this->session->userdata('is_logged_in') !== TRUE) {
+            return $this->output
+                ->set_status_header(401)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('message' => 'Unauthorized')));
+        }
+
+        $row = $this->penyaluran->get_by_id($id);
+        if (!$row) {
+            return $this->output
+                ->set_status_header(404)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('message' => 'Data penyaluran tidak ditemukan')));
+        }
+
+        $details = $this->penyaluran->get_detail_rows((int) $row->id);
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(array(
+                'row' => $row,
+                'details' => $details
+            )));
+    }
+
     public function update($id = NULL)
     {
         if ($this->input->method(TRUE) !== 'POST') {
