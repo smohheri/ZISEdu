@@ -32,10 +32,11 @@
 		<link rel="shortcut icon" href="<?php echo $faviconUrl; ?>" type="image/png">
 	<?php endif; ?>
 
-	<link rel="stylesheet" href="<?php echo base_url('adminlte/plugins/fontawesome-free/css/all.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/plugins/fontawesome-free/css/all.min.css'); ?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
-	<link rel="stylesheet" href="<?php echo base_url('adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css'); ?>">
-	<link rel="stylesheet" href="<?php echo base_url('adminlte/dist/css/adminlte.min.css'); ?>">
+	<link rel="stylesheet"
+		href="<?php echo base_url('asset/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/dist/css/adminlte.min.css'); ?>">
 	<style>
 		html,
 		body {
@@ -342,9 +343,9 @@
 		</div>
 	</div>
 
-	<script src="<?php echo base_url('adminlte/plugins/jquery/jquery.min.js'); ?>"></script>
-	<script src="<?php echo base_url('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-	<script src="<?php echo base_url('adminlte/dist/js/adminlte.min.js'); ?>"></script>
+	<script src="<?php echo base_url('asset/adminlte/plugins/jquery/jquery.min.js'); ?>"></script>
+	<script src="<?php echo base_url('asset/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+	<script src="<?php echo base_url('asset/adminlte/dist/js/adminlte.min.js'); ?>"></script>
 </body>
 
 </html>

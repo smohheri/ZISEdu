@@ -77,7 +77,11 @@ class Zakat_mal extends CI_Controller
         }
 
         $payload = $this->_build_payload($nomor);
-        $this->_apply_auto_calculation($payload);
+        if ($this->_get_calculation_mode() === 'manual') {
+            $this->_apply_manual_calculation($payload);
+        } else {
+            $this->_apply_auto_calculation($payload);
+        }
         $detailRows = $this->_collect_detail_rows();
 
         $this->db->trans_begin();
@@ -157,7 +161,11 @@ class Zakat_mal extends CI_Controller
         }
 
         $payload = $this->_build_payload($nomor, FALSE);
-        $this->_apply_auto_calculation($payload);
+        if ($this->_get_calculation_mode() === 'manual') {
+            $this->_apply_manual_calculation($payload);
+        } else {
+            $this->_apply_auto_calculation($payload);
+        }
         $detailRows = $this->_collect_detail_rows();
 
         $this->db->trans_begin();
@@ -345,6 +353,21 @@ class Zakat_mal extends CI_Controller
         $payload['total_zakat'] = $totalZakat;
     }
 
+    private function _apply_manual_calculation(array &$payload)
+    {
+        $totalHarta = max(0, (float) $payload['total_harta']);
+        $totalHutang = max(0, (float) $payload['total_hutang_jatuh_tempo']);
+
+        $payload['harta_bersih'] = max(0, $totalHarta - $totalHutang);
+        $payload['total_zakat'] = max(0, round((float) $payload['total_zakat'], 2));
+    }
+
+    private function _get_calculation_mode()
+    {
+        $mode = strtolower(trim((string) $this->input->post('mode_perhitungan', TRUE)));
+        return $mode === 'manual' ? 'manual' : 'otomatis';
+    }
+
     private function _collect_detail_rows()
     {
         $details = (array) $this->input->post('detail');
@@ -383,6 +406,7 @@ class Zakat_mal extends CI_Controller
 
     private function _set_form_rules()
     {
+        $this->form_validation->set_rules('mode_perhitungan', 'Mode Perhitungan', 'trim|required|in_list[otomatis,manual]');
         $this->form_validation->set_rules('nomor_transaksi', 'Nomor Transaksi', 'trim|max_length[40]');
         $this->form_validation->set_rules('muzakki_id', 'Muzakki', 'trim|required|integer');
         $this->form_validation->set_rules('tanggal_hitung', 'Tanggal Hitung', 'trim|required');

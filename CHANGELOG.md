@@ -4,6 +4,45 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+## [v1.1.3] - 2026-03-04
+
+Penataan struktur aset frontend agar lebih rapi dan konsisten.
+
+### Added
+- Folder baru `asset/` sebagai root untuk aset statis aplikasi.
+
+### Changed
+- Seluruh paket AdminLTE dipindahkan dari root `adminlte/` ke `asset/adminlte/`.
+- Referensi URL aset pada view diperbarui ke path baru `asset/adminlte/...`, mencakup:
+  - partial layout (`head` dan `scripts`),
+  - halaman login,
+  - dashboard (Chart.js),
+  - halaman kwitansi zakat fitrah dan zakat mal.
+
+### Fixed
+- Mencegah potensi 404 aset setelah restrukturisasi direktori dengan menyamakan seluruh path pemanggilan CSS/JS ke lokasi baru.
+
+## [v1.1.2] - 2026-03-04
+
+Penyempurnaan perhitungan transaksi **Zakat Mal** agar mendukung input nominal zakat manual.
+
+### Added
+- Opsi **Mode Perhitungan** pada form transaksi zakat mal:
+  - `Hitung Otomatis` (menghitung `total_zakat` dari parameter perhitungan),
+  - `Input Zakat Manual` (nominal `total_zakat` diisi langsung oleh amil/operator).
+
+### Changed
+- Alur simpan dan update transaksi `zakat_mal` diperbarui untuk membaca input `mode_perhitungan`.
+- Validasi server-side ditambahkan untuk field `mode_perhitungan` dengan nilai yang diizinkan `otomatis` atau `manual`.
+- Perilaku JavaScript pada form zakat mal diperbarui:
+  - pada mode manual, field `total_zakat` dapat diedit,
+  - pada mode otomatis, field `total_zakat` terkunci dan dihitung ulang otomatis,
+  - `harta_bersih` tetap dihitung otomatis di kedua mode.
+- Saat edit data lama, mode perhitungan default kini menyesuaikan nilai existing agar lebih konsisten dengan nominal tersimpan.
+
+### Fixed
+- Perhitungan `harta_bersih` dan `total_zakat` kini lebih konsisten antara form (frontend) dan proses simpan/update (backend) untuk skenario manual maupun otomatis.
+
 ## [v1.1.1] - 2026-03-04
 
 Penyempurnaan UX modul master, transaksi, kwitansi, dan laporan.

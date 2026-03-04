@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<script src="<?php echo base_url('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-<script src="<?php echo base_url('adminlte/dist/js/adminlte.min.js'); ?>"></script>
+<script src="<?php echo base_url('asset/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+<script src="<?php echo base_url('asset/adminlte/dist/js/adminlte.min.js'); ?>"></script>
 <script>
 	(function () {
 		const currencyFieldNames = [

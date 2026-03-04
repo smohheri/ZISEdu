@@ -31,11 +31,11 @@
 		<link rel="shortcut icon" href="<?php echo $faviconUrl; ?>" type="image/png">
 	<?php endif; ?>
 
-	<link rel="stylesheet" href="<?php echo base_url('adminlte/plugins/fontawesome-free/css/all.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/plugins/fontawesome-free/css/all.min.css'); ?>">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
-	<link rel="stylesheet" href="<?php echo base_url('adminlte/dist/css/adminlte.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/dist/css/adminlte.min.css'); ?>">
 	<!-- jQuery -->
-	<script src="<?php echo base_url('adminlte/plugins/jquery/jquery.min.js'); ?>"></script>
+	<script src="<?php echo base_url('asset/adminlte/plugins/jquery/jquery.min.js'); ?>"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

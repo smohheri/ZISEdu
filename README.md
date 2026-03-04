@@ -4,11 +4,16 @@ Aplikasi ini digunakan untuk pendataan dan pengelolaan **zakat fitrah** serta **
 
 ## Informasi Rilis
 
-- Versi rilis: **v1.1.1**
+- Versi rilis: **v1.1.2**
 - Tanggal rilis: **2026-03-04**
 - Status: **Stable Update**
 - Riwayat perubahan: **CHANGELOG.md**
 - Release notes rilis pertama: **RELEASE_NOTES_v1.0.0.md**
+
+### Highlight v1.1.2
+- Form transaksi `zakat_mal` mendukung `Mode Perhitungan` (otomatis/manual).
+- Pada mode manual, nominal `total_zakat` bisa diinput langsung dan tetap tervalidasi di backend.
+- Perhitungan `harta_bersih` tetap otomatis, sementara `total_zakat` menyesuaikan mode perhitungan.
 
 ### Highlight v1.1.1
 - Detail data pada list `muzakki`, `zakat_mal`, dan `penyaluran` menggunakan modal.
@@ -143,7 +148,7 @@ Password default tidak didokumentasikan dalam plain text (menggunakan hash). Jik
 
 ## Status Pengembangan Saat Ini
 
-Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.1**:
+Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.2**:
 - manajemen data master,
 - transaksi fitrah/mal,
 - penyaluran,
@@ -153,6 +158,7 @@ Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.1**:
 - modul infaq/shodaqoh,
 - penyempurnaan UI/UX halaman muzakki,
 - modal detail pada zakat mal dan penyaluran,
+- mode perhitungan zakat mal otomatis/manual,
 - standarisasi format nomor transaksi/kwitansi berbasis tahun (`YYYY`).
 - penyimpanan permanen nomor kwitansi di database (`no_kwitansi`).
 

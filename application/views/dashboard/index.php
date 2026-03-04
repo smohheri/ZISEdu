@@ -256,7 +256,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
     </div>
 </div>
 
-<script src="<?php echo base_url('adminlte/plugins/chart.js/Chart.min.js'); ?>"></script>
+<script src="<?php echo base_url('asset/adminlte/plugins/chart.js/Chart.min.js'); ?>"></script>
 <script>
     (function () {
         const labels = <?php echo json_encode($chartLabels); ?>;
