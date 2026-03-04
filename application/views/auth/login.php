@@ -6,13 +6,19 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php
+	$appName = 'ZISEdu';
 	$baseTitle = isset($page_title) && $page_title !== '' ? $page_title : 'Login';
-	$documentTitle = (stripos($baseTitle, 'ZISEdu') !== FALSE) ? $baseTitle : $baseTitle . ' - ZISEdu';
 	$appVersion = config_item('app_version') ? config_item('app_version') : 'v1.0.0';
 
 	$CI =& get_instance();
 	$CI->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi_login');
 	$loginLembaga = $CI->pengaturan_aplikasi_login->get_first();
+	$namaLembagaLogin = !empty($loginLembaga->nama_lembaga)
+		? trim((string) $loginLembaga->nama_lembaga)
+		: 'ZISEdu';
+	$documentTitle = (stripos($baseTitle, $appName) !== FALSE)
+		? $baseTitle
+		: $baseTitle . ' - ' . $appName;
 
 	$faviconUrl = '';
 	if (!empty($loginLembaga->logo_path)) {
@@ -154,23 +160,95 @@
 			align-items: center;
 			justify-content: center;
 			padding: 32px;
+			background: linear-gradient(180deg, #f8fafc 0%, #f2f5fa 100%);
 		}
 
 		.login-inner {
 			width: 100%;
-			max-width: 460px;
+			max-width: 440px;
 			animation: riseIn .6s ease;
 		}
 
 		.login-side .card {
 			margin-bottom: 0;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
-			border-radius: .6rem;
+			box-shadow: 0 16px 42px rgba(15, 23, 42, .10);
+			border-radius: 14px;
+			border: 1px solid #e9eef5;
+			overflow: hidden;
 		}
 
 		.login-logo a {
-			color: #2b2f33;
+			color: #1f2937;
 			font-size: 2rem;
+		}
+
+		.login-side .login-logo {
+			text-align: center;
+		}
+
+		.login-logo small {
+			display: block;
+			margin-top: 4px;
+			font-size: 13px;
+			font-weight: 600;
+			letter-spacing: .2px;
+			color: #6b7280;
+		}
+
+		.login-side .card-header {
+			background: #ffffff;
+			border-bottom: 1px solid #edf2f7;
+			padding: 18px 24px;
+		}
+
+		.login-side .card-body {
+			padding: 24px;
+		}
+
+		.login-side .login-box-msg {
+			color: #6b7280;
+			margin-bottom: 18px;
+		}
+
+		.login-side .input-group {
+			margin-bottom: 14px;
+		}
+
+		.login-side .input-group .form-control,
+		.login-side .input-group .input-group-text {
+			height: 46px;
+			border-color: #dfe6ef;
+			background: #fff;
+		}
+
+		.login-side .input-group .form-control {
+			border-right: 0;
+			padding-left: 14px;
+		}
+
+		.login-side .input-group .input-group-text {
+			color: #7b8794;
+			border-left: 0;
+		}
+
+		.login-side .input-group .form-control:focus {
+			border-color: #86b7fe;
+			box-shadow: none;
+		}
+
+		.login-side .input-group .form-control:focus+.input-group-append .input-group-text {
+			border-color: #86b7fe;
+		}
+
+		.login-side .btn-login {
+			height: 40px;
+			border-radius: 8px;
+			font-weight: 600;
+		}
+
+		.login-side .icheck-primary label {
+			font-size: 14px;
+			color: #4b5563;
 		}
 
 		@keyframes riseIn {
@@ -216,6 +294,12 @@
 			.login-side {
 				padding: 22px;
 			}
+
+			.login-side .card-body,
+			.login-side .card-header {
+				padding-left: 18px;
+				padding-right: 18px;
+			}
 		}
 	</style>
 </head>
@@ -225,7 +309,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="app-info-panel">
-					<h2 class="mb-3"><b>ZIS</b>Edu</h2>
+					<h2 class="mb-3"><?php echo html_escape($appName); ?></h2>
 					<p class="mb-3">Sistem informasi pengelolaan <strong>Zakat, Infaq Sodakoh, Elektronik
 							Terpadu</strong> yang membantu lembaga mengelola data dan transaksi secara cepat, akurat,
 						dan transparan.</p>
@@ -278,7 +362,8 @@
 			<div class="col-md-6 login-side">
 				<div class="login-inner">
 					<div class="login-logo mb-3">
-						<a href="<?php echo site_url(); ?>"><b>ZIS</b>Edu</a>
+						<a href="<?php echo site_url(); ?>"><?php echo html_escape($namaLembagaLogin); ?></a>
+						<small>Panel Administrasi</small>
 					</div>
 
 					<div class="card card-outline card-primary">
@@ -329,7 +414,7 @@
 									</div>
 								</div>
 								<div class="col-4">
-									<button type="submit" class="btn btn-primary btn-block">Masuk</button>
+									<button type="submit" class="btn btn-primary btn-block btn-login">Masuk</button>
 								</div>
 							</div>
 							<?php echo form_close(); ?>

@@ -4,11 +4,17 @@ Aplikasi ini digunakan untuk pendataan dan pengelolaan **zakat fitrah** serta **
 
 ## Informasi Rilis
 
-- Versi rilis: **v1.1.2**
+- Versi rilis: **v1.1.3**
 - Tanggal rilis: **2026-03-04**
 - Status: **Stable Update**
 - Riwayat perubahan: **CHANGELOG.md**
 - Release notes rilis pertama: **RELEASE_NOTES_v1.0.0.md**
+
+### Highlight v1.1.3
+- Restrukturisasi aset frontend: paket AdminLTE dipindahkan ke root aset baru `asset/adminlte/`.
+- Referensi CSS/JS pada halaman utama (layout, login, dashboard, kwitansi) diperbarui ke path aset baru.
+- Layout form `zakat_mal` (section Perhitungan Zakat) dirapikan dengan komposisi grid yang lebih konsisten.
+- UI panel kanan halaman login dipoles agar lebih elegan/clean, dengan branding nama lembaga dari database.
 
 ### Highlight v1.1.2
 - Form transaksi `zakat_mal` mendukung `Mode Perhitungan` (otomatis/manual).
@@ -148,7 +154,7 @@ Password default tidak didokumentasikan dalam plain text (menggunakan hash). Jik
 
 ## Status Pengembangan Saat Ini
 
-Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.2**:
+Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.3**:
 - manajemen data master,
 - transaksi fitrah/mal,
 - penyaluran,
@@ -161,6 +167,8 @@ Fitur inti aplikasi telah tersedia dan berjalan hingga rilis **v1.1.2**:
 - mode perhitungan zakat mal otomatis/manual,
 - standarisasi format nomor transaksi/kwitansi berbasis tahun (`YYYY`).
 - penyimpanan permanen nomor kwitansi di database (`no_kwitansi`).
+- restrukturisasi aset frontend ke `asset/adminlte`.
+- penyempurnaan UI form zakat mal dan halaman login.
 
 Detail perubahan terbaru tersedia pada file `CHANGELOG.md`.
 Ringkasan publik rilis tersedia pada `RELEASE_NOTES_v1.0.0.md`.

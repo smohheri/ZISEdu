@@ -12,6 +12,8 @@
 			<div class="alert alert-warning"><?php echo validation_errors(); ?></div>
 		<?php endif; ?>
 
+		<h5 class="mb-3">Informasi Transaksi</h5>
+
 		<div class="row">
 			<?php
 			$nomorTransaksi = isset($row->nomor_transaksi)
@@ -58,25 +60,28 @@
 				</select></div>
 		</div>
 
-		<div class="row">
-			<?php
-			$defaultModePerhitungan = 'otomatis';
-			if (isset($row)) {
-				$totalHartaEksisting = (float) (isset($row->total_harta) ? $row->total_harta : 0);
-				$totalHutangEksisting = (float) (isset($row->total_hutang_jatuh_tempo) ? $row->total_hutang_jatuh_tempo : 0);
-				$nishabEksisting = (float) (isset($row->nilai_nishab) ? $row->nilai_nishab : 0);
-				$persenEksisting = (float) (isset($row->persentase_zakat) ? $row->persentase_zakat : 0);
-				$hartaBersihEksisting = max(0, $totalHartaEksisting - $totalHutangEksisting);
-				$estimasiAuto = $hartaBersihEksisting >= $nishabEksisting ? round(($hartaBersihEksisting * $persenEksisting) / 100, 2) : 0;
-				$totalZakatEksisting = (float) (isset($row->total_zakat) ? $row->total_zakat : 0);
+		<hr>
+		<h5 class="mb-3">Perhitungan Zakat</h5>
+		<?php
+		$defaultModePerhitungan = 'otomatis';
+		if (isset($row)) {
+			$totalHartaEksisting = (float) (isset($row->total_harta) ? $row->total_harta : 0);
+			$totalHutangEksisting = (float) (isset($row->total_hutang_jatuh_tempo) ? $row->total_hutang_jatuh_tempo : 0);
+			$nishabEksisting = (float) (isset($row->nilai_nishab) ? $row->nilai_nishab : 0);
+			$persenEksisting = (float) (isset($row->persentase_zakat) ? $row->persentase_zakat : 0);
+			$hartaBersihEksisting = max(0, $totalHartaEksisting - $totalHutangEksisting);
+			$estimasiAuto = $hartaBersihEksisting >= $nishabEksisting ? round(($hartaBersihEksisting * $persenEksisting) / 100, 2) : 0;
+			$totalZakatEksisting = (float) (isset($row->total_zakat) ? $row->total_zakat : 0);
 
-				if (abs($totalZakatEksisting - $estimasiAuto) > 0.009) {
-					$defaultModePerhitungan = 'manual';
-				}
+			if (abs($totalZakatEksisting - $estimasiAuto) > 0.009) {
+				$defaultModePerhitungan = 'manual';
 			}
-			$modePerhitungan = set_value('mode_perhitungan', $defaultModePerhitungan);
-			?>
-			<div class="col-md-4 form-group">
+		}
+		$modePerhitungan = set_value('mode_perhitungan', $defaultModePerhitungan);
+		?>
+		<?php $metodeBayar = set_value('metode_bayar', isset($row->metode_bayar) ? $row->metode_bayar : 'tunai'); ?>
+		<div class="row">
+			<div class="col-md-6 form-group">
 				<label>Mode Perhitungan</label>
 				<select name="mode_perhitungan" id="mode_perhitungan" class="form-control" required>
 					<option value="otomatis" <?php echo ($modePerhitungan === 'otomatis') ? 'selected' : ''; ?>>Hitung
@@ -86,6 +91,17 @@
 				</select>
 				<small class="text-muted">Pilih manual jika nominal zakat diinput langsung.</small>
 			</div>
+			<div class="col-md-6 form-group"><label>Metode Bayar</label><select name="metode_bayar"
+					class="form-control">
+					<option value="tunai" <?php echo ($metodeBayar === 'tunai') ? 'selected' : ''; ?>>Tunai</option>
+					<option value="transfer" <?php echo ($metodeBayar === 'transfer') ? 'selected' : ''; ?>>Transfer
+					</option>
+					<option value="qris" <?php echo ($metodeBayar === 'qris') ? 'selected' : ''; ?>>QRIS</option>
+					<option value="lainnya" <?php echo ($metodeBayar === 'lainnya') ? 'selected' : ''; ?>>Lainnya</option>
+				</select></div>
+		</div>
+
+		<div class="row">
 			<div class="col-md-4 form-group"><label>Total Harta</label><input type="number" step="0.01"
 					name="total_harta" id="total_harta" class="form-control"
 					value="<?php echo set_value('total_harta', isset($row->total_harta) ? $row->total_harta : 0); ?>"
@@ -94,13 +110,17 @@
 					name="total_hutang_jatuh_tempo" id="total_hutang_jatuh_tempo" class="form-control"
 					value="<?php echo set_value('total_hutang_jatuh_tempo', isset($row->total_hutang_jatuh_tempo) ? $row->total_hutang_jatuh_tempo : 0); ?>">
 			</div>
+			<div class="col-md-4 form-group"><label>Total Zakat</label><input type="number" step="0.01"
+					name="total_zakat" id="total_zakat" class="form-control"
+					value="<?php echo set_value('total_zakat', isset($row->total_zakat) ? $row->total_zakat : 0); ?>"
+					required></div>
+		</div>
+
+		<div class="row">
 			<div class="col-md-4 form-group"><label>Harta Bersih</label><input type="number" step="0.01"
 					name="harta_bersih" id="harta_bersih" class="form-control"
 					value="<?php echo set_value('harta_bersih', isset($row->harta_bersih) ? $row->harta_bersih : 0); ?>"
 					readonly required></div>
-		</div>
-
-		<div class="row">
 			<div class="col-md-4 form-group"><label>Nilai Nishab</label><input type="number" step="0.01"
 					name="nilai_nishab" id="nilai_nishab" class="form-control"
 					value="<?php echo set_value('nilai_nishab', isset($row->nilai_nishab) ? $row->nilai_nishab : 0); ?>"
@@ -109,22 +129,12 @@
 					name="persentase_zakat" id="persentase_zakat" class="form-control"
 					value="<?php echo set_value('persentase_zakat', isset($row->persentase_zakat) ? $row->persentase_zakat : 2.5); ?>"
 					required></div>
-			<div class="col-md-4 form-group"><label>Total Zakat</label><input type="number" step="0.01"
-					name="total_zakat" id="total_zakat" class="form-control"
-					value="<?php echo set_value('total_zakat', isset($row->total_zakat) ? $row->total_zakat : 0); ?>"
-					required></div>
 		</div>
 
-		<?php $metodeBayar = set_value('metode_bayar', isset($row->metode_bayar) ? $row->metode_bayar : 'tunai'); ?>
-		<div class="form-group"><label>Metode Bayar</label><select name="metode_bayar" class="form-control">
-				<option value="tunai" <?php echo ($metodeBayar === 'tunai') ? 'selected' : ''; ?>>Tunai</option>
-				<option value="transfer" <?php echo ($metodeBayar === 'transfer') ? 'selected' : ''; ?>>Transfer</option>
-				<option value="qris" <?php echo ($metodeBayar === 'qris') ? 'selected' : ''; ?>>QRIS</option>
-				<option value="lainnya" <?php echo ($metodeBayar === 'lainnya') ? 'selected' : ''; ?>>Lainnya</option>
-			</select></div>
-
-		<div class="form-group"><label>Keterangan</label><textarea name="keterangan" rows="2"
-				class="form-control"><?php echo set_value('keterangan', isset($row->keterangan) ? $row->keterangan : ''); ?></textarea>
+		<div class="row">
+			<div class="col-12 form-group"><label>Keterangan</label><textarea name="keterangan" rows="2"
+					class="form-control"><?php echo set_value('keterangan', isset($row->keterangan) ? $row->keterangan : ''); ?></textarea>
+			</div>
 		</div>
 
 		<hr>

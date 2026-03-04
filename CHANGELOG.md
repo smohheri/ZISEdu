@@ -6,7 +6,7 @@ Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
 ## [v1.1.3] - 2026-03-04
 
-Penataan struktur aset frontend agar lebih rapi dan konsisten.
+Penyempurnaan struktur aset frontend dan polishing UI pada halaman form/login.
 
 ### Added
 - Folder baru `asset/` sebagai root untuk aset statis aplikasi.
@@ -18,6 +18,14 @@ Penataan struktur aset frontend agar lebih rapi dan konsisten.
   - halaman login,
   - dashboard (Chart.js),
   - halaman kwitansi zakat fitrah dan zakat mal.
+- Layout section **Perhitungan Zakat** pada form `zakat_mal/create` dirapikan:
+  - komposisi grid field dibuat lebih seimbang,
+  - baris `Mode Perhitungan` + `Metode Bayar` diposisikan di awal section,
+  - field `Keterangan` dipisah menjadi baris penuh (`12` kolom).
+- Tampilan panel kanan halaman login diperbarui agar lebih modern, elegan, dan clean:
+  - style card, spacing, input, dan tombol login dipoles,
+  - branding panel kanan menggunakan `nama_lembaga` dari database,
+  - branding panel kiri tetap menggunakan nama aplikasi `ZISEdu`.
 
 ### Fixed
 - Mencegah potensi 404 aset setelah restrukturisasi direktori dengan menyamakan seluruh path pemanggilan CSS/JS ke lokasi baru.
