@@ -26,7 +26,7 @@
                     $tanggalBayar = set_value('tanggal_bayar', isset($row->tanggal_bayar) ? $row->tanggal_bayar : date('Y-m-d'));
                     echo html_escape(trim((string) $tanggalBayar) !== '' ? $tanggalBayar : date('Y-m-d'));
                     ?>" required></div>
-            <div class="col-md-4 form-group"><label>Tahun Masehi</label><input type="number" name="tahun_masehi"
+            <div class="col-md-4 form-group"><label>Tahun Masehi</label><input type="number" name="tahun_masehi" id="tahun_masehi"
                     class="form-control"
                     value="<?php echo set_value('tahun_masehi', isset($row->tahun_masehi) ? $row->tahun_masehi : date('Y')); ?>"
                     required></div>
@@ -48,9 +48,9 @@
                     id="jumlah_jiwa" class="form-control"
                     value="<?php echo set_value('jumlah_jiwa', isset($row->jumlah_jiwa) ? $row->jumlah_jiwa : 1); ?>"
                     required></div>
-            <div class="col-md-3 form-group"><label>Tahun Hijriah</label><input type="text" name="tahun_hijriah"
+            <div class="col-md-3 form-group"><label>Tahun Hijriah</label><input type="text" name="tahun_hijriah" id="tahun_hijriah"
                     class="form-control"
-                    value="<?php echo set_value('tahun_hijriah', isset($row->tahun_hijriah) ? $row->tahun_hijriah : ''); ?>">
+                    value="<?php echo set_value('tahun_hijriah', isset($row->tahun_hijriah) ? $row->tahun_hijriah : ''); ?>" readonly>
             </div>
         </div>
 
@@ -100,12 +100,25 @@
 <?php echo form_close(); ?>
 
 <script>
-    (function () {
+    document.addEventListener('DOMContentLoaded', function () {
         const muzakkiEl = document.getElementById('muzakki_id');
         const jumlahJiwaEl = document.getElementById('jumlah_jiwa');
 
         if (!muzakkiEl || !jumlahJiwaEl) {
             return;
+        }
+
+        // Initialize Select2 if available
+        if (typeof jQuery !== 'undefined' && typeof jQuery.fn.select2 !== 'undefined') {
+            jQuery(muzakkiEl).select2({
+                theme: 'bootstrap4',
+                placeholder: '-- Pilih Muzakki --',
+                allowClear: true
+            });
+            // Select2 custom change event
+            jQuery(muzakkiEl).on('change', function() {
+                loadMuzakkiInfo();
+            });
         }
 
         const baseInfoUrl = '<?php echo site_url('zakat_fitrah/muzakki_info'); ?>';
@@ -151,7 +164,32 @@
                 });
         }
 
-        muzakkiEl.addEventListener('change', loadMuzakkiInfo);
+        if (typeof jQuery !== 'undefined' && typeof jQuery.fn.select2 !== 'undefined') {
+            // we already bound the 'change' event during initialization
+        } else {
+            muzakkiEl.addEventListener('change', loadMuzakkiInfo);
+        }
+        
         loadMuzakkiInfo();
-    })();
+
+        const tahunMasehiEl = document.getElementById('tahun_masehi');
+        const tahunHijriahEl = document.getElementById('tahun_hijriah');
+
+        if (tahunMasehiEl && tahunHijriahEl) {
+            function updateTahunHijriah() {
+                const masehi = parseInt(tahunMasehiEl.value, 10);
+                if (!isNaN(masehi)) {
+                    const hijriah = Math.floor((masehi - 622) * 33 / 32);
+                    tahunHijriahEl.value = hijriah + ' H';
+                } else {
+                    tahunHijriahEl.value = '';
+                }
+            }
+
+            tahunMasehiEl.addEventListener('input', updateTahunHijriah);
+            if (tahunHijriahEl.value === '') {
+                updateTahunHijriah();
+            }
+        }
+    });
 </script>

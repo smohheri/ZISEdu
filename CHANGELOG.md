@@ -6,9 +6,15 @@ Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
 ## [v1.1.4] - 2026-03-10
 
-Peningkatan kompatibilitas dengan PHP 8.2 dan perbaikan responsivitas mobile pada panel admin.
+Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada panel admin, dan penyempurnaan UI transaksi Zakat Fitrah.
+
+### Added
+- Fitur auto-kalkulasi perkiraan Tahun Hijriah berdasarkan input Tahun Masehi secara *real-time* pada form transaksi Zakat Fitrah.
+- Implementasi kotak pencarian data Muzakki menggunakan plugin **Select2** pada form transaksi Zakat Fitrah.
 
 ### Changed
+- Input Tahun Hijriah pada form transaksi Zakat Fitrah diubah menjadi *read-only*.
+- Penyesuaian skrip inisialisasi Select2 menggunakan event `DOMContentLoaded` agar plugin berhasil termuat.
 - Tabel data pada seluruh halaman index dan laporan dibungkus dengan wrapper `.table-responsive` agar layout tabel bisa di-scroll horizontal tanpa merusak layout AdminLTE saat diakses melalui perangkat mobile.
 - Layout form filter pada halaman Laporan dirombak menggunakan sistem Grid Bootstrap agar tampil rapi dan tertata dengan baik di layar mobile maupun desktop.
 - Tampilan sidebar menu dibuat lebih *compact* (ringkas) dengan jarak antar item yang lebih rapat dan huruf yang sedikit lebih kecil (`nav-compact text-sm`), sehingga dapat menampilkan lebih banyak menu tanpa memakan banyak tempat vertikal.

@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <script src="<?php echo base_url('asset/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+<!-- Select2 -->
+<script src="<?php echo base_url('asset/adminlte/plugins/select2/js/select2.full.min.js'); ?>"></script>
 <script src="<?php echo base_url('asset/adminlte/dist/js/adminlte.min.js'); ?>"></script>
 <script>
 	(function () {
