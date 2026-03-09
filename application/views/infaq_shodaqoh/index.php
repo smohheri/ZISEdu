@@ -92,7 +92,8 @@
             </div>
         </form>
 
-        <table class="table table-sm table-bordered table-striped table-hover">
+        <div class="table-responsive">
+        <table class="table table-sm table-bordered table-striped table-hover text-nowrap">
             <thead>
                 <tr>
                     <th width="50">No</th>
@@ -147,6 +148,7 @@
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
 
         <div class="d-flex justify-content-between align-items-center mt-2">
             <span class="text-muted">

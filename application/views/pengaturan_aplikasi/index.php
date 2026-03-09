@@ -81,8 +81,8 @@ $status_badge = $is_data_ready ? (((int) $row->aktif === 1) ? 'success' : 'dange
             </div>
         <?php else: ?>
             <div class="row">
-                <div class="col-md-8">
-                    <table class="table table-sm table-bordered table-striped mb-0">
+                <div class="col-md-8 table-responsive">
+                    <table class="table table-sm table-bordered table-striped text-nowrap mb-0">
                         <tr>
                             <th width="230">Kode Lembaga</th>
                             <td><?php echo html_escape($row->kode_lembaga); ?></td>

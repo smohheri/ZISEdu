@@ -128,7 +128,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-share-square mr-1"></i>Ringkasan Penyaluran</h3>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body table-responsive p-0">
                 <table class="table table-sm mb-0">
                     <tr>
                         <th>Total Penyaluran Uang</th>

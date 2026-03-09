@@ -125,7 +125,8 @@
             </div>
         </form>
 
-        <table id="tanggungan-table" class="table table-sm table-bordered table-striped table-hover" style="width:100%">
+        <div class="table-responsive">
+        <table id="tanggungan-table" class="table table-sm table-bordered table-striped table-hover text-nowrap" style="width:100%">
             <thead>
                 <tr>
                     <th width="50">No</th>
@@ -172,6 +173,7 @@
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
 
         <div class="d-flex justify-content-between align-items-center mt-2">
             <span class="text-muted">

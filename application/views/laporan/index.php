@@ -13,19 +13,23 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
         <h3 class="card-title"><i class="fas fa-filter mr-2"></i>Filter Laporan</h3>
     </div>
     <div class="card-body">
-        <?php echo form_open('laporan', array('method' => 'get', 'class' => 'form-inline')); ?>
-            <div class="form-group mr-3 mb-2">
-                <label class="mr-2">Dari Tanggal</label>
-                <input type="date" name="start_date" class="form-control" value="<?php echo html_escape($start_date); ?>">
+        <?php echo form_open('laporan', array('method' => 'get')); ?>
+            <div class="row align-items-end">
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <label>Dari Tanggal</label>
+                    <input type="date" name="start_date" class="form-control" value="<?php echo html_escape($start_date); ?>">
+                </div>
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <label>Sampai Tanggal</label>
+                    <input type="date" name="end_date" class="form-control" value="<?php echo html_escape($end_date); ?>">
+                </div>
+                <div class="col-md-4 col-sm-12 mb-3">
+                    <button type="submit" class="btn btn-primary mr-1"><i class="fas fa-search"></i> Tampilkan</button>
+                    <a href="<?php echo site_url('laporan/export_pdf?start_date=' . urlencode($start_date) . '&end_date=' . urlencode($end_date)); ?>" target="_blank" class="btn btn-danger">
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                    </a>
+                </div>
             </div>
-            <div class="form-group mr-3 mb-2">
-                <label class="mr-2">Sampai Tanggal</label>
-                <input type="date" name="end_date" class="form-control" value="<?php echo html_escape($end_date); ?>">
-            </div>
-            <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i> Tampilkan</button>
-            <a href="<?php echo site_url('laporan/export_pdf?start_date=' . urlencode($start_date) . '&end_date=' . urlencode($end_date)); ?>" target="_blank" class="btn btn-danger mb-2 ml-2">
-                <i class="fas fa-file-pdf"></i> Export PDF
-            </a>
         <?php echo form_close(); ?>
         <small class="text-muted d-block mt-2">Periode: <?php echo html_escape(indo_date($start_date)); ?> s.d. <?php echo html_escape(indo_date($end_date)); ?></small>
     </div>
