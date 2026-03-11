@@ -11,6 +11,7 @@ Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada p
 ### Added
 - Fitur auto-kalkulasi perkiraan Tahun Hijriah berdasarkan input Tahun Masehi secara *real-time* pada form transaksi Zakat Fitrah.
 - Implementasi kotak pencarian data Muzakki menggunakan plugin **Select2** pada form transaksi Zakat Fitrah.
+- Fitur **Auto-Scale/Shrink CSS Transform** otomatis pada *browser print* untuk memaksa kwitansi memendek/menyesuaikan ukuran jika teks isi (tanggungan/rincian harta) sangat banyak hingga melebihi batas 1 halaman (Anti _Page Break_).
 
 ### Changed
 - Input Tahun Hijriah pada form transaksi Zakat Fitrah diubah menjadi *read-only*.
