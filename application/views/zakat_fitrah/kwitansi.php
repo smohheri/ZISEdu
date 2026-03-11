@@ -48,16 +48,21 @@
 		}
 
 		@page {
-			size: 21cm 13.9cm;
-			margin: 8mm 10mm;
+			size: 210mm 139mm;
+			margin: 0;
 		}
 
 		@media print {
 
 			html,
 			body {
-				width: 21cm;
-				height: 13.9cm;
+				width: 210mm;
+				height: 139mm;
+				max-width: 210mm;
+				max-height: 139mm;
+				overflow: hidden;
+				margin: 0;
+				padding: 0;
 				font-size: 12px;
 			}
 
@@ -72,10 +77,15 @@
 			.card {
 				border: 1px solid #000 !important;
 				box-shadow: none !important;
+				margin: 0 !important;
 			}
 
 			.receipt-wrap {
+				width: 100%;
+				height: 100%;
 				margin: 0;
+				padding: 8mm 10mm;
+				box-sizing: border-box;
 				max-width: 100%;
 			}
 
