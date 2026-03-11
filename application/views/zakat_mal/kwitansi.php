@@ -228,6 +228,36 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		window.addEventListener('beforeprint', function () {
+			var card = document.querySelector('.card');
+			card.style.transform = 'none';
+			card.style.transformOrigin = 'top center';
+			
+			// Buat elemen dummy untuk membaca 123mm (tinggi bersih kertas) menjadi pixel riil di browser
+			var dummy = document.createElement('div');
+			dummy.style.position = 'absolute';
+			// Kertas 139mm - (padding 8mm atas + 8mm bawah)
+			dummy.style.height = '123mm'; 
+			document.body.appendChild(dummy);
+			var maxHeight = dummy.offsetHeight;
+			document.body.removeChild(dummy);
+
+			var actualHeight = card.scrollHeight;
+
+			// Jika tinggi riil blok kwitansi melebihi batas kertas
+			if (actualHeight > maxHeight) {
+				var scale = maxHeight / actualHeight;
+				// Terapkan penekanan rasio (kurangi sedikit margin of error)
+				card.style.transform = 'scale(' + (scale - 0.01) + ')';
+			}
+		});
+
+		window.addEventListener('afterprint', function () {
+			document.querySelector('.card').style.transform = 'none';
+		});
+	</script>
 </body>
 
 </html>
