@@ -26,7 +26,7 @@ $sidebarBrandText = !empty($sidebarLembaga->nama_lembaga)
 
 	<div class="sidebar">
 		<nav class="mt-2">
-			<ul class="nav nav-pills nav-sidebar flex-column nav-compact text-sm" data-widget="treeview" role="menu" data-accordion="false">
+			<ul class="nav nav-pills nav-sidebar flex-column nav-compact" data-widget="treeview" role="menu" data-accordion="false">
 				<li class="nav-item">
 					<a href="<?php echo site_url('welcome'); ?>" class="nav-link">
 						<i class="nav-icon fas fa-tachometer-alt"></i>

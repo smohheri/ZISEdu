@@ -61,6 +61,7 @@
             border-collapse: collapse;
             margin-top: 8px;
             margin-bottom: 8px;
+            font-size: 11px;
         }
 
         .info-table td {
@@ -98,7 +99,7 @@
         .tanggungan-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .tanggungan-table th,
@@ -155,10 +156,10 @@
             <div class="meta">No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; border-top: 1px solid #000; padding-top: 10px;">
             <tr>
-                <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #ccc;">
-                    <div class="section-title" style="margin-top: 0; color: #555;">INFORMASI TRANSAKSI</div>
+                <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #000;">
+                    <div class="section-title" style="margin-top: 0; color: #000;">INFORMASI TRANSAKSI</div>
                     <table class="info-table">
                         <tr>
                             <td class="label-col">Tanggal Bayar</td>
@@ -190,7 +191,7 @@
 
                 </td>
                 <td style="width: 50%; vertical-align: top; padding-left: 15px;">
-                    <div class="section-title" style="margin-top: 0; color: #555;">RINCIAN TANGGUNGAN</div>
+                    <div class="section-title" style="margin-top: 0; color: #000;">RINCIAN TANGGUNGAN</div>
                     <?php if (!empty($tanggungan)): ?>
                         <table class="tanggungan-table" style="margin-top: 8px;">
                             <thead style="background-color: #f4f4f4;">
@@ -213,7 +214,7 @@
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <div style="text-align: center; color: #999; margin-top: 30px; font-style: italic;">
+                        <div style="text-align: center; color: #000; margin-top: 30px; font-style: italic;">
                             Tidak ada tanggungan tercatat
                         </div>
                     <?php endif; ?>
@@ -221,9 +222,9 @@
             </tr>
         </table>
 
-        <div class="highlight" style="text-align: center; background-color: #f9f9f9; border: 1px solid #eee; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
-            <div class="highlight-title" style="color: #666; font-size: 10px;">TOTAL NOMINAL DITERIMA</div>
-            <div class="highlight-value" style="color: #28a745; margin-top: 2px; font-size: 14px; font-weight: bold;">
+        <div class="highlight" style="text-align: center; background-color: transparent; border: 1px solid #000; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
+            <div class="highlight-title" style="color: #000; font-size: 11px;">TOTAL NOMINAL DITERIMA</div>
+            <div class="highlight-value" style="color: #000; margin-top: 2px; font-size: 14px; font-weight: bold;">
                 <?php if ($row->metode_tunaikan === 'beras'): ?>
                     <?php echo number_format((float) $row->beras_kg, 2, ',', '.'); ?> Kg Beras
                 <?php else: ?>

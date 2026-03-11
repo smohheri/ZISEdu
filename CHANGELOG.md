@@ -18,11 +18,12 @@ Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada p
 - Penyesuaian skrip inisialisasi Select2 menggunakan event `DOMContentLoaded` agar plugin berhasil termuat.
 - Tabel data pada seluruh halaman index dan laporan dibungkus dengan wrapper `.table-responsive` agar layout tabel bisa di-scroll horizontal tanpa merusak layout AdminLTE saat diakses melalui perangkat mobile.
 - Layout form filter pada halaman Laporan dirombak menggunakan sistem Grid Bootstrap agar tampil rapi dan tertata dengan baik di layar mobile maupun desktop.
-- Tampilan sidebar menu dibuat lebih *compact* (ringkas) dengan jarak antar item yang lebih rapat dan huruf yang sedikit lebih kecil (`nav-compact text-sm`), sehingga dapat menampilkan lebih banyak menu tanpa memakan banyak tempat vertikal.
+- Tampilan sidebar menu dipertahankan lebih *compact* (ringkas) dengan jarak antar item yang lebih rapat (`nav-compact`), namun dengan ukuran teks standar untuk keterbacaan yang lebih baik dibanding ukuran kecil.
 - Layout cetak kwitansi (Browser Print) dan ekspor PDF kini menggunakan desain **2 kolom** untuk **Zakat Fitrah** dan **Zakat Mal** (kiri: info, kanan: rincian).
 - Ukuran output kertas kwitansi dibuat spesifik secara _custom_: **Lebar 21 cm x Tinggi 13,9 cm**.
 - Margins, paddings, dan ukuran font telah direkayasa pada `kwitansi_pdf.php` dan `kwitansi.php` sedemikian rupa sehingga output terjamin muat dalam 1 halaman tanpa _page break_.
 - Menghapus tampilan "Kode Muzakki" pada kwitansi cetak, sehingga hanya nama lengkap yang tercetak.
+- Mengubah warna teks pada seluruh area cetak kwitansi (Zakat Fitrah & Mal) menjadi hitam pekat (`#000`) dan memperbesar ukuran font pada area kolom rincian/informasi sebagai optimasi keterbacaan hasil cetak menggunakan *printer dot matrix*.
 
 ### Fixed
 - Mengatasi error peringatan *Creation of dynamic property is deprecated* di PHP 8.2 dengan menambahkan atribut `#[\AllowDynamicProperties]` pada class inti CodeIgniter 3 (`CI_Controller`, `CI_Loader`, `CI_Router`, `CI_URI`, `CI_Model`, `CI_DB_driver`).

@@ -92,6 +92,14 @@
 			.card-body {
 				padding: 12px;
 			}
+
+			* {
+				color: #000 !important;
+			}
+
+			.receipt-cols, .receipt-cols table {
+				font-size: 14px !important;
+			}
 		}
 	</style>
 </head>
@@ -137,9 +145,9 @@
 					<small>No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></small>
 				</div>
 
-				<div class="row pt-3 border-top">
+				<div class="row pt-3 border-top receipt-cols">
 					<div class="col-6 border-right pr-4">
-						<h6 class="text-muted mb-3 font-weight-bold">INFORMASI TRANSAKSI</h6>
+						<h6 class="mb-3 font-weight-bold">INFORMASI TRANSAKSI</h6>
 						<table class="table table-borderless table-sm mb-3 w-auto">
 							<tr>
 								<td class="pr-3">Tanggal Bayar</td>
@@ -172,7 +180,7 @@
 
 					<div class="col-6 pl-4">
 						<?php if (!empty($tanggungan)): ?>
-							<h6 class="text-muted mb-3 font-weight-bold">RINCIAN TANGGUNGAN</h6>
+							<h6 class="mb-3 font-weight-bold">RINCIAN TANGGUNGAN</h6>
 							<div class="table-responsive">
 								<table class="table table-bordered table-sm table-striped">
 									<thead class="bg-light">
@@ -196,19 +204,19 @@
 								</table>
 							</div>
 						<?php else: ?>
-							<div class="text-center text-muted mt-5 pt-4">
+							<div class="text-center mt-5 pt-4">
 								<p><i>Tidak ada tanggungan tercatat</i></p>
 							</div>
 						<?php endif; ?>
 					</div>
 				</div>
 
-				<div class="py-2 mt-3 bg-light rounded border text-center">
-					<span class="d-block text-muted mb-0" style="font-size: 13px;">Total Nominal Diterima</span>
+				<div class="py-2 mt-3 rounded border text-center" style="border-color: #000 !important;">
+					<span class="d-block mb-0" style="font-size: 13px;">Total Nominal Diterima</span>
 					<?php if ($row->metode_tunaikan === 'beras'): ?>
-						<h3 class="mb-0 text-success font-weight-bold"><?php echo number_format((float) $row->beras_kg, 2, ',', '.'); ?> Kg Beras</h3>
+						<h3 class="mb-0 font-weight-bold"><?php echo number_format((float) $row->beras_kg, 2, ',', '.'); ?> Kg Beras</h3>
 					<?php else: ?>
-						<h3 class="mb-0 text-success font-weight-bold">Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></h3>
+						<h3 class="mb-0 font-weight-bold">Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></h3>
 					<?php endif; ?>
 				</div>
 

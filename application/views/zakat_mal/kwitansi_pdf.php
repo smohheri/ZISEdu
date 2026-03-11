@@ -60,6 +60,7 @@
             border-collapse: collapse;
             margin-top: 8px;
             margin-bottom: 8px;
+            font-size: 11px;
         }
 
         .info-table td {
@@ -97,7 +98,7 @@
         .detail-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .detail-table th,
@@ -154,10 +155,10 @@
             <div class="meta">No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; border-top: 1px solid #000; padding-top: 10px;">
             <tr>
-                <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #ccc;">
-                    <div class="section-title" style="margin-top: 0; color: #555;">INFORMASI TRANSAKSI</div>
+                <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #000;">
+                    <div class="section-title" style="margin-top: 0; color: #000;">INFORMASI TRANSAKSI</div>
                     <table class="info-table">
                         <tr>
                             <td class="label-col">Tanggal Hitung</td>
@@ -197,7 +198,7 @@
 
                 </td>
                 <td style="width: 50%; vertical-align: top; padding-left: 15px;">
-                    <div class="section-title" style="margin-top: 0; color: #555;">RINCIAN HARTA</div>
+                    <div class="section-title" style="margin-top: 0; color: #000;">RINCIAN HARTA</div>
                     <?php if (!empty($detail_rows)): ?>
                         <table class="detail-table" style="margin-top: 8px;">
                             <thead style="background-color: #f4f4f4;">
@@ -219,7 +220,7 @@
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <div style="text-align: center; color: #999; margin-top: 30px; font-style: italic;">
+                        <div style="text-align: center; color: #000; margin-top: 30px; font-style: italic;">
                             Tidak ada rincian harta tercatat
                         </div>
                     <?php endif; ?>
@@ -227,9 +228,9 @@
             </tr>
         </table>
 
-        <div class="highlight" style="text-align: center; background-color: #f9f9f9; border: 1px solid #eee; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
-            <div class="highlight-title" style="color: #666; font-size: 10px;">TOTAL ZAKAT DITERIMA</div>
-            <div class="highlight-value" style="color: #28a745; margin-top: 2px; font-size: 14px; font-weight: bold;">Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?></div>
+        <div class="highlight" style="text-align: center; background-color: transparent; border: 1px solid #000; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
+            <div class="highlight-title" style="color: #000; font-size: 11px;">TOTAL ZAKAT DITERIMA</div>
+            <div class="highlight-value" style="color: #000; margin-top: 2px; font-size: 14px; font-weight: bold;">Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?></div>
         </div>
 
         <table class="sign-wrap">
