@@ -12,7 +12,7 @@
     <style>
         body {
             font-family: sans-serif;
-            font-size: 11px;
+            font-size: 9.5px;
             color: #000;
         }
 
@@ -59,8 +59,8 @@
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 12px;
-            margin-bottom: 12px;
+            margin-top: 8px;
+            margin-bottom: 8px;
         }
 
         .info-table td {
@@ -120,7 +120,7 @@
         }
 
         .sign-space {
-            height: 56px;
+            height: 40px;
         }
     </style>
 </head>
@@ -155,7 +155,7 @@
             <div class="meta">No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; border-top: 1px solid #ccc; padding-top: 15px;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
             <tr>
                 <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #ccc;">
                     <div class="section-title" style="margin-top: 0; color: #555;">INFORMASI TRANSAKSI</div>

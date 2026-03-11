@@ -248,11 +248,13 @@ class Zakat_fitrah extends CI_Controller
         $html = $this->load->view('zakat_fitrah/kwitansi_pdf', $viewData, TRUE);
         $mpdf = new \Mpdf\Mpdf(array(
             'format' => array(210, 139),
-            'margin_left' => 8,
-            'margin_right' => 8,
-            'margin_top' => 8,
-            'margin_bottom' => 8
+            'margin_left' => 6,
+            'margin_right' => 6,
+            'margin_top' => 6,
+            'margin_bottom' => 4,
+            'autoPageBreak' => false
         ));
+        $mpdf->shrink_tables_to_fit = 1;
 
         $mpdf->SetTitle('Kwitansi Zakat Fitrah - ' . $row->nomor_transaksi);
         $mpdf->WriteHTML($html);
