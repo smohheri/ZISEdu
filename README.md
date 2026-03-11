@@ -4,11 +4,17 @@ Aplikasi ini digunakan untuk pendataan dan pengelolaan **zakat fitrah** serta **
 
 ## Informasi Rilis
 
-- Versi rilis: **v1.1.3**
-- Tanggal rilis: **2026-03-04**
+- Versi rilis: **v1.1.4**
+- Tanggal rilis: **2026-03-11**
 - Status: **Stable Update**
 - Riwayat perubahan: **CHANGELOG.md**
 - Release notes rilis pertama: **RELEASE_NOTES_v1.0.0.md**
+
+### Highlight v1.1.4
+- **Dukungan PHP 8.2 & Responsivitas Mobile**: Memperbaiki isu kompatibilitas PHP 8.2 dan menyelaraskan seluruh tabel aplikasi (Master, Transaksi, Laporan, Dashboard) agar adaptif dan bergeser otomatis di layar ponsel (anti _overflow_ layout).
+- **UI Transaksi Fitrah**: Input Tahun Masehi sekarang langsung menghitung Tahun Hijriah *real-time*, dan pemilihan Muzakki menggunakan *smart search* dari Select2.
+- **Layout Cetak & PDF 2 Kolom**: Pembaruan struktur kwitansi Zakat Fitrah dan Zakat Mal untuk menggunakan layout 2 kolom proporsional dalam *custom size* (21x13,9 cm), optimal agar dapat dicetak persis 1 halaman.
+- Penyesuaian layout form laporan untuk tampilan layar kecil menggunakan sistem Grid Bootstrap.
 
 ### Highlight v1.1.3
 - Restrukturisasi aset frontend: paket AdminLTE dipindahkan ke root aset baru `asset/adminlte/`.

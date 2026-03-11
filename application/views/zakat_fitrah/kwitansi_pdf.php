@@ -155,38 +155,75 @@
             <div class="meta">No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></div>
         </div>
 
-        <table class="info-table">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; border-top: 1px solid #ccc; padding-top: 15px;">
             <tr>
-                <td class="label-col">Tanggal Bayar</td>
-                <td>: <?php echo html_escape(indo_date($row->tanggal_bayar)); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Muzakki</td>
-                <td>:
-                    <?php echo html_escape(($row->kode_muzakki ? $row->kode_muzakki . ' - ' : '') . $row->nama_muzakki); ?>
+                <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #ccc;">
+                    <div class="section-title" style="margin-top: 0; color: #555;">INFORMASI TRANSAKSI</div>
+                    <table class="info-table">
+                        <tr>
+                            <td class="label-col">Tanggal Bayar</td>
+                            <td>: <?php echo html_escape(indo_date($row->tanggal_bayar)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Muzakki</td>
+                            <td>:
+                                <strong><?php echo html_escape($row->nama_muzakki); ?></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Jumlah Jiwa</td>
+                            <td>: <?php echo (int) $row->jumlah_jiwa; ?> jiwa</td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Metode Tunaikan</td>
+                            <td>: <?php echo ucfirst(html_escape($row->metode_tunaikan)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Metode Bayar</td>
+                            <td>: <?php echo ucfirst(html_escape($row->metode_bayar)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Status</td>
+                            <td>: <?php echo strtoupper(html_escape($row->status)); ?></td>
+                        </tr>
+                    </table>
+
                 </td>
-            </tr>
-            <tr>
-                <td class="label-col">Jumlah Jiwa</td>
-                <td>: <?php echo (int) $row->jumlah_jiwa; ?> jiwa</td>
-            </tr>
-            <tr>
-                <td class="label-col">Metode Tunaikan</td>
-                <td>: <?php echo ucfirst(html_escape($row->metode_tunaikan)); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Metode Bayar</td>
-                <td>: <?php echo ucfirst(html_escape($row->metode_bayar)); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Status</td>
-                <td>: <?php echo strtoupper(html_escape($row->status)); ?></td>
+                <td style="width: 50%; vertical-align: top; padding-left: 15px;">
+                    <div class="section-title" style="margin-top: 0; color: #555;">RINCIAN TANGGUNGAN</div>
+                    <?php if (!empty($tanggungan)): ?>
+                        <table class="tanggungan-table" style="margin-top: 8px;">
+                            <thead style="background-color: #f4f4f4;">
+                                <tr>
+                                    <th width="30">No</th>
+                                    <th>Nama Anggota</th>
+                                    <th>Hubungan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1;
+                                foreach ($tanggungan as $anggota): ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo $no++; ?></td>
+                                        <td><?php echo html_escape($anggota->nama_anggota); ?></td>
+                                        <td><?php echo html_escape(!empty($anggota->hubungan_keluarga) ? $anggota->hubungan_keluarga : '-'); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <div style="text-align: center; color: #999; margin-top: 30px; font-style: italic;">
+                            Tidak ada tanggungan tercatat
+                        </div>
+                    <?php endif; ?>
+                </td>
             </tr>
         </table>
 
-        <div class="highlight">
-            <div class="highlight-title">Nominal Diterima</div>
-            <div class="highlight-value">
+        <div class="highlight" style="text-align: center; background-color: #f9f9f9; border: 1px solid #eee; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
+            <div class="highlight-title" style="color: #666; font-size: 10px;">TOTAL NOMINAL DITERIMA</div>
+            <div class="highlight-value" style="color: #28a745; margin-top: 2px; font-size: 14px; font-weight: bold;">
                 <?php if ($row->metode_tunaikan === 'beras'): ?>
                     <?php echo number_format((float) $row->beras_kg, 2, ',', '.'); ?> Kg Beras
                 <?php else: ?>
@@ -194,30 +231,6 @@
                 <?php endif; ?>
             </div>
         </div>
-
-        <?php if (!empty($tanggungan)): ?>
-            <div class="section-title">Rincian Tanggungan</div>
-            <table class="tanggungan-table">
-                <thead>
-                    <tr>
-                        <th width="40">No</th>
-                        <th>Nama Anggota</th>
-                        <th>Hubungan Keluarga</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $no = 1;
-                    foreach ($tanggungan as $anggota): ?>
-                        <tr>
-                            <td class="text-center"><?php echo $no++; ?></td>
-                            <td><?php echo html_escape($anggota->nama_anggota); ?></td>
-                            <td><?php echo html_escape(!empty($anggota->hubungan_keluarga) ? $anggota->hubungan_keluarga : '-'); ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
 
         <table class="sign-wrap">
             <tr>

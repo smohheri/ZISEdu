@@ -4,9 +4,9 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
-## [v1.1.4] - 2026-03-10
+## [v1.1.4] - 2026-03-11
 
-Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada panel admin, dan penyempurnaan UI transaksi Zakat Fitrah.
+Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada panel admin, penyempurnaan UI transaksi Zakat Fitrah, serta peningkatan tata letak kwitansi 2-kolom.
 
 ### Added
 - Fitur auto-kalkulasi perkiraan Tahun Hijriah berdasarkan input Tahun Masehi secara *real-time* pada form transaksi Zakat Fitrah.
@@ -18,9 +18,15 @@ Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada p
 - Tabel data pada seluruh halaman index dan laporan dibungkus dengan wrapper `.table-responsive` agar layout tabel bisa di-scroll horizontal tanpa merusak layout AdminLTE saat diakses melalui perangkat mobile.
 - Layout form filter pada halaman Laporan dirombak menggunakan sistem Grid Bootstrap agar tampil rapi dan tertata dengan baik di layar mobile maupun desktop.
 - Tampilan sidebar menu dibuat lebih *compact* (ringkas) dengan jarak antar item yang lebih rapat dan huruf yang sedikit lebih kecil (`nav-compact text-sm`), sehingga dapat menampilkan lebih banyak menu tanpa memakan banyak tempat vertikal.
+- Layout cetak kwitansi (Browser Print) dan ekspor PDF kini menggunakan desain **2 kolom** untuk **Zakat Fitrah** dan **Zakat Mal** (kiri: info, kanan: rincian).
+- Ukuran output kertas kwitansi dibuat spesifik secara _custom_: **Lebar 21 cm x Tinggi 13,9 cm**.
+- Margins, paddings, dan ukuran font telah direkayasa pada `kwitansi_pdf.php` dan `kwitansi.php` sedemikian rupa sehingga output terjamin muat dalam 1 halaman tanpa _page break_.
+- Menghapus tampilan "Kode Muzakki" pada kwitansi cetak, sehingga hanya nama lengkap yang tercetak.
 
 ### Fixed
 - Mengatasi error peringatan *Creation of dynamic property is deprecated* di PHP 8.2 dengan menambahkan atribut `#[\AllowDynamicProperties]` pada class inti CodeIgniter 3 (`CI_Controller`, `CI_Loader`, `CI_Router`, `CI_URI`, `CI_Model`, `CI_DB_driver`).
+- Menyelaraskan seluruh elemen tabel data utama dengan sistem kerangka `table-responsive` dan `text-nowrap`.
+- Memperbaiki isu tampilan tabel _overflow_ (melebar merusak layar) pada perangkat genggam/_mobile_, dengan fitur panel geser (*horizontal scroll*) otomatis tanpa merusak layout.
 
 ## [v1.1.3] - 2026-03-04
 

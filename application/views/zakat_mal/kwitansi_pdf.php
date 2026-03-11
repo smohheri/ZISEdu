@@ -154,70 +154,83 @@
             <div class="meta">No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></div>
         </div>
 
-        <table class="info-table">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; border-top: 1px solid #ccc; padding-top: 15px;">
             <tr>
-                <td class="label-col">Tanggal Hitung</td>
-                <td>: <?php echo html_escape(indo_date($row->tanggal_hitung)); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Tanggal Bayar</td>
-                <td>: <?php echo html_escape($row->tanggal_bayar ? indo_date($row->tanggal_bayar) : '-'); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Muzakki</td>
-                <td>:
-                    <?php echo html_escape(($row->kode_muzakki ? $row->kode_muzakki . ' - ' : '') . $row->nama_muzakki); ?>
+                <td style="width: 50%; vertical-align: top; padding-right: 15px; border-right: 1px solid #ccc;">
+                    <div class="section-title" style="margin-top: 0; color: #555;">INFORMASI TRANSAKSI</div>
+                    <table class="info-table">
+                        <tr>
+                            <td class="label-col">Tanggal Hitung</td>
+                            <td>: <?php echo html_escape(indo_date($row->tanggal_hitung)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Tanggal Bayar</td>
+                            <td>: <?php echo html_escape($row->tanggal_bayar ? indo_date($row->tanggal_bayar) : '-'); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Muzakki</td>
+                            <td>:
+                                <strong><?php echo html_escape($row->nama_muzakki); ?></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Harta Bersih</td>
+                            <td>: Rp <?php echo number_format((float) $row->harta_bersih, 0, ',', '.'); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Nishab</td>
+                            <td>: Rp <?php echo number_format((float) $row->nilai_nishab, 0, ',', '.'); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Persentase Zakat</td>
+                            <td>: <?php echo number_format((float) $row->persentase_zakat, 2, ',', '.'); ?>%</td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Metode Bayar</td>
+                            <td>: <?php echo ucfirst(html_escape($row->metode_bayar)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Status</td>
+                            <td>: <?php echo strtoupper(html_escape($row->status)); ?></td>
+                        </tr>
+                    </table>
+
                 </td>
-            </tr>
-            <tr>
-                <td class="label-col">Harta Bersih</td>
-                <td>: Rp <?php echo number_format((float) $row->harta_bersih, 0, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Nishab</td>
-                <td>: Rp <?php echo number_format((float) $row->nilai_nishab, 0, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Persentase Zakat</td>
-                <td>: <?php echo number_format((float) $row->persentase_zakat, 2, ',', '.'); ?>%</td>
-            </tr>
-            <tr>
-                <td class="label-col">Metode Bayar</td>
-                <td>: <?php echo ucfirst(html_escape($row->metode_bayar)); ?></td>
-            </tr>
-            <tr>
-                <td class="label-col">Status</td>
-                <td>: <?php echo strtoupper(html_escape($row->status)); ?></td>
+                <td style="width: 50%; vertical-align: top; padding-left: 15px;">
+                    <div class="section-title" style="margin-top: 0; color: #555;">RINCIAN HARTA</div>
+                    <?php if (!empty($detail_rows)): ?>
+                        <table class="detail-table" style="margin-top: 8px;">
+                            <thead style="background-color: #f4f4f4;">
+                                <tr>
+                                    <th>Jenis Harta</th>
+                                    <th>Nilai Harta</th>
+                                    <th>Haul</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($detail_rows as $detail): ?>
+                                    <tr>
+                                        <td><?php echo html_escape(isset($jenis_harta_options[$detail->jenis_harta_id]) ? $jenis_harta_options[$detail->jenis_harta_id] : $detail->jenis_harta_id); ?>
+                                        </td>
+                                        <td>Rp <?php echo number_format((float) $detail->nilai_harta, 0, ',', '.'); ?></td>
+                                        <td><?php echo $detail->nilai_haul_bulan !== NULL ? (int) $detail->nilai_haul_bulan . ' bln' : '-'; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <div style="text-align: center; color: #999; margin-top: 30px; font-style: italic;">
+                            Tidak ada rincian harta tercatat
+                        </div>
+                    <?php endif; ?>
+                </td>
             </tr>
         </table>
 
-        <div class="highlight">
-            <div class="highlight-title">Total Zakat Diterima</div>
-            <div class="highlight-value">Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?></div>
+        <div class="highlight" style="text-align: center; background-color: #f9f9f9; border: 1px solid #eee; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
+            <div class="highlight-title" style="color: #666; font-size: 10px;">TOTAL ZAKAT DITERIMA</div>
+            <div class="highlight-value" style="color: #28a745; margin-top: 2px; font-size: 14px; font-weight: bold;">Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?></div>
         </div>
-
-        <?php if (!empty($detail_rows)): ?>
-            <div class="section-title">Rincian Harta</div>
-            <table class="detail-table">
-                <thead>
-                    <tr>
-                        <th>Jenis Harta</th>
-                        <th>Nilai Harta</th>
-                        <th>Haul (bulan)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($detail_rows as $detail): ?>
-                        <tr>
-                            <td><?php echo html_escape(isset($jenis_harta_options[$detail->jenis_harta_id]) ? $jenis_harta_options[$detail->jenis_harta_id] : $detail->jenis_harta_id); ?>
-                            </td>
-                            <td>Rp <?php echo number_format((float) $detail->nilai_harta, 0, ',', '.'); ?></td>
-                            <td><?php echo $detail->nilai_haul_bulan !== NULL ? (int) $detail->nilai_haul_bulan : '-'; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
 
         <table class="sign-wrap">
             <tr>

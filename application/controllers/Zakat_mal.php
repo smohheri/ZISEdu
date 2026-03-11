@@ -274,7 +274,7 @@ class Zakat_mal extends CI_Controller
 
         $html = $this->load->view('zakat_mal/kwitansi_pdf', $viewData, TRUE);
         $mpdf = new \Mpdf\Mpdf(array(
-            'format' => array(241.3, 279.4),
+            'format' => array(210, 139),
             'margin_left' => 8,
             'margin_right' => 8,
             'margin_top' => 8,

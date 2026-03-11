@@ -47,7 +47,7 @@
 		}
 
 		@page {
-			size: 9.5in 11in;
+			size: 21cm 13.9cm;
 			margin: 8mm 10mm;
 		}
 
@@ -55,8 +55,8 @@
 
 			html,
 			body {
-				width: 9.5in;
-				height: 11in;
+				width: 21cm;
+				height: 13.9cm;
 				font-size: 12px;
 			}
 
@@ -125,76 +125,87 @@
 					<small>No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></small>
 				</div>
 
-				<table class="table table-borderless table-sm mb-3">
-					<tr>
-						<td class="label-col">Tanggal Hitung</td>
-						<td>: <?php echo html_escape(indo_date($row->tanggal_hitung)); ?></td>
-					</tr>
-					<tr>
-						<td class="label-col">Tanggal Bayar</td>
-						<td>: <?php echo html_escape($row->tanggal_bayar ? indo_date($row->tanggal_bayar) : '-'); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="label-col">Muzakki</td>
-						<td>:
-							<?php echo html_escape(($row->kode_muzakki ? $row->kode_muzakki . ' - ' : '') . $row->nama_muzakki); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="label-col">Harta Bersih</td>
-						<td>: Rp <?php echo number_format((float) $row->harta_bersih, 0, ',', '.'); ?></td>
-					</tr>
-					<tr>
-						<td class="label-col">Nishab</td>
-						<td>: Rp <?php echo number_format((float) $row->nilai_nishab, 0, ',', '.'); ?></td>
-					</tr>
-					<tr>
-						<td class="label-col">Persentase Zakat</td>
-						<td>: <?php echo number_format((float) $row->persentase_zakat, 2, ',', '.'); ?>%</td>
-					</tr>
-					<tr>
-						<td class="label-col">Metode Bayar</td>
-						<td>: <?php echo ucfirst(html_escape($row->metode_bayar)); ?></td>
-					</tr>
-					<tr>
-						<td class="label-col">Status</td>
-						<td>: <?php echo strtoupper(html_escape($row->status)); ?></td>
-					</tr>
-				</table>
-
-				<div class="p-3 mb-3 bg-light rounded border">
-					<h5 class="mb-1">Total Zakat Diterima</h5>
-					<h3 class="mb-0">Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?></h3>
-				</div>
-
-				<?php if (!empty($detail_rows)): ?>
-					<h6 class="mt-4"><strong>Rincian Harta</strong></h6>
-					<div class="table-responsive">
-						<table class="table table-bordered table-sm">
-							<thead>
-								<tr>
-									<th>Jenis Harta</th>
-									<th>Nilai Harta</th>
-									<th>Haul (bulan)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach ($detail_rows as $detail): ?>
-									<tr>
-										<td><?php echo html_escape(isset($jenis_harta_options[$detail->jenis_harta_id]) ? $jenis_harta_options[$detail->jenis_harta_id] : $detail->jenis_harta_id); ?>
-										</td>
-										<td>Rp <?php echo number_format((float) $detail->nilai_harta, 0, ',', '.'); ?></td>
-										<td><?php echo $detail->nilai_haul_bulan !== NULL ? (int) $detail->nilai_haul_bulan : '-'; ?>
-										</td>
-									</tr>
-								<?php endforeach; ?>
-							</tbody>
+				<div class="row pt-3 border-top">
+					<div class="col-6 border-right pr-4">
+						<h6 class="text-muted mb-3 font-weight-bold">INFORMASI TRANSAKSI</h6>
+						<table class="table table-borderless table-sm mb-3 w-auto">
+							<tr>
+								<td class="pr-3">Tanggal Hitung</td>
+								<td>: <?php echo html_escape(indo_date($row->tanggal_hitung)); ?></td>
+							</tr>
+							<tr>
+								<td class="pr-3">Tanggal Bayar</td>
+								<td>: <?php echo html_escape($row->tanggal_bayar ? indo_date($row->tanggal_bayar) : '-'); ?>
+								</td>
+							</tr>
+							<tr>
+								<td class="pr-3">Muzakki</td>
+								<td>:
+									<strong><?php echo html_escape($row->nama_muzakki); ?></strong>
+								</td>
+							</tr>
+							<tr>
+								<td class="pr-3">Harta Bersih</td>
+								<td>: Rp <?php echo number_format((float) $row->harta_bersih, 0, ',', '.'); ?></td>
+							</tr>
+							<tr>
+								<td class="pr-3">Nishab</td>
+								<td>: Rp <?php echo number_format((float) $row->nilai_nishab, 0, ',', '.'); ?></td>
+							</tr>
+							<tr>
+								<td class="pr-3">Persentase Zakat</td>
+								<td>: <?php echo number_format((float) $row->persentase_zakat, 2, ',', '.'); ?>%</td>
+							</tr>
+							<tr>
+								<td class="pr-3">Metode Bayar</td>
+								<td>: <?php echo ucfirst(html_escape($row->metode_bayar)); ?></td>
+							</tr>
+							<tr>
+								<td class="pr-3">Status</td>
+								<td>: <?php echo strtoupper(html_escape($row->status)); ?></td>
+							</tr>
 						</table>
 					</div>
-				<?php endif; ?>
 
-				<div class="row mt-5">
+					<div class="col-6 pl-4">
+						<?php if (!empty($detail_rows)): ?>
+							<h6 class="text-muted mb-3 font-weight-bold">RINCIAN HARTA</h6>
+							<div class="table-responsive">
+								<table class="table table-bordered table-sm table-striped">
+									<thead class="bg-light">
+										<tr>
+											<th>Jenis Harta</th>
+											<th>Nilai Harta</th>
+											<th>Haul</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach ($detail_rows as $detail): ?>
+											<tr>
+												<td><?php echo html_escape(isset($jenis_harta_options[$detail->jenis_harta_id]) ? $jenis_harta_options[$detail->jenis_harta_id] : $detail->jenis_harta_id); ?>
+												</td>
+												<td>Rp <?php echo number_format((float) $detail->nilai_harta, 0, ',', '.'); ?></td>
+												<td><?php echo $detail->nilai_haul_bulan !== NULL ? (int) $detail->nilai_haul_bulan . ' bln' : '-'; ?>
+												</td>
+											</tr>
+										<?php endforeach; ?>
+									</tbody>
+								</table>
+							</div>
+						<?php else: ?>
+							<div class="text-center text-muted mt-5 pt-4">
+								<p><i>Tidak ada rincian harta tercatat</i></p>
+							</div>
+						<?php endif; ?>
+					</div>
+				</div>
+
+				<div class="py-2 mt-3 bg-light rounded border text-center">
+					<span class="d-block text-muted mb-0" style="font-size: 13px;">Total Zakat Diterima</span>
+					<h3 class="mb-0 text-success font-weight-bold">Rp <?php echo number_format((float) $row->total_zakat, 0, ',', '.'); ?></h3>
+				</div>
+
+				<div class="row mt-4">
 					<div class="col-6 text-center">
 						<p class="mb-5">Muzakki,</p>
 						<p><strong>(<?php echo html_escape($namaMuzakkiTtd); ?>)</strong></p>
