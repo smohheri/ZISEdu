@@ -522,6 +522,9 @@ class CI_Pagination {
 			$this->cur_page = (string) $this->cur_page;
 		}
 
+		// Normalize to string to avoid ctype_digit warnings when null.
+		$this->cur_page = (string) $this->cur_page;
+
 		// If something isn't quite right, back to the default base page.
 		if ( ! ctype_digit($this->cur_page) OR ($this->use_page_numbers && (int) $this->cur_page === 0))
 		{
