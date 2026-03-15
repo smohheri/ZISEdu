@@ -14,7 +14,7 @@
 <?php endif; ?>
 
 <div class="row">
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-12">
 		<div class="small-box bg-gradient-primary">
 			<div class="inner">
 				<h3><?php echo $stats['total']; ?></h3>
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-6">
 		<div class="small-box bg-gradient-info">
 			<div class="inner">
 				<h3><?php echo $stats['super_admin']; ?></h3>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-6">
 		<div class="small-box bg-gradient-success">
 			<div class="inner">
 				<h3><?php echo $stats['amil']; ?></h3>
@@ -47,7 +47,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-12">
 		<div class="small-box bg-gradient-warning">
 			<div class="inner">
 				<h3><?php echo $stats['operator']; ?></h3>
@@ -271,72 +271,4 @@
 		}, 5000);
 	});
 </script>
-
-<style>
-	.user-avatar {
-		display: flex;
-		align-items: center;
-	}
-
-	.avatar-circle {
-		width: 32px;
-		height: 32px;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		font-weight: bold;
-		font-size: 12px;
-	}
-
-	.small-box {
-		border-radius: 10px;
-		box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.15);
-	}
-
-	.small-box .icon {
-		top: 10px;
-		right: 15px;
-		z-index: 0;
-	}
-
-	.border-left-success {
-		border-left: 0.25rem solid #28a745 !important;
-	}
-
-	.border-left-danger {
-		border-left: 0.25rem solid #dc3545 !important;
-	}
-
-	@media screen and (max-width: 768px) {
-		.small-box h3 {
-			font-size: 1.5rem;
-		}
-
-		.small-box p {
-			font-size: 0.8rem;
-		}
-
-		#users-table {
-			font-size: 0.85rem;
-		}
-
-		#users-table th,
-		#users-table td {
-			padding: 0.5rem 0.25rem;
-		}
-
-		.avatar-circle {
-			width: 28px;
-			height: 28px;
-			font-size: 10px;
-		}
-
-		.badge {
-			font-size: 0.7rem;
-			padding: 0.25rem 0.4rem;
-		}
-	}
-</style>
 

@@ -14,7 +14,7 @@
 <?php endif; ?>
 
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-primary">
             <div class="inner">
                 <h3><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></h3>
@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-6">
         <div class="small-box bg-gradient-info">
             <div class="inner">
                 <h3><?php echo isset($stats['infaq']) ? (int) $stats['infaq'] : 0; ?></h3>
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-6">
         <div class="small-box bg-gradient-success">
             <div class="inner">
                 <h3><?php echo isset($stats['shodaqoh']) ? (int) $stats['shodaqoh'] : 0; ?></h3>
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-warning">
             <div class="inner">
                 <h3>Rp <?php echo number_format((float) (isset($stats['total_nominal']) ? $stats['total_nominal'] : 0), 0, ',', '.'); ?></h3>

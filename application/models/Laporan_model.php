@@ -40,12 +40,22 @@ class Laporan_model extends CI_Model
             ->get()
             ->row();
 
+        $infaq = $this->db
+            ->select('COALESCE(SUM(nominal_uang),0) AS total_uang')
+            ->from('infaq_shodaqoh')
+            ->where('status', 'diterima')
+            ->where('tanggal_transaksi >=', $startDate)
+            ->where('tanggal_transaksi <=', $endDate)
+            ->get()
+            ->row();
+
         return array(
             'fitrah_uang' => (float) ($fitrah ? $fitrah->total_uang : 0),
             'fitrah_beras' => (float) ($fitrah ? $fitrah->total_beras : 0),
             'mal_uang' => (float) ($mal ? $mal->total_zakat : 0),
             'penyaluran_uang' => (float) ($penyaluran ? $penyaluran->total_uang : 0),
-            'penyaluran_beras' => (float) ($penyaluran ? $penyaluran->total_beras : 0)
+            'penyaluran_beras' => (float) ($penyaluran ? $penyaluran->total_beras : 0),
+            'infaq_shodaqoh_uang' => (float) ($infaq ? $infaq->total_uang : 0)
         );
     }
 

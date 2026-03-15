@@ -1,0 +1,106 @@
+/* Custom Responsive Styles for ZISEdu */
+
+/* General consistency fixes */
+.table-responsive {
+    border: 0 !important;
+}
+
+.content-wrapper {
+    transition: margin-left .3s ease-in-out;
+}
+
+.main-sidebar {
+    box-shadow: 0 14px 28px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22) !important;
+}
+
+.small-box {
+    border-radius: 0.5rem !important;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.card {
+    border-radius: 0.5rem !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075) !important;
+}
+
+/* Mobile view adjustments (max-width: 575.98px) */
+@media (max-width: 575.98px) {
+    .content-header h1 {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Adjust Small Box Typography */
+    .small-box h3 {
+        font-size: 1.3rem !important;
+    }
+    .small-box p {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    .small-box h4 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Adjust Info Box */
+    .info-box {
+        min-height: 70px !important;
+        margin-bottom: 0.75rem;
+    }
+    .info-box-icon {
+        width: 60px !important;
+        font-size: 1.2rem !important;
+    }
+    .info-box-text {
+        font-size: 0.75rem !important;
+    }
+    .info-box-number {
+        font-size: 0.9rem !important;
+    }
+
+    /* Table adjustments */
+    .table-sm th, .table-sm td {
+        padding: 0.5rem 0.4rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .table thead th {
+        border-top: 0;
+    }
+
+    /* Form and search bar */
+    .input-group-sm > .form-control, 
+    .input-group-sm > .input-group-append > .btn, 
+    .input-group-sm > .input-group-prepend > .input-group-text {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .input-group-append .btn {
+        margin-bottom: 0; /* reset our previous button rule for input-groups */
+    }
+
+    /* Padding adjustments */
+    .content {
+        padding: 0 0.5rem !important;
+    }
+    .container-fluid {
+        padding: 0 !important;
+    }
+    .card-body {
+        padding: 0.75rem !important;
+    }
+    
+    /* Pagination */
+    .pagination {
+        font-size: 0.8rem;
+    }
+}
+
+/* Specific Fix for Search Bar on Mobile */
+@media (max-width: 767.98px) {
+    .input-group {
+        width: 100% !important;
+    }
+}

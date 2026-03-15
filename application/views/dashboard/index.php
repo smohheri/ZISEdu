@@ -2,7 +2,6 @@
 <?php
 $summary = isset($summary) && is_array($summary) ? $summary : array();
 $monthlyChart = isset($monthly_chart) && is_array($monthly_chart) ? $monthly_chart : array();
-
 $totalMuzakki = isset($summary['total_muzakki']) ? (int) $summary['total_muzakki'] : 0;
 $totalMustahik = isset($summary['total_mustahik']) ? (int) $summary['total_mustahik'] : 0;
 $totalMasukUang = isset($summary['total_masuk_uang']) ? (float) $summary['total_masuk_uang'] : 0;
@@ -28,7 +27,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
 ?>
 
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-primary">
             <div class="inner">
                 <h3>Rp <?php echo number_format($totalMasukUang, 0, ',', '.'); ?></h3>
@@ -37,7 +36,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
             <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-success">
             <div class="inner">
                 <h3>Rp <?php echo number_format($totalSaldoUang, 0, ',', '.'); ?></h3>
@@ -46,7 +45,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
             <div class="icon"><i class="fas fa-wallet"></i></div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-6">
         <div class="small-box bg-gradient-info">
             <div class="inner">
                 <h3><?php echo number_format($totalMuzakki, 0, ',', '.'); ?></h3>
@@ -55,7 +54,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
             <div class="icon"><i class="fas fa-users"></i></div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-6">
         <div class="small-box bg-gradient-warning">
             <div class="inner">
                 <h3><?php echo number_format($totalMustahik, 0, ',', '.'); ?></h3>
@@ -67,33 +66,33 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="info-box bg-light">
+    <div class="col-lg-4 col-sm-6 col-12">
+        <div class="info-box bg-light shadow-sm">
             <span class="info-box-icon bg-primary"><i class="fas fa-donate"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Zakat Fitrah (Uang)</span>
                 <span class="info-box-number">Rp <?php echo number_format($totalFitrahUang, 0, ',', '.'); ?></span>
-                <span class="text-muted">Beras: <?php echo number_format($totalFitrahBeras, 2, ',', '.'); ?> Kg</span>
+                <span class="text-muted small">Beras: <?php echo number_format($totalFitrahBeras, 2, ',', '.'); ?> Kg</span>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="info-box bg-light">
+    <div class="col-lg-4 col-sm-6 col-12">
+        <div class="info-box bg-light shadow-sm">
             <span class="info-box-icon bg-success"><i class="fas fa-coins"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Zakat Mal (Uang)</span>
                 <span class="info-box-number">Rp <?php echo number_format($totalMalUang, 0, ',', '.'); ?></span>
-                <span class="text-muted">Status lunas</span>
+                <span class="text-muted small">Status lunas</span>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="info-box bg-light">
+    <div class="col-lg-4 col-sm-12 col-12">
+        <div class="info-box bg-light shadow-sm">
             <span class="info-box-icon bg-info"><i class="fas fa-hand-holding-usd"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Infaq & Shodaqoh</span>
                 <span class="info-box-number">Rp <?php echo number_format($totalInfaqShodaqoh, 0, ',', '.'); ?></span>
-                <span class="text-muted">Infaq: Rp <?php echo number_format($totalInfaq, 0, ',', '.'); ?> | Shodaqoh: Rp <?php echo number_format($totalShodaqoh, 0, ',', '.'); ?></span>
+                <span class="text-muted small">Infaq: Rp <?php echo number_format($totalInfaq, 0, ',', '.'); ?> | Shodaqoh: Rp <?php echo number_format($totalShodaqoh, 0, ',', '.'); ?></span>
             </div>
         </div>
     </div>

@@ -19,7 +19,7 @@ $status_badge = $is_data_ready ? (((int) $row->aktif === 1) ? 'success' : 'dange
 <?php endif; ?>
 
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-primary">
             <div class="inner">
                 <h3><?php echo $is_data_ready ? 1 : 0; ?></h3>
@@ -30,10 +30,10 @@ $status_badge = $is_data_ready ? (((int) $row->aktif === 1) ? 'success' : 'dange
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-info">
             <div class="inner">
-                <h3><?php echo $is_data_ready && $row->kode_lembaga ? html_escape($row->kode_lembaga) : '-'; ?></h3>
+                <h3 style="font-size: 1.5rem;"><?php echo $is_data_ready && $row->kode_lembaga ? html_escape($row->kode_lembaga) : '-'; ?></h3>
                 <p>Kode Lembaga</p>
             </div>
             <div class="icon">
@@ -41,7 +41,7 @@ $status_badge = $is_data_ready ? (((int) $row->aktif === 1) ? 'success' : 'dange
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-success">
             <div class="inner">
                 <h3><?php echo $is_data_ready && $row->nama_pimpinan ? 1 : 0; ?></h3>
@@ -52,7 +52,7 @@ $status_badge = $is_data_ready ? (((int) $row->aktif === 1) ? 'success' : 'dange
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-warning">
             <div class="inner">
                 <h3><?php echo $status_label; ?></h3>
@@ -178,32 +178,4 @@ $status_badge = $is_data_ready ? (((int) $row->aktif === 1) ? 'success' : 'dange
         }, 5000);
     });
 </script>
-
-<style>
-    .small-box {
-        border-radius: 10px;
-        box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.15);
-    }
-
-    .small-box .icon {
-        top: 10px;
-        right: 15px;
-        z-index: 0;
-    }
-
-    .media-preview {
-        max-height: 160px;
-        width: auto;
-    }
-
-    @media screen and (max-width: 768px) {
-        .small-box h3 {
-            font-size: 1.2rem;
-        }
-
-        .small-box p {
-            font-size: 0.8rem;
-        }
-    }
-</style>
 

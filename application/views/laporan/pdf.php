@@ -7,51 +7,40 @@ $fitrahBeras = isset($ringkasan['fitrah_beras']) ? (float) $ringkasan['fitrah_be
 $malUang = isset($ringkasan['mal_uang']) ? (float) $ringkasan['mal_uang'] : 0;
 $penyaluranUang = isset($ringkasan['penyaluran_uang']) ? (float) $ringkasan['penyaluran_uang'] : 0;
 $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['penyaluran_beras'] : 0;
+$infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infaq_shodaqoh_uang'] : 0;
 $logoImageSrc = isset($logo_image_src) ? $logo_image_src : NULL;
 $kopImageSrc = isset($kop_image_src) ? $kop_image_src : NULL;
 
-$namaLembaga = !empty($lembaga->nama_lembaga) ? $lembaga->nama_lembaga : 'ZISEDU';
+$namaLembaga = ($lembaga && !empty($lembaga->nama_lembaga)) ? $lembaga->nama_lembaga : 'Lembaga Zakat';
 $alamatParts = array();
-if (!empty($lembaga->alamat)) {
-    $alamatParts[] = $lembaga->alamat;
-}
-if (!empty($lembaga->kelurahan)) {
-    $alamatParts[] = 'Kel. ' . $lembaga->kelurahan;
-}
-if (!empty($lembaga->kecamatan)) {
-    $alamatParts[] = 'Kec. ' . $lembaga->kecamatan;
-}
-if (!empty($lembaga->kota_kabupaten)) {
-    $alamatParts[] = $lembaga->kota_kabupaten;
-}
-if (!empty($lembaga->provinsi)) {
-    $alamatParts[] = $lembaga->provinsi;
-}
-if (!empty($lembaga->kode_pos)) {
-    $alamatParts[] = $lembaga->kode_pos;
+if ($lembaga) {
+    if (!empty($lembaga->alamat)) $alamatParts[] = $lembaga->alamat;
+    if (!empty($lembaga->kelurahan)) $alamatParts[] = 'Kel. ' . $lembaga->kelurahan;
+    if (!empty($lembaga->kecamatan)) $alamatParts[] = 'Kec. ' . $lembaga->kecamatan;
+    if (!empty($lembaga->kota_kabupaten)) $alamatParts[] = $lembaga->kota_kabupaten;
+    if (!empty($lembaga->provinsi)) $alamatParts[] = $lembaga->provinsi;
+    if (!empty($lembaga->kode_pos)) $alamatParts[] = $lembaga->kode_pos;
 }
 $alamatLembaga = !empty($alamatParts) ? implode(', ', $alamatParts) : '-';
 
 $kontakParts = array();
-if (!empty($lembaga->no_telp)) {
-    $kontakParts[] = 'Telp: ' . $lembaga->no_telp;
-}
-if (!empty($lembaga->no_hp)) {
-    $kontakParts[] = 'HP: ' . $lembaga->no_hp;
-}
-if (!empty($lembaga->email)) {
-    $kontakParts[] = 'Email: ' . $lembaga->email;
-}
-if (!empty($lembaga->website)) {
-    $kontakParts[] = 'Web: ' . $lembaga->website;
+if ($lembaga) {
+    if (!empty($lembaga->no_telp)) $kontakParts[] = 'Telp: ' . $lembaga->no_telp;
+    if (!empty($lembaga->no_hp)) $kontakParts[] = 'HP: ' . $lembaga->no_hp;
+    if (!empty($lembaga->email)) $kontakParts[] = 'Email: ' . $lembaga->email;
+    if (!empty($lembaga->website)) $kontakParts[] = 'Web: ' . $lembaga->website;
 }
 $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
+
+$pimpinan = ($lembaga && !empty($lembaga->nama_pimpinan)) ? $lembaga->nama_pimpinan : '..........................';
+$bendahara = ($lembaga && !empty($lembaga->nama_bendahara)) ? $lembaga->nama_bendahara : '..........................';
+$kota = ($lembaga && !empty($lembaga->kota_kabupaten)) ? $lembaga->kota_kabupaten : '..........';
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Laporan Zakat</title>
+    <title>Laporan Zakat - <?php echo html_escape($namaLembaga); ?></title>
     <style>
         body { font-family: sans-serif; font-size: 10px; }
         .kop { border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 10px; }
@@ -66,6 +55,9 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
         th { background: #f2f2f2; }
         .text-right { text-align: right; }
         .text-center { text-align: center; }
+        .signature-table { width: 100%; border: none !important; margin-top: 50px; }
+        .signature-table td { border: none !important; padding: 10px; vertical-align: top; text-align: center; }
+        .signature-wrapper { margin-top: 60px; }
     </style>
 </head>
 <body>
@@ -96,6 +88,7 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
                 <th>Total Fitrah Uang</th>
                 <th>Total Fitrah Beras</th>
                 <th>Total Zakat Mal</th>
+                <th>Total Infaq/Shodaqoh</th>
                 <th>Total Penyaluran Uang</th>
                 <th>Total Penyaluran Beras</th>
             </tr>
@@ -105,6 +98,7 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
                 <td class="text-right">Rp <?php echo number_format($fitrahUang, 0, ',', '.'); ?></td>
                 <td class="text-right"><?php echo number_format($fitrahBeras, 2, ',', '.'); ?> Kg</td>
                 <td class="text-right">Rp <?php echo number_format($malUang, 0, ',', '.'); ?></td>
+                <td class="text-right">Rp <?php echo number_format($infaqUang, 0, ',', '.'); ?></td>
                 <td class="text-right">Rp <?php echo number_format($penyaluranUang, 0, ',', '.'); ?></td>
                 <td class="text-right"><?php echo number_format($penyaluranBeras, 2, ',', '.'); ?> Kg</td>
             </tr>
@@ -177,35 +171,7 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
         </tbody>
     </table>
 
-    <h3>3. Laporan Penyaluran</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>No Penyaluran</th>
-                <th>Tanggal</th>
-                <th>Sumber</th>
-                <th>Total Uang</th>
-                <th>Total Beras</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($rows_penyaluran)): foreach ($rows_penyaluran as $row): ?>
-                <tr>
-                    <td><?php echo html_escape($row->nomor_penyaluran); ?></td>
-                    <td><?php echo html_escape(indo_date($row->tanggal_penyaluran)); ?></td>
-                    <td><?php echo html_escape($row->jenis_sumber); ?></td>
-                    <td class="text-right">Rp <?php echo number_format((float) $row->total_uang, 0, ',', '.'); ?></td>
-                    <td class="text-right"><?php echo number_format((float) $row->total_beras_kg, 2, ',', '.'); ?> Kg</td>
-                    <td><?php echo html_escape($row->status); ?></td>
-                </tr>
-            <?php endforeach; else: ?>
-                <tr><td colspan="6" class="text-center">Tidak ada data.</td></tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-
-    <h3>4. Laporan Infaq & Shodaqoh</h3>
+    <h3>3. Laporan Infaq & Shodaqoh</h3>
     <table>
         <thead>
             <tr>
@@ -231,6 +197,41 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
                 </tr>
             <?php endforeach; else: ?>
                 <tr><td colspan="7" class="text-center">Tidak ada data.</td></tr>
+            <?php endif; ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-right">Total:</th>
+                <th class="text-right">Rp <?php echo number_format($infaqUang, 0, ',', '.'); ?></th>
+                <th colspan="2"></th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <h3>4. Laporan Penyaluran</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>No Penyaluran</th>
+                <th>Tanggal</th>
+                <th>Sumber</th>
+                <th>Total Uang</th>
+                <th>Total Beras</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($rows_penyaluran)): foreach ($rows_penyaluran as $row): ?>
+                <tr>
+                    <td><?php echo html_escape($row->nomor_penyaluran); ?></td>
+                    <td><?php echo html_escape(indo_date($row->tanggal_penyaluran)); ?></td>
+                    <td><?php echo html_escape($row->jenis_sumber); ?></td>
+                    <td class="text-right">Rp <?php echo number_format((float) $row->total_uang, 0, ',', '.'); ?></td>
+                    <td class="text-right"><?php echo number_format((float) $row->total_beras_kg, 2, ',', '.'); ?> Kg</td>
+                    <td><?php echo html_escape($row->status); ?></td>
+                </tr>
+            <?php endforeach; else: ?>
+                <tr><td colspan="6" class="text-center">Tidak ada data.</td></tr>
             <?php endif; ?>
         </tbody>
     </table>
@@ -260,5 +261,22 @@ $kontakLembaga = !empty($kontakParts) ? implode(' | ', $kontakParts) : '-';
             <?php endif; ?>
         </tbody>
     </table>
+
+    <div class="signature-wrapper">
+        <table class="signature-table">
+            <tr>
+                <td width="50%">
+                    Mengetahui,<br>
+                    Ketua <?php echo html_escape($namaLembaga); ?><br><br><br><br><br>
+                    <strong><u><?php echo html_escape($pimpinan); ?></u></strong>
+                </td>
+                <td width="50%">
+                    <?php echo html_escape($kota); ?>, <?php echo html_escape(indo_date(date('Y-m-d'))); ?><br>
+                    Bendahara <?php echo html_escape($namaLembaga); ?><br><br><br><br><br>
+                    <strong><u><?php echo html_escape($bendahara); ?></u></strong>
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

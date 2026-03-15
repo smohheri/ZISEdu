@@ -29,7 +29,7 @@ if (!empty($latest_pengaturan)) {
 <?php endif; ?>
 
 <div class="row">
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-12">
 		<div class="small-box bg-gradient-primary">
 			<div class="inner">
 				<h3><?php echo $total_pengaturan; ?></h3>
@@ -40,7 +40,7 @@ if (!empty($latest_pengaturan)) {
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-6">
 		<div class="small-box bg-gradient-info">
 			<div class="inner">
 				<h3><?php echo html_escape($tahun_terbaru); ?></h3>
@@ -51,7 +51,7 @@ if (!empty($latest_pengaturan)) {
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-6">
 		<div class="small-box bg-gradient-success">
 			<div class="inner">
 				<h3>Rp <?php echo number_format($fitrah_terkini, 0, ',', '.'); ?></h3>
@@ -62,7 +62,7 @@ if (!empty($latest_pengaturan)) {
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-3 col-6">
+	<div class="col-lg-3 col-sm-6 col-12">
 		<div class="small-box bg-gradient-warning">
 			<div class="inner">
 				<h3>Rp <?php echo number_format($nilai_emas_terkini, 0, ',', '.'); ?></h3>
@@ -206,48 +206,3 @@ if (!empty($latest_pengaturan)) {
 		}, 5000);
 	});
 </script>
-
-<style>
-	.small-box {
-		border-radius: 10px;
-		box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.15);
-	}
-
-	.small-box .icon {
-		top: 10px;
-		right: 15px;
-		z-index: 0;
-	}
-
-	.border-left-success {
-		border-left: 0.25rem solid #28a745 !important;
-	}
-
-	.border-left-danger {
-		border-left: 0.25rem solid #dc3545 !important;
-	}
-
-	@media screen and (max-width: 768px) {
-		.small-box h3 {
-			font-size: 1.4rem;
-		}
-
-		.small-box p {
-			font-size: 0.8rem;
-		}
-
-		#pengaturan-zakat-table {
-			font-size: 0.85rem;
-		}
-
-		#pengaturan-zakat-table th,
-		#pengaturan-zakat-table td {
-			padding: 0.5rem 0.25rem;
-		}
-
-		.btn-sm {
-			font-size: 0.72rem;
-			padding: 0.25rem 0.5rem;
-		}
-	}
-</style>

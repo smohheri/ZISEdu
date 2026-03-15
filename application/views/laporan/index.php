@@ -6,6 +6,7 @@ $fitrahBeras = isset($ringkasan['fitrah_beras']) ? (float) $ringkasan['fitrah_be
 $malUang = isset($ringkasan['mal_uang']) ? (float) $ringkasan['mal_uang'] : 0;
 $penyaluranUang = isset($ringkasan['penyaluran_uang']) ? (float) $ringkasan['penyaluran_uang'] : 0;
 $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['penyaluran_beras'] : 0;
+$infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infaq_shodaqoh_uang'] : 0;
 ?>
 
 <div class="card card-primary">
@@ -36,7 +37,7 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
 </div>
 
 <div class="row">
-    <div class="col-md-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-info">
             <div class="inner">
                 <h4>Rp <?php echo number_format($fitrahUang, 0, ',', '.'); ?></h4>
@@ -47,7 +48,7 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-warning">
             <div class="inner">
                 <h4><?php echo number_format($fitrahBeras, 2, ',', '.'); ?> Kg</h4>
@@ -58,7 +59,7 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-success">
             <div class="inner">
                 <h4>Rp <?php echo number_format($malUang, 0, ',', '.'); ?></h4>
@@ -69,11 +70,22 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
+        <div class="small-box bg-primary">
+            <div class="inner">
+                <h4>Rp <?php echo number_format($infaqUang, 0, ',', '.'); ?></h4>
+                <p>Total Infaq/Shodaqoh</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-gift"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 col-12 d-lg-none">
         <div class="small-box bg-danger">
             <div class="inner">
                 <h4>Rp <?php echo number_format($penyaluranUang, 0, ',', '.'); ?></h4>
-                <p>Total Penyaluran Uang</p>
+                <p>Penyaluran (Uang)</p>
             </div>
             <div class="icon">
                 <i class="fas fa-hand-holding-heart"></i>
@@ -157,38 +169,6 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
 </div>
 
 <div class="card">
-    <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-donate mr-2"></i>Laporan Penyaluran</h3></div>
-    <div class="card-body table-responsive p-0">
-        <table class="table table-sm table-hover mb-0">
-            <thead>
-                <tr>
-                    <th>No Penyaluran</th>
-                    <th>Tanggal</th>
-                    <th>Sumber</th>
-                    <th>Total Uang</th>
-                    <th>Total Beras</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($rows_penyaluran)): foreach ($rows_penyaluran as $row): ?>
-                    <tr>
-                        <td><?php echo html_escape($row->nomor_penyaluran); ?></td>
-                        <td><?php echo html_escape(indo_date($row->tanggal_penyaluran)); ?></td>
-                        <td><?php echo html_escape($row->jenis_sumber); ?></td>
-                        <td>Rp <?php echo number_format((float) $row->total_uang, 0, ',', '.'); ?></td>
-                        <td><?php echo number_format((float) $row->total_beras_kg, 2, ',', '.'); ?> Kg</td>
-                        <td><?php echo html_escape($row->status); ?></td>
-                    </tr>
-                <?php endforeach; else: ?>
-                    <tr><td colspan="6" class="text-center text-muted">Tidak ada data.</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="card">
     <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-coins mr-2"></i>Laporan Infaq & Shodaqoh</h3></div>
     <div class="card-body table-responsive p-0">
         <table class="table table-sm table-hover mb-0">
@@ -216,6 +196,45 @@ $penyaluranBeras = isset($ringkasan['penyaluran_beras']) ? (float) $ringkasan['p
                     </tr>
                 <?php endforeach; else: ?>
                     <tr><td colspan="7" class="text-center text-muted">Tidak ada data.</td></tr>
+                <?php endif; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4" class="text-right">Total:</th>
+                    <th>Rp <?php echo number_format($infaqUang, 0, ',', '.'); ?></th>
+                    <th colspan="2"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-donate mr-2"></i>Laporan Penyaluran</h3></div>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-sm table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>No Penyaluran</th>
+                    <th>Tanggal</th>
+                    <th>Sumber</th>
+                    <th>Total Uang</th>
+                    <th>Total Beras</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($rows_penyaluran)): foreach ($rows_penyaluran as $row): ?>
+                    <tr>
+                        <td><?php echo html_escape($row->nomor_penyaluran); ?></td>
+                        <td><?php echo html_escape(indo_date($row->tanggal_penyaluran)); ?></td>
+                        <td><?php echo html_escape($row->jenis_sumber); ?></td>
+                        <td>Rp <?php echo number_format((float) $row->total_uang, 0, ',', '.'); ?></td>
+                        <td><?php echo number_format((float) $row->total_beras_kg, 2, ',', '.'); ?> Kg</td>
+                        <td><?php echo html_escape($row->status); ?></td>
+                    </tr>
+                <?php endforeach; else: ?>
+                    <tr><td colspan="6" class="text-center text-muted">Tidak ada data.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>

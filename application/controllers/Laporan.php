@@ -24,7 +24,8 @@ class Laporan extends CI_Controller
             'rows_fitrah' => $reportData['rows_fitrah'],
             'rows_mal' => $reportData['rows_mal'],
             'rows_penyaluran' => $reportData['rows_penyaluran'],
-            'rows_mustahik' => $reportData['rows_mustahik']
+            'rows_mustahik' => $reportData['rows_mustahik'],
+            'rows_infaq_shodaqoh' => $reportData['rows_infaq_shodaqoh']
         );
 
         $this->load->view('layouts/adminlte', $data);
@@ -62,6 +63,7 @@ class Laporan extends CI_Controller
             'rows_mal' => $reportData['rows_mal'],
             'rows_penyaluran' => $reportData['rows_penyaluran'],
             'rows_mustahik' => $reportData['rows_mustahik'],
+            'rows_infaq_shodaqoh' => $reportData['rows_infaq_shodaqoh'],
             'lembaga' => $lembaga,
             'logo_image_src' => $logoImageSrc,
             'kop_image_src' => $kopImageSrc

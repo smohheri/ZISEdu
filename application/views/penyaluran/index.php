@@ -14,7 +14,7 @@
 <?php endif; ?>
 
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-primary">
             <div class="inner">
                 <h3><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></h3>
@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-info">
             <div class="inner">
                 <h3>Rp
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-success">
             <div class="inner">
                 <h3><?php echo number_format(isset($stats['total_beras']) ? (float) $stats['total_beras'] : 0, 2, ',', '.'); ?>
@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-warning">
             <div class="inner">
                 <h3><?php echo isset($stats['disalurkan']) ? (int) $stats['disalurkan'] : 0; ?></h3>
@@ -327,48 +327,3 @@
         });
     });
 </script>
-
-<style>
-    .small-box {
-        border-radius: 10px;
-        box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.15);
-    }
-
-    .small-box .icon {
-        top: 10px;
-        right: 15px;
-        z-index: 0;
-    }
-
-    .border-left-success {
-        border-left: 0.25rem solid #28a745 !important;
-    }
-
-    .border-left-danger {
-        border-left: 0.25rem solid #dc3545 !important;
-    }
-
-    @media screen and (max-width: 768px) {
-        .small-box h3 {
-            font-size: 1.4rem;
-        }
-
-        .small-box p {
-            font-size: 0.8rem;
-        }
-
-        #penyaluran-table {
-            font-size: 0.85rem;
-        }
-
-        #penyaluran-table th,
-        #penyaluran-table td {
-            padding: 0.5rem 0.25rem;
-        }
-
-        .btn-sm {
-            font-size: 0.72rem;
-            padding: 0.25rem 0.5rem;
-        }
-    }
-</style>

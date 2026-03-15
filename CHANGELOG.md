@@ -4,6 +4,33 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+## [v1.1.5] - 2026-03-16
+
+Penyempurnaan modul laporan, penambahan tanda tangan dinamis pada dokumen PDF, dan restrukturisasi sistem CSS untuk responsivitas mobile yang lebih baik.
+
+### Added
+- Penambahan Total Infaq & Shodaqoh pada tabel ringkasan utama laporan (Web & PDF).
+- Penambahan tabel rincian transaksi Infaq & Shodaqoh pada laporan periode.
+- Fitur tanda tangan dinamis (Ketua & Bendahara) pada laporan PDF yang terhubung langsung dengan database Pengaturan Lembaga.
+- Penambahan nama lembaga secara dinamis pada label tanda tangan ("Ketua [Nama Lembaga]" & "Bendahara [Nama Lembaga]").
+- File CSS global baru `asset/css/custom.css` untuk menangani seluruh *override* dan tweak responsivitas secara terpusat.
+- Penambahan menu profil pengguna (*User Menu*) pada navbar atas yang menampilkan nama lengkap, role, dan tombol logout untuk mempermudah navigasi di perangkat mobile.
+
+### Changed
+- Reordering (penataan ulang) urutan total pada ringkasan laporan: Fitrah Uang, Fitrah Beras, Zakat Mal, Infaq/Shodaqoh, Penyaluran Uang, dan Penyaluran Beras.
+- Pertukaran posisi laporan: Laporan Infaq & Shodaqoh kini tampil sebelum Laporan Penyaluran untuk alur yang lebih logis.
+- Sinkronisasi urutan *Small Box* dan *Card* pada halaman web agar sesuai dengan format cetakan PDF.
+- Optimasi tata letak grid (*Bootstrap Grid System*) pada seluruh halaman master dan transaksi:
+    - Mengubah kelas kolom dari `col-6` menjadi `col-sm-6 col-12` agar elemen statistik menumpuk (*stack*) secara vertikal pada layar sangat kecil (HP) dan tetap berjejer pada layar sedang (Tablet).
+    - Penyesuaian ini mencakup halaman: Dashboard, Muzakki, Zakat Fitrah, Zakat Mal, Mustahik, Penyaluran, Infaq & Shodaqoh, Laporan, Users, Tanggungan Fitrah, Pengaturan Aplikasi, dan Pengaturan Zakat.
+- Pembersihan kode view dengan menghapus blok `<style>` redundan dan memindahkannya ke `custom.css`.
+- Peningkatan tipografi UI pada mobile: Ukuran font pada *Small Box*, *Info Box*, dan *Card Title* otomatis menyesuaikan untuk keterbacaan yang lebih baik.
+
+### Fixed
+- Perbaikan kalkulasi total Infaq & Shodaqoh yang sebelumnya tidak muncul karena kesalahan filter status transaksi (disesuaikan dari 'lunas' menjadi 'diterima').
+- Perbaikan label "Nama Pimpinan/Ketua" pada PDF agar ditarik langsung dari database tanpa fallback statis.
+- Perbaikan padding dan margin pada kontainer utama (`content-wrapper`) saat diakses dari perangkat mobile agar konten tidak terpotong.
+
 ## [v1.1.4] - 2026-03-11
 
 Peningkatan kompatibilitas dengan PHP 8.2, perbaikan responsivitas mobile pada panel admin, penyempurnaan UI transaksi Zakat Fitrah, serta peningkatan tata letak kwitansi 2-kolom.

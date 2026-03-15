@@ -37,6 +37,8 @@
 	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/plugins/select2/css/select2.min.css'); ?>">
 	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'); ?>">
 	<link rel="stylesheet" href="<?php echo base_url('asset/adminlte/dist/css/adminlte.min.css'); ?>">
+	<!-- Custom Responsive -->
+	<link rel="stylesheet" href="<?php echo base_url('asset/css/custom.css'); ?>">
 	<!-- jQuery -->
 	<script src="<?php echo base_url('asset/adminlte/plugins/jquery/jquery.min.js'); ?>"></script>
 </head>
