@@ -82,9 +82,8 @@ class Tanggungan_fitrah_model extends CI_Model
         }
 
         $stats['kepala_keluarga'] = (int) $this->db
-            ->from($this->table . ' tf')
-            ->join('muzakki m', 'm.id = tf.muzakki_id', 'inner')
-            ->where('m.jenis_muzakki', 'kepala_keluarga')
+            ->from('muzakki')
+            ->where('jenis_muzakki', 'kepala_keluarga')
             ->count_all_results();
 
         return $stats;
