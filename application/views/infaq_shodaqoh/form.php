@@ -46,9 +46,21 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label>Nama Donatur</label>
-                <input type="text" name="nama_donatur" class="form-control"
-                    value="<?php echo set_value('nama_donatur', isset($row->nama_donatur) ? $row->nama_donatur : ''); ?>"
-                    required>
+                <select name="nama_donatur" class="form-control select2-donatur" required>
+                    <?php
+                    $currentNama = set_value('nama_donatur', isset($row->nama_donatur) ? $row->nama_donatur : '');
+                    if ($currentNama !== '') {
+                        echo '<option value="' . html_escape($currentNama) . '" selected>' . html_escape($currentNama) . '</option>';
+                    }
+                    if (isset($muzakki_options) && is_array($muzakki_options)) {
+                        foreach ($muzakki_options as $m) {
+                            if ($m->nama !== $currentNama) {
+                                echo '<option value="' . html_escape($m->nama) . '">' . html_escape($m->nama) . '</option>';
+                            }
+                        }
+                    }
+                    ?>
+                </select>
             </div>
             <div class="col-md-6 form-group">
                 <label>No HP</label>
@@ -98,3 +110,16 @@
     </div>
 </div>
 <?php echo form_close(); ?>
+
+<script>
+    $(document).ready(function() {
+        if ($('.select2-donatur').length > 0) {
+            $('.select2-donatur').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Pilih Muzakki atau Ketik Nama Baru',
+                allowClear: true,
+                tags: true
+            });
+        }
+    });
+</script>

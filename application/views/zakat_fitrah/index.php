@@ -172,6 +172,20 @@
                                     <a class="btn btn-success" target="_blank" href="<?php echo site_url('zakat_fitrah/kwitansi/' . $row->id); ?>" title="Kwitansi">
                                         <i class="fas fa-print"></i>
                                     </a>
+                                    <button type="button" class="btn btn-info btn-detail-zakat-fitrah" title="Detail"
+                                        data-toggle="modal" data-target="#modal-detail-zakat-fitrah"
+                                        data-nomor="<?php echo html_escape($row->nomor_transaksi); ?>"
+                                        data-tanggal-bayar="<?php echo html_escape(indo_date($row->tanggal_bayar)); ?>"
+                                        data-muzakki="<?php echo html_escape(isset($row->nama_muzakki) ? $row->nama_muzakki : $row->muzakki_id); ?>"
+                                        data-jumlah-jiwa="<?php echo (int) $row->jumlah_jiwa; ?> jiwa"
+                                        data-metode-tunaikan="<?php echo html_escape(ucfirst($row->metode_tunaikan)); ?>"
+                                        data-beras="<?php echo number_format((float) $row->beras_kg, 2, ',', '.'); ?> kg"
+                                        data-nominal="Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?>"
+                                        data-metode-bayar="<?php echo html_escape(ucfirst($row->metode_bayar)); ?>"
+                                        data-status="<?php echo html_escape(strtoupper($row->status)); ?>"
+                                        data-keterangan="<?php echo html_escape(!empty($row->keterangan) ? $row->keterangan : '-'); ?>">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                     <a class="btn btn-warning" href="<?php echo site_url('zakat_fitrah/edit/' . $row->id); ?>" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -206,11 +220,55 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-zakat-fitrah" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Zakat Fitrah</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mb-2"><strong>No Transaksi:</strong> <span id="detail-nomor">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Tanggal Bayar:</strong> <span id="detail-tanggal-bayar">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Muzakki:</strong> <span id="detail-muzakki">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Jumlah Jiwa:</strong> <span id="detail-jumlah-jiwa">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Metode Tunaikan:</strong> <span id="detail-metode-tunaikan">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Beras (Kg):</strong> <span id="detail-beras">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Nominal Uang:</strong> <span id="detail-nominal">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Metode Bayar:</strong> <span id="detail-metode-bayar">-</span></div>
+                    <div class="col-md-6 mb-2"><strong>Status:</strong> <span id="detail-status">-</span></div>
+                    <div class="col-md-12 mb-2"><strong>Keterangan:</strong><br><span id="detail-keterangan">-</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         setTimeout(function () {
             $('#alert-success, #alert-error').fadeOut('slow');
         }, 5000);
+
+        $('.btn-detail-zakat-fitrah').on('click', function () {
+            const btn = $(this);
+            $('#detail-nomor').text(btn.data('nomor') || '-');
+            $('#detail-tanggal-bayar').text(btn.data('tanggal-bayar') || '-');
+            $('#detail-muzakki').text(btn.data('muzakki') || '-');
+            $('#detail-jumlah-jiwa').text(btn.data('jumlah-jiwa') || '-');
+            $('#detail-metode-tunaikan').text(btn.data('metode-tunaikan') || '-');
+            $('#detail-beras').text(btn.data('beras') || '-');
+            $('#detail-nominal').text(btn.data('nominal') || '-');
+            $('#detail-metode-bayar').text(btn.data('metode-bayar') || '-');
+            $('#detail-status').text(btn.data('status') || '-');
+            $('#detail-keterangan').text(btn.data('keterangan') || '-');
+        });
     });
 </script>
 

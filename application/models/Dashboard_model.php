@@ -8,9 +8,9 @@ class Dashboard_model extends CI_Model
         return $this->db->table_exists('infaq_shodaqoh');
     }
 
-    public function get_monthly_chart_data($months = 6)
+    public function get_daily_chart_data($days = 7)
     {
-        $months = max(1, (int) $months);
+        $days = max(1, (int) $days);
 
         $labels = array();
         $masukZakat = array();
@@ -23,20 +23,15 @@ class Dashboard_model extends CI_Model
 
         $hasInfaqTable = $this->_has_infaq_table();
 
-        for ($i = $months - 1; $i >= 0; $i--) {
-            $target = strtotime(date('Y-m-01') . " -{$i} month");
-            $year = date('Y', $target);
-            $month = date('m', $target);
-
-            $startDate = $year . '-' . $month . '-01';
-            $endDate = date('Y-m-t', strtotime($startDate));
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $target = strtotime("-{$i} days");
+            $date = date('Y-m-d', $target);
 
             $fitrah = $this->db
                 ->select('COALESCE(SUM(nominal_uang),0) AS total_uang, COALESCE(SUM(beras_kg),0) AS total_beras')
                 ->from('zakat_fitrah')
                 ->where('status', 'lunas')
-                ->where('tanggal_bayar >=', $startDate)
-                ->where('tanggal_bayar <=', $endDate)
+                ->where('tanggal_bayar', $date)
                 ->get()
                 ->row();
 
@@ -45,13 +40,11 @@ class Dashboard_model extends CI_Model
                 ->from('zakat_mal')
                 ->where('status', 'lunas')
                 ->group_start()
-                ->where('tanggal_bayar >=', $startDate)
-                ->where('tanggal_bayar <=', $endDate)
+                ->where('tanggal_bayar', $date)
                 ->group_end()
                 ->or_group_start()
                 ->where('tanggal_bayar IS NULL', NULL, FALSE)
-                ->where('tanggal_hitung >=', $startDate)
-                ->where('tanggal_hitung <=', $endDate)
+                ->where('tanggal_hitung', $date)
                 ->where('status', 'lunas')
                 ->group_end()
                 ->get()
@@ -63,8 +56,7 @@ class Dashboard_model extends CI_Model
                     ->select('COALESCE(SUM(nominal_uang),0) AS total_uang')
                     ->from('infaq_shodaqoh')
                     ->where('status', 'diterima')
-                    ->where('tanggal_transaksi >=', $startDate)
-                    ->where('tanggal_transaksi <=', $endDate)
+                    ->where('tanggal_transaksi', $date)
                     ->get()
                     ->row();
             }
@@ -73,8 +65,7 @@ class Dashboard_model extends CI_Model
                 ->select('COALESCE(SUM(total_uang),0) AS total_uang')
                 ->from('penyaluran')
                 ->where('status', 'disalurkan')
-                ->where('tanggal_penyaluran >=', $startDate)
-                ->where('tanggal_penyaluran <=', $endDate)
+                ->where('tanggal_penyaluran', $date)
                 ->get()
                 ->row();
 
@@ -83,7 +74,7 @@ class Dashboard_model extends CI_Model
             $nilaiInfaq = (float) ($infaq ? $infaq->total_uang : 0);
             $nilaiKeluar = (float) ($penyaluran ? $penyaluran->total_uang : 0);
 
-            $labels[] = date('M Y', $target);
+            $labels[] = date('d M Y', $target);
             $masukZakat[] = $nilaiFitrahUang + $nilaiMal;
             $masukInfaqShodaqoh[] = $nilaiInfaq;
             $keluarPenyaluran[] = $nilaiKeluar;

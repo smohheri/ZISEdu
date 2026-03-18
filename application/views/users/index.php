@@ -13,6 +13,24 @@
 	</div>
 <?php endif; ?>
 
+<style>
+.avatar-circle {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 15px;
+	font-weight: 600;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.user-avatar span {
+	font-weight: 500;
+}
+</style>
+
 <div class="row">
 	<div class="col-lg-3 col-sm-6 col-12">
 		<div class="small-box bg-gradient-primary">

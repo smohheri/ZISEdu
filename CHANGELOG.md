@@ -4,6 +4,7 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+<<<<<<< HEAD
 ## [Unreleased]
 
 ### 2026-03-18
@@ -29,6 +30,20 @@ Optimasi layout form Transaksi Terpadu (Zakat Mal section).
 
 ### Changed
 - Row 1 layout lebih rapi dan minimalis sesuai feedback user
+=======
+## [v1.1.6] - 2026-03-19
+
+Penyempurnaan tata letak Dashboard, perbaikan struktur MVC pada modul Transaksi Terpadu, dan penambahan informasi beras pada infobox.
+
+### Added
+- Penambahan metrik informasi berat beras (Kg) pada infobox Zakat Fitrah di halaman Transaksi Terpadu.
+- Fitur detail rekap (breakdown nominal Fitrah, Mal, Infaq) pada modal popup Transaksi Terpadu.
+
+### Changed
+- Refaktor arsitektur pada controller `Transaksi_terpadu.php`. Query statistik yang sebelumnya hardcode, kini dipindahkan ke model `Transaksi_terpadu_model.php` via method `get_stats()` (Pola MVC).
+- Ubah rentang peramalan/data pada grafik (chart) Dashboard dari akumulasi 6 Bulan menjadi harian (7 Hari Terakhir) via `Dashboard_model->get_daily_chart_data()`.
+- Reordering (penataan ulang) layout widget Dashboard: Penempatan *card* Zakat Fitrah Terbaru disejajarkan dengan Infaq & Shodaqoh Terbaru (1 baris), dan *card* Ringkasan Penyaluran disejajarkan dengan Penyaluran Terbaru (1 baris).
+>>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)
 
 ## [v1.1.5] - 2026-03-16
 

@@ -35,7 +35,7 @@ class Welcome extends CI_Controller
 			'page_title' => 'Dashboard',
 			'content_view' => 'dashboard/index',
 			'summary' => $summary,
-			'monthly_chart' => $this->dashboard->get_monthly_chart_data(6),
+			'daily_chart' => $this->dashboard->get_daily_chart_data(7),
 			'recent_fitrah' => $this->dashboard->get_recent_fitrah(5),
 			'recent_penyaluran' => $this->dashboard->get_recent_penyaluran(5),
 			'recent_infaq_shodaqoh' => $this->dashboard->get_recent_infaq_shodaqoh(5)

@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php $lembaga = isset($lembaga) ? $lembaga : NULL; ?>
 <?php $namaPenerima = isset($nama_penerima) && trim((string) $nama_penerima) !== '' ? $nama_penerima : '-'; ?>
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id">
 
@@ -240,3 +241,154 @@
 </body>
 
 </html>
+=======
+<?php $namaMuzakkiTtd = isset($row->nama_donatur) && trim((string) $row->nama_donatur) !== '' ? $row->nama_donatur : '-'; ?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kwitansi Infaq & Shodaqoh</title>
+    <link rel="stylesheet" href="<?php echo base_url('asset/adminlte/plugins/fontawesome-free/css/all.min.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('asset/adminlte/dist/css/adminlte.min.css'); ?>">
+    <style>
+        body { background: #f4f6f9; }
+        .receipt-wrap { max-width: 860px; margin: 24px auto; }
+        .receipt-title { letter-spacing: 1px; }
+        .kop-wrap { border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .kop-img { max-height: 95px; width: auto; }
+        .kop-title { font-size: 21px; font-weight: 700; line-height: 1.2; }
+        .signature-wrap { margin-top: 40px; }
+        .signature-wrap p { margin-bottom: 60px; }
+        @page { size: 210mm 139mm; margin: 0; }
+        @media print {
+            html, body { width: 210mm; height: 139mm; overflow: hidden; margin: 0; padding: 0; font-size: 12px; }
+            body { background: #fff; }
+            .no-print { display: none !important; }
+            .card { border: 1px solid #000 !important; box-shadow: none !important; margin: 0 !important; }
+            .receipt-wrap { width: 100%; height: 100%; margin: 0; padding: 8mm 10mm; box-sizing: border-box; }
+            .card-body { padding: 12px; }
+            * { color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-wrap">
+        <div class="mb-3 no-print text-right">
+            <button type="button" class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print"></i> Cetak
+            </button>
+            <a href="<?php echo site_url('infaq_shodaqoh/export_pdf/' . $row->id); ?>" class="btn btn-danger">
+                <i class="fas fa-file-pdf"></i> Export PDF
+            </a>
+            <a href="<?php echo site_url('infaq_shodaqoh'); ?>" class="btn btn-default">Kembali</a>
+        </div>
+
+        <div class="card card-outline card-primary">
+            <div class="card-body">
+                <div class="kop-wrap">
+                    <div class="row align-items-center">
+                        <div class="col-2 text-center">
+                            <?php if (!empty($lembaga) && !empty($lembaga->logo_path)): ?>
+                                <img src="<?php echo base_url($lembaga->logo_path); ?>" alt="Logo" class="kop-img">
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-10 text-center">
+                            <div class="kop-title">
+                                <?php echo html_escape(!empty($lembaga) && !empty($lembaga->nama_lembaga) ? $lembaga->nama_lembaga : 'ZISEDU'); ?>
+                            </div>
+                            <div><?php echo html_escape(!empty($lembaga) && !empty($lembaga->alamat) ? $lembaga->alamat : '-'); ?></div>
+                            <div>
+                                Telp: <?php echo html_escape(!empty($lembaga) && !empty($lembaga->no_telp) ? $lembaga->no_telp : '-'); ?> |
+                                Email: <?php echo html_escape(!empty($lembaga) && !empty($lembaga->email) ? $lembaga->email : '-'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-3">
+                    <h3 class="receipt-title mb-0"><strong>KWITANSI PENERIMAAN <?php echo strtoupper(html_escape($row->jenis_dana)); ?></strong></h3>
+                    <small>No. Kwitansi: <?php echo html_escape(isset($no_kwitansi) ? $no_kwitansi : '-'); ?></small><br>
+                    <small>No. Transaksi: <?php echo html_escape($row->nomor_transaksi); ?></small>
+                </div>
+
+                <div class="row pt-3 border-top receipt-cols">
+                    <div class="col-12">
+                        <table class="table table-borderless table-sm mb-0">
+                            <tr>
+                                <td width="150">Telah terima dari</td>
+                                <td width="10">:</td>
+                                <td><strong><?php echo html_escape($row->nama_donatur); ?></strong></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td><?php echo html_escape(indo_date($row->tanggal_transaksi)); ?></td>
+                            </tr>
+                            <tr>
+                                <td>Untuk Pembayaran</td>
+                                <td>:</td>
+                                <td><?php echo ucfirst(html_escape($row->jenis_dana)); ?> <?php echo html_escape($row->keterangan ? ' - ' . $row->keterangan : ''); ?></td>
+                            </tr>
+                            <tr>
+                                <td>Metode Bayar</td>
+                                <td>:</td>
+                                <td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>:</td>
+                                <td><?php echo strtoupper(html_escape($row->status)); ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3 mb-2">
+                    <div style="border: 2px solid #000; display: inline-block; padding: 10px 30px; font-size: 24px; font-weight: bold;">
+                        Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?>
+                    </div>
+                </div>
+
+                <div class="row signature-wrap">
+                    <div class="col-6 text-center">
+                        <p>Donatur,</p>
+                        <strong>(<?php echo html_escape($namaMuzakkiTtd); ?>)</strong>
+                    </div>
+                    <div class="col-6 text-center">
+                        <p>Penerima,</p>
+                        <strong>(<?php echo html_escape($namaPenerima); ?>)</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('beforeprint', function () {
+            var card = document.querySelector('.card');
+            card.style.transform = 'none';
+            card.style.transformOrigin = 'top center';
+            
+            var dummy = document.createElement('div');
+            dummy.style.position = 'absolute';
+            dummy.style.height = '123mm'; 
+            document.body.appendChild(dummy);
+            var maxHeight = dummy.offsetHeight;
+            document.body.removeChild(dummy);
+
+            var actualHeight = card.scrollHeight;
+
+            if (actualHeight > maxHeight) {
+                var scale = maxHeight / actualHeight;
+                card.style.transform = 'scale(' + (scale - 0.01) + ')';
+            }
+        });
+
+        window.addEventListener('afterprint', function () {
+            document.querySelector('.card').style.transform = 'none';
+        });
+    </script>
+</body>
+</html>
+>>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)

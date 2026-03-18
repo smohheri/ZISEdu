@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php
 $summary = isset($summary) && is_array($summary) ? $summary : array();
-$monthlyChart = isset($monthly_chart) && is_array($monthly_chart) ? $monthly_chart : array();
+$dailyChart = isset($daily_chart) && is_array($daily_chart) ? $daily_chart : array();
 $totalMuzakki = isset($summary['total_muzakki']) ? (int) $summary['total_muzakki'] : 0;
 $totalMustahik = isset($summary['total_mustahik']) ? (int) $summary['total_mustahik'] : 0;
 $totalMasukUang = isset($summary['total_masuk_uang']) ? (float) $summary['total_masuk_uang'] : 0;
@@ -15,15 +15,15 @@ $totalPenyaluranBeras = isset($summary['total_penyaluran_beras']) ? (float) $sum
 $totalInfaq = isset($summary['total_infaq_uang']) ? (float) $summary['total_infaq_uang'] : 0;
 $totalShodaqoh = isset($summary['total_shodaqoh_uang']) ? (float) $summary['total_shodaqoh_uang'] : 0;
 
-$chartLabels = isset($monthlyChart['labels']) ? $monthlyChart['labels'] : array();
-$chartMasukZakat = isset($monthlyChart['masuk_zakat']) ? $monthlyChart['masuk_zakat'] : array();
-$chartMasukInfaq = isset($monthlyChart['masuk_infaq_shodaqoh']) ? $monthlyChart['masuk_infaq_shodaqoh'] : array();
-$chartKeluar = isset($monthlyChart['keluar_penyaluran']) ? $monthlyChart['keluar_penyaluran'] : array();
-$chartSaldo = isset($monthlyChart['saldo_arus_kas']) ? $monthlyChart['saldo_arus_kas'] : array();
+$chartLabels = isset($dailyChart['labels']) ? $dailyChart['labels'] : array();
+$chartMasukZakat = isset($dailyChart['masuk_zakat']) ? $dailyChart['masuk_zakat'] : array();
+$chartMasukInfaq = isset($dailyChart['masuk_infaq_shodaqoh']) ? $dailyChart['masuk_infaq_shodaqoh'] : array();
+$chartKeluar = isset($dailyChart['keluar_penyaluran']) ? $dailyChart['keluar_penyaluran'] : array();
+$chartSaldo = isset($dailyChart['saldo_arus_kas']) ? $dailyChart['saldo_arus_kas'] : array();
 
-$chartFitrah = isset($monthlyChart['fitrah_uang']) ? $monthlyChart['fitrah_uang'] : array();
-$chartMal = isset($monthlyChart['mal_uang']) ? $monthlyChart['mal_uang'] : array();
-$chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] : array();
+$chartFitrah = isset($dailyChart['fitrah_uang']) ? $dailyChart['fitrah_uang'] : array();
+$chartMal = isset($dailyChart['mal_uang']) ? $dailyChart['mal_uang'] : array();
+$chartInfaq = isset($dailyChart['infaq_uang']) ? $dailyChart['infaq_uang'] : array();
 ?>
 
 <div class="row">
@@ -102,7 +102,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
     <div class="col-md-6">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-line mr-1"></i>Arus Dana 6 Bulan Terakhir</h3>
+                <h3 class="card-title"><i class="fas fa-chart-line mr-1"></i>Arus Dana 7 Hari Terakhir</h3>
             </div>
             <div class="card-body">
                 <canvas id="arusDanaChart" height="100"></canvas>
@@ -112,7 +112,7 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
     <div class="col-md-6">
         <div class="card card-outline card-info">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-bar mr-1"></i>Komposisi Pemasukan 6 Bulan</h3>
+                <h3 class="card-title"><i class="fas fa-chart-bar mr-1"></i>Komposisi Pemasukan 7 Hari Terakhir</h3>
             </div>
             <div class="card-body">
                 <canvas id="komposisiMasukChart" height="100"></canvas>
@@ -122,29 +122,6 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="card card-outline card-success">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-share-square mr-1"></i>Ringkasan Penyaluran</h3>
-            </div>
-            <div class="card-body table-responsive p-0">
-                <table class="table table-sm mb-0">
-                    <tr>
-                        <th>Total Penyaluran Uang</th>
-                        <td class="text-right">Rp <?php echo number_format($totalPenyaluranUang, 0, ',', '.'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Total Penyaluran Beras</th>
-                        <td class="text-right"><?php echo number_format($totalPenyaluranBeras, 2, ',', '.'); ?> Kg</td>
-                    </tr>
-                    <tr>
-                        <th>Saldo Uang Tersisa</th>
-                        <td class="text-right font-weight-bold">Rp <?php echo number_format($totalSaldoUang, 0, ',', '.'); ?></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
     <div class="col-md-6">
         <div class="card card-outline card-warning">
             <div class="card-header">
@@ -184,9 +161,6 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
             </div>
         </div>
     </div>
-</div>
-
-<div class="row">
     <div class="col-md-6">
         <div class="card card-outline card-secondary">
             <div class="card-header">
@@ -216,6 +190,32 @@ $chartInfaq = isset($monthlyChart['infaq_uang']) ? $monthlyChart['infaq_uang'] :
                             <tr><td colspan="4" class="text-center text-muted">Belum ada transaksi.</td></tr>
                         <?php endif; ?>
                     </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-share-square mr-1"></i>Ringkasan Penyaluran</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th>Total Penyaluran Uang</th>
+                        <td class="text-right">Rp <?php echo number_format($totalPenyaluranUang, 0, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Total Penyaluran Beras</th>
+                        <td class="text-right"><?php echo number_format($totalPenyaluranBeras, 2, ',', '.'); ?> Kg</td>
+                    </tr>
+                    <tr>
+                        <th>Saldo Uang Tersisa</th>
+                        <td class="text-right font-weight-bold">Rp <?php echo number_format($totalSaldoUang, 0, ',', '.'); ?></td>
+                    </tr>
                 </table>
             </div>
         </div>

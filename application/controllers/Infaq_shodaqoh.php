@@ -37,6 +37,7 @@ class Infaq_shodaqoh extends CI_Controller
 		$this->load->view('layouts/adminlte', $data);
 	}
 
+<<<<<<< HEAD
 	public function create()
 	{
 		$data = array(
@@ -45,6 +46,18 @@ class Infaq_shodaqoh extends CI_Controller
 			'form_action' => 'infaq_shodaqoh/store',
 			'auto_nomor' => $this->infaq_shodaqoh->generate_next_nomor()
 		);
+=======
+    public function create()
+    {
+        $this->load->model('Muzakki_model');
+        $data = array(
+            'page_title' => 'Tambah Transaksi Infaq & Shodaqoh',
+            'content_view' => 'infaq_shodaqoh/form',
+            'form_action' => 'infaq_shodaqoh/store',
+            'auto_nomor' => $this->infaq_shodaqoh->generate_next_nomor(),
+            'muzakki_options' => $this->Muzakki_model->get_all()
+        );
+>>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)
 
 		$this->load->view('layouts/adminlte', $data);
 	}
@@ -94,12 +107,23 @@ class Infaq_shodaqoh extends CI_Controller
 			show_404();
 		}
 
+<<<<<<< HEAD
 		$data = array(
 			'page_title' => 'Edit Transaksi Infaq & Shodaqoh',
 			'content_view' => 'infaq_shodaqoh/form',
 			'form_action' => 'infaq_shodaqoh/update/' . (int) $row->id,
 			'row' => $row
 		);
+=======
+        $this->load->model('Muzakki_model');
+        $data = array(
+            'page_title' => 'Edit Transaksi Infaq & Shodaqoh',
+            'content_view' => 'infaq_shodaqoh/form',
+            'form_action' => 'infaq_shodaqoh/update/' . (int) $row->id,
+            'row' => $row,
+            'muzakki_options' => $this->Muzakki_model->get_all()
+        );
+>>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)
 
 		$this->load->view('layouts/adminlte', $data);
 	}
@@ -150,12 +174,113 @@ class Infaq_shodaqoh extends CI_Controller
 		redirect('infaq_shodaqoh');
 	}
 
+<<<<<<< HEAD
 	public function kwitansi($id = NULL)
 	{
 		$row = $this->infaq_shodaqoh->get_by_id($id);
 		if (!$row) {
 			show_404();
 		}
+=======
+    public function kwitansi($id = NULL)
+    {
+        $row = $this->infaq_shodaqoh->get_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
+        $lembaga = $this->pengaturan_aplikasi->get_first();
+
+        $noKwitansi = $this->_resolve_no_kwitansi($row);
+        $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
+        if ($namaPenerima === '') {
+            $namaPenerima = trim((string) $this->session->userdata('username'));
+        }
+
+        $data = array(
+            'page_title' => 'Kwitansi Penerimaan Infaq / Shodaqoh',
+            'row' => $row,
+            'no_kwitansi' => $noKwitansi,
+            'lembaga' => $lembaga,
+            'nama_penerima' => $namaPenerima
+        );
+
+        $this->load->view('infaq_shodaqoh/kwitansi', $data);
+    }
+
+    public function export_pdf($id = NULL)
+    {
+        $row = $this->infaq_shodaqoh->get_by_id($id);
+        if (!$row) {
+            show_404();
+        }
+
+        $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
+        $lembaga = $this->pengaturan_aplikasi->get_first();
+
+        $noKwitansi = $this->_resolve_no_kwitansi($row);
+
+        $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
+        if ($namaPenerima === '') {
+            $namaPenerima = trim((string) $this->session->userdata('username'));
+        }
+
+        $logoImageSrc = NULL;
+        if ($lembaga && !empty($lembaga->logo_path)) {
+            $logoFullPath = FCPATH . ltrim($lembaga->logo_path, '/\\');
+            if (is_file($logoFullPath)) {
+                $logoImageSrc = 'file:///' . str_replace('\\', '/', $logoFullPath);
+            }
+        }
+
+        $viewData = array(
+            'row' => $row,
+            'no_kwitansi' => $noKwitansi,
+            'lembaga' => $lembaga,
+            'nama_penerima' => $namaPenerima,
+            'logo_image_src' => $logoImageSrc
+        );
+
+        $vendorAutoload = FCPATH . 'vendor/autoload.php';
+        if (!is_file($vendorAutoload)) {
+            show_error('Autoload Composer tidak ditemukan. Pastikan dependency mPDF sudah terpasang.');
+        }
+
+        require_once $vendorAutoload;
+
+        $html = $this->load->view('infaq_shodaqoh/kwitansi_pdf', $viewData, TRUE);
+        $mpdf = new \Mpdf\Mpdf(array(
+            'format' => array(210, 139),
+            'margin_left' => 6,
+            'margin_right' => 6,
+            'margin_top' => 6,
+            'margin_bottom' => 4,
+            'autoPageBreak' => false
+        ));
+        $mpdf->shrink_tables_to_fit = 1;
+
+        $mpdf->SetTitle('Kwitansi Infaq - ' . $row->nomor_transaksi);
+        $mpdf->WriteHTML($html);
+
+        $filename = 'kwitansi-infaq-' . (int) $row->id . '.pdf';
+        $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
+    }
+
+    private function _build_payload($nomor, $includeCreatedBy = TRUE)
+    {
+        $payload = array(
+            'nomor_transaksi' => $nomor,
+            'tanggal_transaksi' => (string) $this->input->post('tanggal_transaksi', TRUE),
+            'jenis_dana' => (string) $this->input->post('jenis_dana', TRUE),
+            'nama_donatur' => trim((string) $this->input->post('nama_donatur', TRUE)),
+            'no_hp' => $this->_null_if_empty($this->input->post('no_hp', TRUE)),
+            'nominal_uang' => (float) $this->input->post('nominal_uang', TRUE),
+            'metode_bayar' => (string) $this->input->post('metode_bayar', TRUE),
+            'keterangan' => $this->_null_if_empty($this->input->post('keterangan', TRUE)),
+            'status' => (string) $this->input->post('status', TRUE)
+        );
+>>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)
 
 		$this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
 		$lembaga = $this->pengaturan_aplikasi->get_first();
@@ -167,6 +292,7 @@ class Infaq_shodaqoh extends CI_Controller
 			$namaPenerima = trim((string) $this->session->userdata('username'));
 		}
 
+<<<<<<< HEAD
 		$data = array(
 			'page_title' => 'Kwitansi Penerimaan Infaq / Shodaqoh',
 			'row' => $row,
@@ -174,6 +300,29 @@ class Infaq_shodaqoh extends CI_Controller
 			'lembaga' => $lembaga,
 			'nama_penerima' => $namaPenerima
 		);
+=======
+    private function _resolve_no_kwitansi($row)
+    {
+        $existing = isset($row->no_kwitansi) ? trim((string) $row->no_kwitansi) : '';
+        if ($existing !== '') {
+            return $existing;
+        }
+
+        $generated = $this->_generate_no_kwitansi((int) $row->id, isset($row->tanggal_transaksi) ? $row->tanggal_transaksi : NULL);
+
+        if ($this->db->field_exists('no_kwitansi', 'infaq_shodaqoh')) {
+            $this->infaq_shodaqoh->update((int) $row->id, array('no_kwitansi' => $generated));
+        }
+
+        return $generated;
+    }
+
+    private function _null_if_empty($value)
+    {
+        $value = trim((string) $value);
+        return $value === '' ? NULL : $value;
+    }
+>>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)
 
 		$this->load->view('infaq_shodaqoh/kwitansi', $data);
 	}

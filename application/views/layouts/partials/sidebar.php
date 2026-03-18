@@ -1,6 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php
-$CI =& get_instance();
+$CI = & get_instance();
 $CI->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi_sidebar');
 $sidebarLembaga = $CI->pengaturan_aplikasi_sidebar->get_first();
 
@@ -18,9 +18,11 @@ $sidebarBrandText = !empty($sidebarLembaga->nama_lembaga)
 		<?php if ($sidebarLogoUrl !== ''): ?>
 			<img src="<?php echo $sidebarLogoUrl; ?>" alt="Logo" class="brand-image img-circle elevation-3"
 				style="opacity: .9;">
-		<?php else: ?>
+		<?php
+else: ?>
 			<i class="fas fa-school brand-image" style="margin-top: 8px;"></i>
-		<?php endif; ?>
+		<?php
+endif; ?>
 		<span class="brand-text font-weight-light"><?php echo html_escape($sidebarBrandText); ?></span>
 	</a>
 
@@ -66,6 +68,10 @@ $sidebarBrandText = !empty($sidebarLembaga->nama_lembaga)
 					</a></li>
 
 				<li class="nav-header">TRANSAKSI</li>
+				<li class="nav-item"><a href="<?php echo site_url('transaksi_terpadu'); ?>" class="nav-link"><i
+							class="nav-icon fas fa-layer-group"></i>
+						<p>Transaksi Terpadu</p>
+					</a></li>
 				<li class="nav-item"><a href="<?php echo site_url('zakat_fitrah'); ?>" class="nav-link"><i
 							class="nav-icon fas fa-donate"></i>
 						<p>Zakat Fitrah</p>
@@ -74,21 +80,16 @@ $sidebarBrandText = !empty($sidebarLembaga->nama_lembaga)
 							class="nav-icon fas fa-wallet"></i>
 						<p>Zakat Mal</p>
 					</a></li>
-				<li class="nav-item"><a href="<?php echo site_url('penyaluran'); ?>" class="nav-link"><i
-							class="nav-icon fas fa-share-square"></i>
-						<p>Penyaluran</p>
-					</a></li>
 				<li class="nav-item"><a href="<?php echo site_url('infaq_shodaqoh'); ?>" class="nav-link"><i
 							class="nav-icon fas fa-hand-holding-usd"></i>
 						<p>Infaq & Shodaqoh</p>
 					</a></li>
 
-				<li class="nav-item">
-					<a href="<?php echo site_url('transaksi_unified'); ?>" class="nav-link">
-						<i class="nav-icon fas fa-layer-group"></i>
-						<p><strong>Transaksi Terpadu</strong></p>
-					</a>
-				</li>
+				<li class="nav-header">PENYALURAN</li>
+				<li class="nav-item"><a href="<?php echo site_url('penyaluran'); ?>" class="nav-link"><i
+							class="nav-icon fas fa-share-square"></i>
+						<p>Penyaluran Zakat</p>
+					</a></li>
 
 				<li class="nav-header">LAPORAN</li>
 				<li class="nav-item"><a href="<?php echo site_url('laporan'); ?>" class="nav-link"><i
