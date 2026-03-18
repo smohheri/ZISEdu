@@ -229,4 +229,48 @@ class Zakat_mal_model extends CI_Model
 
 		return $prefix . str_pad((string) $next, 4, '0', STR_PAD_LEFT);
 	}
+
+	public function get_by_batch($batch_id)
+	{
+		return $this->_base_query()
+			->where('zm.batch_id', $batch_id)
+			->get()
+			->row();
+	}
+
+	public function generate_next_kwitansi($date = NULL)
+	{
+		$date = $date ?: date('Y-m-d');
+		$dateToken = date('Y', strtotime($date));
+		$prefix = 'KW-' . $dateToken . '-';
+
+		$last = $this->db
+			->select('no_kwitansi')
+			->from($this->table)
+			->like('no_kwitansi', $prefix, 'after')
+			->order_by('no_kwitansi', 'DESC')
+			->limit(1)
+			->get()
+			->row();
+
+		$next = 1;
+		if ($last && isset($last->no_kwitansi)) {
+			$parts = explode('-', $last->no_kwitansi);
+			$suffix = end($parts);
+			if (is_numeric($suffix)) {
+				$next = ((int) $suffix) + 1;
+			}
+		}
+
+		return $prefix . str_pad((string) $next, 4, '0', STR_PAD_LEFT);
+	}
+
+	public function update_no_kwitansi($id)
+	{
+		$no = $this->generate_next_kwitansi();
+		return $this->db
+			->where('id', (int) $id)
+			->update($this->table, ['no_kwitansi' => $no]);
+	}
 }
+
