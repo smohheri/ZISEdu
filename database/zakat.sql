@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 18, 2026 at 10:52 AM
+-- Generation Time: Mar 18, 2026 at 02:00 PM
 -- Server version: 9.1.0
 -- PHP Version: 8.1.31
 
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `infaq_shodaqoh` (
   `no_kwitansi` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `tanggal_transaksi` date NOT NULL,
   `jenis_dana` enum('infaq','shodaqoh','infaq_shodaqoh') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `muzakki_kode` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `nama_donatur` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
   `no_hp` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `nominal_uang` decimal(18,2) NOT NULL DEFAULT '0.00',
@@ -50,16 +51,19 @@ CREATE TABLE IF NOT EXISTS `infaq_shodaqoh` (
   KEY `fk_infaq_shodaqoh_user` (`created_by`),
   KEY `idx_infaq_shodaqoh_tanggal` (`tanggal_transaksi`),
   KEY `idx_infaq_shodaqoh_jenis` (`jenis_dana`),
-  KEY `idx_infaq_shodaqoh_nama` (`nama_donatur`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `idx_infaq_shodaqoh_nama` (`nama_donatur`),
+  KEY `idx_infaq_muzakki_kode` (`muzakki_kode`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `infaq_shodaqoh`
 --
 
-INSERT INTO `infaq_shodaqoh` (`id`, `nomor_transaksi`, `no_kwitansi`, `tanggal_transaksi`, `jenis_dana`, `nama_donatur`, `no_hp`, `nominal_uang`, `metode_bayar`, `keterangan`, `status`, `created_by`, `created_at`, `updated_at`, `batch_id`) VALUES
-(1, 'IS-2026-0001', 'KW/IS/2026/0001', '2026-03-18', 'infaq', 'H', NULL, 150000.00, 'tunai', NULL, 'diterima', 1, '2026-03-18 16:47:36', '2026-03-18 16:47:36', NULL),
-(2, 'IS-2026-0002', 'KW/IS/2026/0002', '2026-03-18', 'infaq_shodaqoh', 'dasd', 'asd', 14567890.00, 'tunai', NULL, 'diterima', 1, '2026-03-18 17:01:26', '2026-03-18 17:23:38', NULL);
+INSERT INTO `infaq_shodaqoh` (`id`, `nomor_transaksi`, `no_kwitansi`, `tanggal_transaksi`, `jenis_dana`, `muzakki_kode`, `nama_donatur`, `no_hp`, `nominal_uang`, `metode_bayar`, `keterangan`, `status`, `created_by`, `created_at`, `updated_at`, `batch_id`) VALUES
+(1, 'IS-2026-0001', 'KW/IS/2026/0001', '2026-03-18', 'infaq', NULL, 'H', NULL, 150000.00, 'tunai', NULL, 'diterima', 1, '2026-03-18 16:47:36', '2026-03-18 16:47:36', NULL),
+(2, 'IS-2026-0002', 'KW/IS/2026/0002', '2026-03-18', 'infaq_shodaqoh', NULL, 'dasd', 'asd', 14567890.00, 'tunai', NULL, 'diterima', 1, '2026-03-18 17:01:26', '2026-03-18 17:23:38', NULL),
+(3, 'IS-2026-0003', 'KW-2026-0001', '0000-00-00', 'infaq_shodaqoh', 'MZK-2026-0001', 'heri', '', 147000.00, 'tunai', '', 'diterima', 1, '2026-03-18 21:49:03', '2026-03-18 21:49:03', 'BATCH-20260318204903-3193'),
+(4, 'IS-2026-0004', 'KW-2026-0002', '0000-00-00', 'infaq_shodaqoh', 'MZK-2026-0001', 'heri', '', 124000.00, 'tunai', '', 'diterima', 1, '2026-03-18 21:55:51', '2026-03-18 21:55:51', 'BATCH-20260318205551-9620');
 
 -- --------------------------------------------------------
 
@@ -364,7 +368,19 @@ CREATE TABLE IF NOT EXISTS `zakat_fitrah` (
   KEY `idx_fitrah_tanggal` (`tanggal_bayar`),
   KEY `idx_fitrah_tahun` (`tahun_masehi`),
   KEY `idx_fitrah_muzakki` (`muzakki_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `zakat_fitrah`
+--
+
+INSERT INTO `zakat_fitrah` (`id`, `nomor_transaksi`, `no_kwitansi`, `muzakki_id`, `tanggal_bayar`, `tahun_hijriah`, `tahun_masehi`, `jumlah_jiwa`, `metode_tunaikan`, `beras_kg`, `nominal_uang`, `metode_bayar`, `keterangan`, `status`, `created_by`, `created_at`, `updated_at`, `batch_id`) VALUES
+(1, 'ZF-2026-0001', 'KW-2026-0001', 1, '2026-03-18', NULL, '2026', 2, 'beras', 0.00, 150000.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:44:23', '2026-03-18 21:44:23', 'BATCH-20260318204423-8600'),
+(2, 'ZF-2026-0002', 'KW-2026-0002', 1, '2026-03-18', NULL, '2026', 2, 'beras', 15.00, 0.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:45:00', '2026-03-18 21:45:00', 'BATCH-20260318204500-4447'),
+(3, 'ZF-2026-0003', 'KW-2026-0003', 1, '2026-03-18', NULL, '2026', 2, 'uang', 0.00, 200000.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:47:18', '2026-03-18 21:47:18', 'BATCH-20260318204718-4482'),
+(4, 'ZF-2026-0004', 'KW-2026-0004', 1, '2026-03-18', NULL, '2026', 2, 'uang', 0.00, 15000000.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:49:03', '2026-03-18 21:49:03', 'BATCH-20260318204903-3193'),
+(5, 'ZF-2026-0005', 'KW-2026-0005', 1, '2026-03-18', NULL, '2026', 2, 'beras', 23.00, 0.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:55:17', '2026-03-18 21:55:17', 'BATCH-20260318205517-8148'),
+(6, 'ZF-2026-0006', 'KW-2026-0006', 1, '2026-03-18', NULL, '2026', 2, 'beras', 23.00, 0.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:55:51', '2026-03-18 21:55:51', 'BATCH-20260318205551-9620');
 
 -- --------------------------------------------------------
 
@@ -401,7 +417,15 @@ CREATE TABLE IF NOT EXISTS `zakat_mal` (
   KEY `idx_mal_tanggal` (`tanggal_hitung`),
   KEY `idx_mal_tahun` (`tahun_masehi`),
   KEY `idx_mal_muzakki` (`muzakki_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `zakat_mal`
+--
+
+INSERT INTO `zakat_mal` (`id`, `nomor_transaksi`, `no_kwitansi`, `muzakki_id`, `tanggal_hitung`, `tanggal_bayar`, `tahun_masehi`, `total_harta`, `total_hutang_jatuh_tempo`, `harta_bersih`, `nilai_nishab`, `persentase_zakat`, `total_zakat`, `metode_bayar`, `keterangan`, `status`, `created_by`, `created_at`, `updated_at`, `batch_id`) VALUES
+(1, 'ZM-2026-0001', 'KW-2026-0001', 1, '2026-03-18', '2026-03-18', '2026', 0.00, 0.00, 0.00, 0.00, 0.00, 150000.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:55:17', '2026-03-18 21:55:17', 'BATCH-20260318205517-8148'),
+(2, 'ZM-2026-0002', 'KW-2026-0002', 1, '2026-03-18', '2026-03-18', '2026', 0.00, 0.00, 0.00, 0.00, 0.00, 15000.00, 'tunai', '', 'lunas', 1, '2026-03-18 21:55:51', '2026-03-18 21:55:51', 'BATCH-20260318205551-9620');
 
 -- --------------------------------------------------------
 
@@ -432,6 +456,7 @@ CREATE TABLE IF NOT EXISTS `zakat_mal_detail` (
 -- Constraints for table `infaq_shodaqoh`
 --
 ALTER TABLE `infaq_shodaqoh`
+  ADD CONSTRAINT `fk_infaq_muzakki_kode` FOREIGN KEY (`muzakki_kode`) REFERENCES `muzakki` (`kode_muzakki`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_infaq_shodaqoh_user` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
