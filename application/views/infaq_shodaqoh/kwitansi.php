@@ -153,8 +153,12 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="pr-3">Nama Donatur</td>
-								<td>: <strong><?php echo html_escape($row->nama_donatur); ?></strong></td>
+								<td class="pr-3">Nama Donatur/Muzakki</td>
+								<td>:
+									<strong><?php echo html_escape($row->nama_muzakki ?? $row->nama_donatur); ?></strong>
+								</td>
+								</xai:function_call; <xai:function_call name="edit_file">
+								<parameter name="path">application/views/infaq_shodaqoh/kwitansi.php
 							</tr>
 							<tr>
 								<td class="pr-3">No. HP</td>
@@ -188,10 +192,12 @@
 
 				<div class="row mt-4">
 					<div class="col-6 text-left">
-						<div>Donatur,</div>
+						<div>Donatur/Muzakki,</div>
 						<div class="sign-space" style="height:40px"></div>
-						<div><strong>(<?php echo html_escape($row->nama_donatur); ?>)</strong></div>
+						<div><strong>(<?php echo html_escape($row->nama_muzakki ?? $row->nama_donatur); ?>)</strong>
+						</div>
 					</div>
+
 					<div class="col-6 text-right">
 						<div>Penerima,</div>
 						<div class="sign-space" style="height:40px"></div>

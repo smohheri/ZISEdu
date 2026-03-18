@@ -9,6 +9,7 @@ class Transaksi_unified extends CI_Controller
 		$this->load->model('Zakat_fitrah_model', 'zakat_fitrah');
 		$this->load->model('Zakat_mal_model', 'zakat_mal');
 		$this->load->model('Infaq_shodaqoh_model', 'infaq_shodaqoh');
+		$this->load->model('Muzakki_model', 'muzakki');
 		$this->_require_login();
 	}
 
@@ -177,11 +178,17 @@ class Transaksi_unified extends CI_Controller
 
 	private function _build_infaq_payload($nomor, $batch_id)
 	{
+		$muzakki_id = (int) $this->input->post('muzakki_id');
+		$muzakki = $this->muzakki->get_by_id($muzakki_id);
+		$muzakki_kode = $muzakki ? $muzakki->kode_muzakki : NULL;
+		$nama_muzakki = $muzakki ? $muzakki->nama : '';
+
 		return array(
 			'nomor_transaksi' => $nomor,
 			'tanggal_transaksi' => $this->input->post('tanggal_transaksi_infaq'),
 			'jenis_dana' => $this->input->post('jenis_dana_infaq'),
-			'nama_donatur' => $this->input->post('nama_donatur_infaq'),
+			'muzakki_kode' => $muzakki_kode,
+			'nama_donatur' => $nama_muzakki,
 			'no_hp' => $this->input->post('no_hp_infaq'),
 			'nominal_uang' => $this->input->post('nominal_uang_infaq'),
 			'metode_bayar' => $this->input->post('metode_bayar_infaq'),

@@ -128,41 +128,43 @@
 									echo html_escape($jenisLabels[$row->jenis_dana] ?? ucfirst($row->jenis_dana));
 									?>
 								</td>
-								<td><?php echo html_escape($row->nama_donatur); ?></td>
-								<td>Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></td>
-								<td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
-								<td>
-									<?php if ($row->status === 'diterima'): ?>
-										<span class="badge badge-success">Diterima</span>
-									<?php elseif ($row->status === 'draft'): ?>
-										<span class="badge badge-warning">Draft</span>
-									<?php else: ?>
-										<span class="badge badge-danger">Batal</span>
-									<?php endif; ?>
-								</td>
-								<td class="text-center">
-									<div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-										<a class="btn btn-success" target="_blank"
-											href="<?php echo site_url('infaq_shodaqoh/kwitansi/' . $row->id); ?>"
-											title="Kwitansi">
-											<i class="fas fa-print"></i>
-										</a>
-										<a class="btn btn-danger" target="_blank"
-											href="<?php echo site_url('infaq_shodaqoh/export_pdf/' . $row->id); ?>"
-											title="Export PDF">
-											<i class="fas fa-file-pdf"></i>
-										</a>
-										<a class="btn btn-warning"
-											href="<?php echo site_url('infaq_shodaqoh/edit/' . $row->id); ?>" title="Edit">
-											<i class="fas fa-edit"></i>
-										</a>
-										<a class="btn btn-danger"
-											href="<?php echo site_url('infaq_shodaqoh/delete/' . $row->id); ?>" title="Hapus"
-											onclick="return confirm('Hapus data?')">
-											<i class="fas fa-trash"></i>
-										</a>
-									</div>
-								</td>
+								<td><?php echo html_escape($row->nama_muzakki ?: $row->nama_donatur); ?></td>
+								</xai:function_call; <xai:function_call name="edit_file">
+								<parameter name="path">application/views/infaq_shodaqoh/kwitansi.php
+									<td>Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></td>
+									<td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
+									<td>
+										<?php if ($row->status === 'diterima'): ?>
+											<span class="badge badge-success">Diterima</span>
+										<?php elseif ($row->status === 'draft'): ?>
+											<span class="badge badge-warning">Draft</span>
+										<?php else: ?>
+											<span class="badge badge-danger">Batal</span>
+										<?php endif; ?>
+									</td>
+									<td class="text-center">
+										<div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+											<a class="btn btn-success" target="_blank"
+												href="<?php echo site_url('infaq_shodaqoh/kwitansi/' . $row->id); ?>"
+												title="Kwitansi">
+												<i class="fas fa-print"></i>
+											</a>
+											<a class="btn btn-danger" target="_blank"
+												href="<?php echo site_url('infaq_shodaqoh/export_pdf/' . $row->id); ?>"
+												title="Export PDF">
+												<i class="fas fa-file-pdf"></i>
+											</a>
+											<a class="btn btn-warning"
+												href="<?php echo site_url('infaq_shodaqoh/edit/' . $row->id); ?>" title="Edit">
+												<i class="fas fa-edit"></i>
+											</a>
+											<a class="btn btn-danger"
+												href="<?php echo site_url('infaq_shodaqoh/delete/' . $row->id); ?>"
+												title="Hapus" onclick="return confirm('Hapus data?')">
+												<i class="fas fa-trash"></i>
+											</a>
+										</div>
+									</td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else: ?>

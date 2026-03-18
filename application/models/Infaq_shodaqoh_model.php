@@ -5,6 +5,14 @@ class Infaq_shodaqoh_model extends CI_Model
 {
 	protected $table = 'infaq_shodaqoh';
 
+	private function _base_query()
+	{
+		return $this->db
+			->select('is.*, m.kode_muzakki, m.nama AS nama_muzakki')
+			->from($this->table . ' is')
+			->join('muzakki m', 'm.kode_muzakki = is.muzakki_kode', 'left');
+	}
+
 	private function _apply_search($search = '')
 	{
 		$search = trim((string) $search);
@@ -13,10 +21,11 @@ class Infaq_shodaqoh_model extends CI_Model
 		}
 
 		$this->db->group_start()
-			->like('nomor_transaksi', $search)
-			->or_like('nama_donatur', $search)
-			->or_like('jenis_dana', $search)
-			->or_like('status', $search)
+			->like('is.nomor_transaksi', $search)
+			->or_like('m.nama', $search)
+			->or_like('is.nama_donatur', $search)
+			->or_like('is.jenis_dana', $search)
+			->or_like('is.status', $search)
 			->group_end();
 	}
 
@@ -27,17 +36,17 @@ class Infaq_shodaqoh_model extends CI_Model
 
 	public function count_filtered($search = '')
 	{
-		$this->db->from($this->table);
+		$this->_base_query();
 		$this->_apply_search($search);
 		return (int) $this->db->count_all_results();
 	}
 
 	public function get_paginated($limit, $offset, $search = '')
 	{
-		$this->db->from($this->table);
+		$this->_base_query();
 		$this->_apply_search($search);
 		return $this->db
-			->order_by('id', 'DESC')
+			->order_by('is.id', 'DESC')
 			->limit((int) $limit, (int) $offset)
 			->get()
 			->result();
@@ -96,9 +105,9 @@ class Infaq_shodaqoh_model extends CI_Model
 
 	public function get_by_id($id)
 	{
-		return $this->db
-			->where('id', (int) $id)
-			->get($this->table)
+		return $this->_base_query()
+			->where('is.id', (int) $id)
+			->get()
 			->row();
 	}
 
@@ -160,9 +169,9 @@ class Infaq_shodaqoh_model extends CI_Model
 
 	public function get_by_batch($batch_id)
 	{
-		return $this->db
-			->where('batch_id', $batch_id)
-			->get($this->table)
+		return $this->_base_query()
+			->where('is.batch_id', $batch_id)
+			->get()
 			->row();
 	}
 

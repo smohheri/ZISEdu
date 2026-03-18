@@ -289,7 +289,7 @@
 				<div class="card-body">
 					<input type="hidden" name="tanggal_transaksi_infaq" value="<?php echo date('Y-m-d'); ?>">
 					<div class="row">
-						<div class="col-md-4 form-group">
+						<div class="col-md-6 form-group">
 							<label>Jenis Dana</label>
 							<select name="jenis_dana_infaq" class="form-control">
 								<option value="infaq">Infaq</option>
@@ -297,12 +297,8 @@
 								<option value="infaq_shodaqoh">Infaq & Shodaqoh</option>
 							</select>
 						</div>
-						<div class="col-md-4 form-group">
-							<label>Nama Donatur <span class="text-danger">*</span></label>
-							<input type="text" name="nama_donatur_infaq" class="form-control">
-						</div>
-						<div class="col-md-4 form-group">
-							<label>No HP</label>
+						<div class="col-md-6 form-group">
+							<label>No HP (Donatur)</label>
 							<input type="text" name="no_hp_infaq" class="form-control">
 						</div>
 					</div>
@@ -359,10 +355,12 @@
 		function loadMuzakkiInfo() {
 			const muzakkiEl = $('#muzakki_id');
 			const jumlahJiwaEl = $('#jumlah_jiwa_fitrah');
+			const namaDonaturInfaqEl = document.getElementById('nama_donatur_infaq');
 			const muzakkiId = muzakkiEl.val();
 
 			if (!muzakkiId) {
 				jumlahJiwaEl.val('').prop('readonly', false);
+				if (namaDonaturInfaqEl) namaDonaturInfaqEl.value = '';
 				return;
 			}
 
@@ -379,6 +377,7 @@
 					if (data.error) {
 						alert('Error: ' + data.error);
 						jumlahJiwaEl.val('').prop('readonly', false);
+						if (namaDonaturInfaqEl) namaDonaturInfaqEl.value = '';
 						return;
 					}
 					if (data.jenis_muzakki && data.jenis_muzakki !== 'individu') {
@@ -386,11 +385,13 @@
 					} else {
 						jumlahJiwaEl.val('').prop('readonly', false);
 					}
+					if (namaDonaturInfaqEl) namaDonaturInfaqEl.value = data.nama || '';
 				})
 				.catch(error => {
 					console.error('Error:', error);
 					alert('Gagal load data muzakki: ' + error.message);
 					jumlahJiwaEl.val('').prop('readonly', false);
+					if (namaDonaturInfaqEl) namaDonaturInfaqEl.value = '';
 				});
 		}
 

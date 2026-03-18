@@ -119,7 +119,9 @@
 							<td><strong>No. Kwitansi:</strong> <?php echo html_escape($infaq->no_kwitansi ?? '-'); ?></td>
 						</tr>
 						<tr>
-							<td><strong>Donatur:</strong> <?php echo html_escape($infaq->nama_donatur); ?></td>
+							<td><strong>Donatur/Muzakki:</strong>
+								<?php echo html_escape($infaq->nama_muzakki ?? $infaq->nama_donatur); ?></td>
+
 						</tr>
 						<tr>
 							<td><strong>Total:</strong> Rp <?php echo number_format($infaq->nominal_uang, 0, ',', '.'); ?>
