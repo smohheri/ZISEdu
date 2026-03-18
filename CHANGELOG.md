@@ -4,33 +4,18 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
-<<<<<<< HEAD
-## [Unreleased]
+## [v1.1.7] - 2026-03-19
 
-### 2026-03-18
+Rilis perbaikan dan penyempurnaan (*bugfixes*) pasca re-strukturisasi MVC baru, khususnya untuk fungsionalitas Kwitansi, Transaksi Terpadu, dan modul Infaq & Shodaqoh.
 
-- Fix: `Transaksi_unified::store()` POST method checks and validation rules.
-- Fix: Use shared `Tanggal Bayar` for Zakat Fitrah and require it when Fitrah included.
-- Change: Infaq donor now sourced from `muzakki` dropdown (`muzakki_id`).
-- Fix: Avoid inserting unknown DB columns (conditionally include `mode_perhitungan`).
-- Cleanup: Removed development debug helpers, debug routes, and temporary debug log files.
-- Add: Minimal `kwitansi` view and form improvements to prevent redirect 404s during testing.
-
-
-## [v1.1.6] - $(date +%Y-%m-%d)
-
-Optimasi layout form Transaksi Terpadu (Zakat Mal section).
+### Added
+- Penambahan opsi "Infaq & Shodaqoh" pada form *dropdown* "Jenis Dana" di fitur penyetoran Infaq/Shodaqoh dalam Transaksi Terpadu.
 
 ### Fixed
-- Perbaikan layout Row 1 Zakat Mal: col-md-6 (Tanggal Hitung sync dari Umum) + col-md-6 (Mode Perhitungan)
-- Penghapusan field Status duplikat (sudah ada di Data Umum shared)
-- Penghapusan field Metode Bayar visual (sudah ada di Data Umum)
-- Balance perfect 12-column Bootstrap grid
-- Tanggal Hitung readonly + auto-sync via JS dari shared_tanggal_bayar
+- Menangani *ParseError syntax error* dan residu *merge conflict* pada `infaq_shodaqoh/index.php`, `kwitansi.php`, `kwitansi_pdf.php`, dan file *controller* `Infaq_shodaqoh.php`.
+- Memperbaiki isu *Database Error 1054: Unknown column 'is.muzakki_kode'* pada `Infaq_shodaqoh_model.php` dengan menghapus paksaan relasi `JOIN` yang tidak relevan dengan struktur tabel baru.
+- Menyelesaikan ratusan _lint errors_ terkait *Trying to get property of non-object of type null* pada format kwitansi cetak Modul Transaksi Terpadu. Pendekatan sekarang menggunakan query model tunggal `get_kwitansi_data` yang konsisten dengan pola MVC agar data tersuplai dengan andal.
 
-### Changed
-- Row 1 layout lebih rapi dan minimalis sesuai feedback user
-=======
 ## [v1.1.6] - 2026-03-19
 
 Penyempurnaan tata letak Dashboard, perbaikan struktur MVC pada modul Transaksi Terpadu, dan penambahan informasi beras pada infobox.
@@ -43,7 +28,7 @@ Penyempurnaan tata letak Dashboard, perbaikan struktur MVC pada modul Transaksi 
 - Refaktor arsitektur pada controller `Transaksi_terpadu.php`. Query statistik yang sebelumnya hardcode, kini dipindahkan ke model `Transaksi_terpadu_model.php` via method `get_stats()` (Pola MVC).
 - Ubah rentang peramalan/data pada grafik (chart) Dashboard dari akumulasi 6 Bulan menjadi harian (7 Hari Terakhir) via `Dashboard_model->get_daily_chart_data()`.
 - Reordering (penataan ulang) layout widget Dashboard: Penempatan *card* Zakat Fitrah Terbaru disejajarkan dengan Infaq & Shodaqoh Terbaru (1 baris), dan *card* Ringkasan Penyaluran disejajarkan dengan Penyaluran Terbaru (1 baris).
->>>>>>> 9e961c5 (Release v1.1.6: Dashboard layout and MVC refactor)
+
 
 ## [v1.1.5] - 2026-03-16
 

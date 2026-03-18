@@ -173,6 +173,7 @@ $CI =& get_instance();
                     <select name="infaq_jenis_dana" class="form-control">
                         <option value="infaq">Infaq</option>
                         <option value="shodaqoh">Shodaqoh</option>
+                        <option value="infaq_shodaqoh">Infaq & Shodaqoh</option>
                     </select>
                 </div>
                 <div class="col-md-4 form-group">

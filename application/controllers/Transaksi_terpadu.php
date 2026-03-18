@@ -270,22 +270,14 @@ class Transaksi_terpadu extends CI_Controller
 
     public function kwitansi($id = NULL)
     {
-        $row = $this->transaksi_terpadu->get_by_id($id);
+        $row = $this->transaksi_terpadu->get_kwitansi_data($id);
         if (!$row) {
             show_404();
         }
 
-        $fitrahId = (int) $row->fitrah_id;
-        $malId = (int) $row->mal_id;
-        $infaqId = (int) $row->infaq_id;
-
-        if ($fitrahId <= 0 && $malId <= 0 && $infaqId <= 0) {
+        if ((int)$row->fitrah_id <= 0 && (int)$row->mal_id <= 0 && (int)$row->infaq_id <= 0) {
             show_404();
         }
-
-        $row_fitrah = $fitrahId > 0 ? $this->zakat_fitrah->get_receipt_by_id($fitrahId) : NULL;
-        $row_mal = $malId > 0 ? $this->zakat_mal->get_receipt_by_id($malId) : NULL;
-        $row_infaq = $infaqId > 0 ? $this->infaq_shodaqoh->get_by_id($infaqId) : NULL;
 
         $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
         $lembaga = $this->pengaturan_aplikasi->get_first();
@@ -299,23 +291,17 @@ class Transaksi_terpadu extends CI_Controller
 
         // Try to get proper Muzakki Name
         $namaMuzakkiTtd = $row->nama_muzakki;
-        if (empty($namaMuzakkiTtd) && $row_infaq && !empty($row_infaq->nama_donatur)) {
-            $namaMuzakkiTtd = $row_infaq->nama_donatur;
+        if (empty($namaMuzakkiTtd) && $row->infaq_id > 0 && !empty($row->infaq_donatur)) {
+            $namaMuzakkiTtd = $row->infaq_donatur;
         }
 
         $data = array(
             'page_title' => 'Kwitansi Terpadu',
             'row' => $row,
-            'row_fitrah' => $row_fitrah,
-            'row_mal' => $row_mal,
-            'row_infaq' => $row_infaq,
             'lembaga' => $lembaga,
             'no_kwitansi_terpadu' => $noKwitansiTerpadu,
             'nama_penerima' => $namaPenerima,
-            'nama_muzakki_ttd' => $namaMuzakkiTtd,
-            'fitrah_id' => $fitrahId,
-            'mal_id' => $malId,
-            'infaq_id' => $infaqId
+            'nama_muzakki_ttd' => $namaMuzakkiTtd
         );
 
         $this->load->view('transaksi_terpadu/kwitansi', $data);
@@ -323,22 +309,14 @@ class Transaksi_terpadu extends CI_Controller
 
     public function export_pdf($id = NULL)
     {
-        $row = $this->transaksi_terpadu->get_by_id($id);
+        $row = $this->transaksi_terpadu->get_kwitansi_data($id);
         if (!$row) {
             show_404();
         }
 
-        $fitrahId = (int) $row->fitrah_id;
-        $malId = (int) $row->mal_id;
-        $infaqId = (int) $row->infaq_id;
-
-        if ($fitrahId <= 0 && $malId <= 0 && $infaqId <= 0) {
+        if ((int)$row->fitrah_id <= 0 && (int)$row->mal_id <= 0 && (int)$row->infaq_id <= 0) {
             show_404();
         }
-
-        $row_fitrah = $fitrahId > 0 ? $this->zakat_fitrah->get_receipt_by_id($fitrahId) : NULL;
-        $row_mal = $malId > 0 ? $this->zakat_mal->get_receipt_by_id($malId) : NULL;
-        $row_infaq = $infaqId > 0 ? $this->infaq_shodaqoh->get_by_id($infaqId) : NULL;
 
         $this->load->model('Pengaturan_aplikasi_model', 'pengaturan_aplikasi');
         $lembaga = $this->pengaturan_aplikasi->get_first();
@@ -347,8 +325,8 @@ class Transaksi_terpadu extends CI_Controller
 
         // Try to get proper Muzakki Name
         $namaMuzakkiTtd = $row->nama_muzakki;
-        if (empty($namaMuzakkiTtd) && $row_infaq && !empty($row_infaq->nama_donatur)) {
-            $namaMuzakkiTtd = $row_infaq->nama_donatur;
+        if (empty($namaMuzakkiTtd) && $row->infaq_id > 0 && !empty($row->infaq_donatur)) {
+            $namaMuzakkiTtd = $row->infaq_donatur;
         }
 
         $namaPenerima = trim((string) $this->session->userdata('nama_lengkap'));
@@ -366,9 +344,6 @@ class Transaksi_terpadu extends CI_Controller
 
         $viewData = array(
             'row' => $row,
-            'row_fitrah' => $row_fitrah,
-            'row_mal' => $row_mal,
-            'row_infaq' => $row_infaq,
             'lembaga' => $lembaga,
             'no_kwitansi_terpadu' => $noKwitansiTerpadu,
             'nama_penerima' => $namaPenerima,

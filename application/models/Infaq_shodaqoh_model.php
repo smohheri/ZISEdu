@@ -8,9 +8,8 @@ class Infaq_shodaqoh_model extends CI_Model
 	private function _base_query()
 	{
 		return $this->db
-			->select('is.*, m.kode_muzakki, m.nama AS nama_muzakki')
-			->from($this->table . ' is')
-			->join('muzakki m', 'm.kode_muzakki = is.muzakki_kode', 'left');
+			->select('is.*')
+			->from($this->table . ' is');
 	}
 
 	private function _apply_search($search = '')
@@ -22,7 +21,6 @@ class Infaq_shodaqoh_model extends CI_Model
 
 		$this->db->group_start()
 			->like('is.nomor_transaksi', $search)
-			->or_like('m.nama', $search)
 			->or_like('is.nama_donatur', $search)
 			->or_like('is.jenis_dana', $search)
 			->or_like('is.status', $search)

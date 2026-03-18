@@ -74,42 +74,42 @@
                     $total_beras = 0;
                     $total_uang = 0;
                     
-                    if($row_fitrah): 
-                        $total_beras += (float)$row_fitrah->beras_kg;
-                        $total_uang += (float)$row_fitrah->nominal_uang;
+                    if($row->fitrah_id > 0): 
+                        $total_beras += (float)$row->fitrah_beras;
+                        $total_uang += (float)$row->fitrah_uang;
                     ?>
                     <tr>
                         <td>Zakat Fitrah</td>
-                        <td><?php echo html_escape($row_fitrah->nomor_transaksi); ?></td>
-                        <td><?php echo (int)$row_fitrah->jumlah_jiwa; ?> jiwa. <?php echo html_escape($row_fitrah->keterangan); ?></td>
-                        <td style="text-align: right;"><?php echo number_format((float)$row_fitrah->beras_kg, 2, ',', '.'); ?></td>
-                        <td style="text-align: right;"><?php echo number_format((float)$row_fitrah->nominal_uang, 0, ',', '.'); ?></td>
+                        <td><?php echo html_escape($row->fitrah_nomor); ?></td>
+                        <td><?php echo (int)$row->fitrah_jiwa; ?> jiwa. <?php echo html_escape($row->fitrah_ket); ?></td>
+                        <td style="text-align: right;"><?php echo number_format((float)$row->fitrah_beras, 2, ',', '.'); ?></td>
+                        <td style="text-align: right;"><?php echo number_format((float)$row->fitrah_uang, 0, ',', '.'); ?></td>
                     </tr>
                     <?php endif; ?>
 
                     <?php 
-                    if($row_mal): 
-                        $total_uang += (float)$row_mal->total_zakat;
+                    if($row->mal_id > 0): 
+                        $total_uang += (float)$row->mal_uang;
                     ?>
                     <tr>
                         <td>Zakat Mal</td>
-                        <td><?php echo html_escape($row_mal->nomor_transaksi); ?></td>
-                        <td><?php echo html_escape($row_mal->keterangan); ?></td>
+                        <td><?php echo html_escape($row->mal_nomor); ?></td>
+                        <td><?php echo html_escape($row->mal_ket); ?></td>
                         <td style="text-align: right;">0,00</td>
-                        <td style="text-align: right;"><?php echo number_format((float)$row_mal->total_zakat, 0, ',', '.'); ?></td>
+                        <td style="text-align: right;"><?php echo number_format((float)$row->mal_uang, 0, ',', '.'); ?></td>
                     </tr>
                     <?php endif; ?>
 
                     <?php 
-                    if($row_infaq): 
-                        $total_uang += (float)$row_infaq->nominal_uang;
+                    if($row->infaq_id > 0): 
+                        $total_uang += (float)$row->infaq_uang;
                     ?>
                     <tr>
                         <td>Infaq / Shodaqoh</td>
-                        <td><?php echo html_escape($row_infaq->nomor_transaksi); ?></td>
-                        <td><?php echo ucfirst(html_escape($row_infaq->jenis_dana)); ?>. <?php echo html_escape($row_infaq->keterangan); ?></td>
+                        <td><?php echo html_escape($row->infaq_nomor); ?></td>
+                        <td><?php echo ucfirst(html_escape($row->infaq_jenis)); ?>. <?php echo html_escape($row->infaq_ket); ?></td>
                         <td style="text-align: right;">0,00</td>
-                        <td style="text-align: right;"><?php echo number_format((float)$row_infaq->nominal_uang, 0, ',', '.'); ?></td>
+                        <td style="text-align: right;"><?php echo number_format((float)$row->infaq_uang, 0, ',', '.'); ?></td>
                     </tr>
                     <?php endif; ?>
                 </tbody>

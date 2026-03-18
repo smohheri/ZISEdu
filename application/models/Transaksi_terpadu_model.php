@@ -55,6 +55,23 @@ class Transaksi_terpadu_model extends CI_Model
             ->row();
     }
 
+    public function get_kwitansi_data($id)
+    {
+        return $this->db
+            ->select('t.*, m.nama as nama_muzakki, 
+                      f.nomor_transaksi as fitrah_nomor, f.jumlah_jiwa as fitrah_jiwa, f.keterangan as fitrah_ket, f.beras_kg as fitrah_beras, f.nominal_uang as fitrah_uang,
+                      mal.nomor_transaksi as mal_nomor, mal.keterangan as mal_ket, mal.total_zakat as mal_uang,
+                      i.nomor_transaksi as infaq_nomor, i.jenis_dana as infaq_jenis, i.keterangan as infaq_ket, i.nominal_uang as infaq_uang, i.nama_donatur as infaq_donatur')
+            ->from($this->table . ' t')
+            ->join('muzakki m', 'm.id = t.muzakki_id', 'left')
+            ->join('zakat_fitrah f', 'f.id = t.fitrah_id', 'left')
+            ->join('zakat_mal mal', 'mal.id = t.mal_id', 'left')
+            ->join('infaq_shodaqoh i', 'i.id = t.infaq_id', 'left')
+            ->where('t.id', (int) $id)
+            ->get()
+            ->row();
+    }
+
     public function insert($data)
     {
         return $this->db->insert($this->table, $data);
