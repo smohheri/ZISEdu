@@ -50,7 +50,9 @@
     <div class="col-lg-3 col-sm-6 col-12">
         <div class="small-box bg-gradient-warning">
             <div class="inner">
-                <h3>Rp <?php echo number_format((float) (isset($stats['total_nominal']) ? $stats['total_nominal'] : 0), 0, ',', '.'); ?></h3>
+                <h3>Rp
+                    <?php echo number_format((float) (isset($stats['total_nominal']) ? $stats['total_nominal'] : 0), 0, ',', '.'); ?>
+                </h3>
                 <p>Total Diterima</p>
             </div>
             <div class="icon">
@@ -77,7 +79,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
                         </div>
-                        <input type="text" name="q" class="form-control" placeholder="Cari nomor, donatur, jenis, status..."
+                        <input type="text" name="q" class="form-control"
+                            placeholder="Cari nomor, donatur, jenis, status..."
                             value="<?php echo html_escape(isset($search) ? $search : ''); ?>">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">
@@ -93,61 +96,73 @@
         </form>
 
         <div class="table-responsive">
-        <table class="table table-sm table-bordered table-striped table-hover text-nowrap">
-            <thead>
-                <tr>
-                    <th width="50">No</th>
-                    <th>No Transaksi</th>
-                    <th>Tanggal</th>
-                    <th>Jenis Dana</th>
-                    <th>Donatur</th>
-                    <th>Nominal</th>
-                    <th>Metode</th>
-                    <th>Status</th>
-                    <th width="120">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($rows)): ?>
-                    <?php $no = isset($paging['offset']) ? ((int) $paging['offset'] + 1) : 1; ?>
-                    <?php foreach ($rows as $row): ?>
-                        <tr>
-                            <td><?php echo $no++; ?></td>
-                            <td><?php echo html_escape($row->nomor_transaksi); ?></td>
-                            <td><?php echo html_escape(indo_date($row->tanggal_transaksi)); ?></td>
-                            <td><?php echo ucfirst(html_escape($row->jenis_dana)); ?></td>
-                            <td><?php echo html_escape($row->nama_donatur); ?></td>
-                            <td>Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></td>
-                            <td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
-                            <td>
-                                <?php if ($row->status === 'diterima'): ?>
-                                    <span class="badge badge-success">Diterima</span>
-                                <?php elseif ($row->status === 'draft'): ?>
-                                    <span class="badge badge-warning">Draft</span>
-                                <?php else: ?>
-                                    <span class="badge badge-danger">Batal</span>
-                                <?php endif; ?>
-                            </td>
-                            <td class="text-center">
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-                                    <a class="btn btn-warning" href="<?php echo site_url('infaq_shodaqoh/edit/' . $row->id); ?>" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a class="btn btn-danger" href="<?php echo site_url('infaq_shodaqoh/delete/' . $row->id); ?>"
-                                        title="Hapus" onclick="return confirm('Hapus data?')">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+            <table class="table table-sm table-bordered table-striped table-hover text-nowrap">
+                <thead>
                     <tr>
-                        <td colspan="9" class="text-center text-muted">Belum ada transaksi infaq/shodaqoh.</td>
+                        <th width="50">No</th>
+                        <th>No Transaksi</th>
+                        <th>Tanggal</th>
+                        <th>Jenis Dana</th>
+                        <th>Donatur</th>
+                        <th>Nominal</th>
+                        <th>Metode</th>
+                        <th>Status</th>
+                        <th width="120">Aksi</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($rows)): ?>
+                        <?php $no = isset($paging['offset']) ? ((int) $paging['offset'] + 1) : 1; ?>
+                        <?php foreach ($rows as $row): ?>
+                            <tr>
+                                <td><?php echo $no++; ?></td>
+                                <td><?php echo html_escape($row->nomor_transaksi); ?></td>
+                                <td><?php echo html_escape(indo_date($row->tanggal_transaksi)); ?></td>
+                                <td><?php echo ucfirst(html_escape($row->jenis_dana)); ?></td>
+                                <td><?php echo html_escape($row->nama_donatur); ?></td>
+                                <td>Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?></td>
+                                <td><?php echo strtoupper(html_escape($row->metode_bayar)); ?></td>
+                                <td>
+                                    <?php if ($row->status === 'diterima'): ?>
+                                        <span class="badge badge-success">Diterima</span>
+                                    <?php elseif ($row->status === 'draft'): ?>
+                                        <span class="badge badge-warning">Draft</span>
+                                    <?php else: ?>
+                                        <span class="badge badge-danger">Batal</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                                        <a class="btn btn-success" target="_blank"
+                                            href="<?php echo site_url('infaq_shodaqoh/kwitansi/' . $row->id); ?>"
+                                            title="Kwitansi">
+                                            <i class="fas fa-print"></i>
+                                        </a>
+                                        <a class="btn btn-danger" target="_blank"
+                                            href="<?php echo site_url('infaq_shodaqoh/export_pdf/' . $row->id); ?>"
+                                            title="Export PDF">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                        <a class="btn btn-warning"
+                                            href="<?php echo site_url('infaq_shodaqoh/edit/' . $row->id); ?>" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger"
+                                            href="<?php echo site_url('infaq_shodaqoh/delete/' . $row->id); ?>" title="Hapus"
+                                            onclick="return confirm('Hapus data?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">Belum ada transaksi infaq/shodaqoh.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-2">

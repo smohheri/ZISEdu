@@ -37,6 +37,8 @@
                     <option value="infaq" <?php echo ($jenisDana === 'infaq') ? 'selected' : ''; ?>>Infaq</option>
                     <option value="shodaqoh" <?php echo ($jenisDana === 'shodaqoh') ? 'selected' : ''; ?>>Shodaqoh
                     </option>
+                    <option value="infaq_shodaqoh" <?php echo ($jenisDana === 'infaq_shodaqoh') ? 'selected' : ''; ?>>
+                        Infaq &amp; Shodaqoh</option>
                 </select>
             </div>
         </div>
