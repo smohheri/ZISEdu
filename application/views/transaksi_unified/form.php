@@ -337,6 +337,7 @@
 		<button type="submit" class="btn btn-primary btn-lg">
 			<i class="fas fa-save"></i> Simpan & Cetak Kwitansi Gabungan
 		</button>
+		<button type="button" id="btn-fallback-index" class="btn btn-warning">Kirim (paksa index.php)</button>
 		<a href="<?php echo site_url('dashboard'); ?>" class="btn btn-secondary">Kembali</a>
 	</div>
 </div>
@@ -543,6 +544,14 @@
 
 		$(document).on('click', '.remove-detail', function () {
 			$(this).closest('tr').remove();
+		});
+
+		// Fallback button: force form to post via index.php when rewrite not available
+		$('#btn-fallback-index').on('click', function () {
+			var f = $('form').first();
+			if (!f || f.length === 0) return;
+			f.attr('action', '<?php echo site_url("index.php/transaksi_unified/store"); ?>');
+			f.submit();
 		});
 	});
 </script>

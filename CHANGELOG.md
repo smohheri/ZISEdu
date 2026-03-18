@@ -4,6 +4,18 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+## [Unreleased]
+
+### 2026-03-18
+
+- Fix: `Transaksi_unified::store()` POST method checks and validation rules.
+- Fix: Use shared `Tanggal Bayar` for Zakat Fitrah and require it when Fitrah included.
+- Change: Infaq donor now sourced from `muzakki` dropdown (`muzakki_id`).
+- Fix: Avoid inserting unknown DB columns (conditionally include `mode_perhitungan`).
+- Cleanup: Removed development debug helpers, debug routes, and temporary debug log files.
+- Add: Minimal `kwitansi` view and form improvements to prevent redirect 404s during testing.
+
+
 ## [v1.1.6] - $(date +%Y-%m-%d)
 
 Optimasi layout form Transaksi Terpadu (Zakat Mal section).

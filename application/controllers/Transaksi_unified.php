@@ -31,7 +31,8 @@ class Transaksi_unified extends CI_Controller
 
 	public function store()
 	{
-		if ($this->input->method() !== 'POST') {
+		// Require POST for store()
+		if (strtolower($this->input->method()) !== 'post') {
 			show_404();
 		}
 
@@ -104,6 +105,8 @@ class Transaksi_unified extends CI_Controller
 		}
 	}
 
+
+
 	public function kwitansi($batch_id = NULL)
 	{
 		if (empty($batch_id)) {
@@ -134,10 +137,21 @@ class Transaksi_unified extends CI_Controller
 	// Placeholder payload builders - will refine after model updates
 	private function _build_zakat_fitrah_payload($nomor, $batch_id)
 	{
+		// Determine tahun_masehi: prefer explicit post, fallback to tanggal_bayar year, then current year
+		$tahun = $this->input->post('tahun_masehi') ?: $this->input->post('tahun_masehi_fitrah');
+		if (empty($tahun)) {
+			$tanggal = $this->input->post('shared_tanggal_bayar') ?: $this->input->post('tanggal_bayar_fitrah');
+			if (!empty($tanggal)) {
+				$tahun = date('Y', strtotime($tanggal));
+			} else {
+				$tahun = date('Y');
+			}
+		}
+
 		return array(
 			'nomor_transaksi' => $nomor,
 			'tanggal_bayar' => $this->input->post('shared_tanggal_bayar') ?: $this->input->post('tanggal_bayar_fitrah'),
-			'tahun_masehi' => $this->input->post('tahun_masehi') ?: $this->input->post('tahun_masehi_fitrah'),
+			'tahun_masehi' => $tahun,
 			'muzakki_id' => $this->input->post('muzakki_id'),
 			'jumlah_jiwa' => $this->input->post('jumlah_jiwa_fitrah'),
 			'metode_tunaikan' => $this->input->post('metode_tunaikan_fitrah'),
@@ -159,7 +173,6 @@ class Transaksi_unified extends CI_Controller
 			'tanggal_bayar' => $this->input->post('shared_tanggal_bayar') ?: $this->input->post('tanggal_bayar_mal'),
 			'muzakki_id' => $this->input->post('muzakki_id'),
 			'tahun_masehi' => $this->input->post('tahun_masehi') ?: $this->input->post('tahun_masehi_mal'),
-			'mode_perhitungan' => $this->input->post('mode_perhitungan_mal'),
 			'metode_bayar' => $this->input->post('shared_metode_bayar') ?: $this->input->post('metode_bayar_mal'),
 			'total_harta' => $this->input->post('total_harta_mal'),
 			'total_hutang_jatuh_tempo' => $this->input->post('total_hutang_jatuh_tempo_mal'),
@@ -172,6 +185,12 @@ class Transaksi_unified extends CI_Controller
 			'batch_id' => $batch_id,
 			'created_by' => $this->session->userdata('user_id'),
 		);
+
+		// Some installations may not have the `mode_perhitungan` column in `zakat_mal`.
+		// Only include it if the DB table has that field to avoid "Unknown column" errors.
+		if ($this->db->field_exists('mode_perhitungan', 'zakat_mal')) {
+			$payload['mode_perhitungan'] = $this->input->post('mode_perhitungan_mal');
+		}
 		// Detail later in store after insert main
 		return $payload;
 	}
@@ -207,7 +226,9 @@ class Transaksi_unified extends CI_Controller
 		$this->form_validation->set_rules('include_infaq', 'Infaq Shodaqoh', 'integer');
 
 		if ($this->input->post('include_fitrah')) {
-			$this->form_validation->set_rules('tanggal_bayar_fitrah', 'Tanggal Bayar Fitrah', 'required');
+			// Use shared/general payment date for Fitrah (data umum)
+			// Require shared_tanggal_bayar so Tanggal Bayar Fitrah comes from data umum
+			$this->form_validation->set_rules('shared_tanggal_bayar', 'Tanggal Bayar (Umum)', 'required');
 			$this->form_validation->set_rules('jumlah_jiwa_fitrah', 'Jumlah Jiwa Fitrah', 'required|numeric|greater_than[0]');
 			$this->form_validation->set_rules('nominal_uang_fitrah', 'Nominal Uang Fitrah', 'numeric|greater_than_equal_to[0]');
 		}
@@ -219,7 +240,8 @@ class Transaksi_unified extends CI_Controller
 		}
 
 		if ($this->input->post('include_infaq')) {
-			$this->form_validation->set_rules('nama_donatur_infaq', 'Nama Donatur Infaq', 'required|trim|max_length[255]');
+			// Nama Donatur Infaq is sourced from the muzakki dropdown (`muzakki_id`)
+			$this->form_validation->set_rules('muzakki_id', 'Nama Donatur Infaq', 'required|integer');
 			$this->form_validation->set_rules('nominal_uang_infaq', 'Nominal Uang Infaq', 'required|numeric|greater_than[0]');
 		}
 	}

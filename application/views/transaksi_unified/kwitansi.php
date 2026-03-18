@@ -1,4 +1,22 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<div style="padding:18px; max-width:900px;">
+	<h2>Kwitansi Gabungan</h2>
+	<p><strong>Batch ID:</strong> <?php echo isset($batch_id) ? html_escape($batch_id) : '-'; ?></p>
+
+	<h3>Ringkasan</h3>
+	<?php if (!empty($fitrah)): ?>
+		<div><strong>Zakat Fitrah:</strong> <?php echo html_escape($fitrah->nomor_transaksi ?? ''); ?></div>
+	<?php endif; ?>
+	<?php if (!empty($mal)): ?>
+		<div><strong>Zakat Mal:</strong> <?php echo html_escape($mal->nomor_transaksi ?? ''); ?></div>
+	<?php endif; ?>
+	<?php if (!empty($infaq)): ?>
+		<div><strong>Infaq:</strong> <?php echo html_escape($infaq->nomor_transaksi ?? ''); ?></div>
+	<?php endif; ?>
+
+	<p><a href="<?php echo site_url('transaksi_unified/create'); ?>">Kembali ke Form</a></p>
+</div>
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php $lembaga = isset($lembaga) ? $lembaga : NULL; ?>
 <?php $nama_penerima = isset($nama_penerima) ? $nama_penerima : '-'; ?>
 <!DOCTYPE html>
