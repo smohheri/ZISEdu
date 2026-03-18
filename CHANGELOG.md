@@ -4,6 +4,20 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+## [v1.1.6] - $(date +%Y-%m-%d)
+
+Optimasi layout form Transaksi Terpadu (Zakat Mal section).
+
+### Fixed
+- Perbaikan layout Row 1 Zakat Mal: col-md-6 (Tanggal Hitung sync dari Umum) + col-md-6 (Mode Perhitungan)
+- Penghapusan field Status duplikat (sudah ada di Data Umum shared)
+- Penghapusan field Metode Bayar visual (sudah ada di Data Umum)
+- Balance perfect 12-column Bootstrap grid
+- Tanggal Hitung readonly + auto-sync via JS dari shared_tanggal_bayar
+
+### Changed
+- Row 1 layout lebih rapi dan minimalis sesuai feedback user
+
 ## [v1.1.5] - 2026-03-16
 
 Penyempurnaan modul laporan, penambahan tanda tangan dinamis pada dokumen PDF, dan restrukturisasi sistem CSS untuk responsivitas mobile yang lebih baik.
