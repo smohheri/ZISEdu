@@ -1,6 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php $lembaga = isset($lembaga) ? $lembaga : NULL; ?>
+<?php $tanggungan = isset($tanggungan) && is_array($tanggungan) ? $tanggungan : array(); ?>
 <?php $namaPenerima = isset($nama_penerima) && trim((string) $nama_penerima) !== '' ? $nama_penerima : '-'; ?>
+<?php $namaDonaturTtd = isset($row->nama_donatur) && trim((string) $row->nama_donatur) !== '' ? $row->nama_donatur : '-'; ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -84,8 +86,9 @@
 		}
 
 		.highlight-value {
-			font-size: 17px;
+			font-size: 18px;
 			font-weight: bold;
+			white-space: nowrap;
 		}
 
 		.sign-wrap {
@@ -98,6 +101,24 @@
 			width: 50%;
 			text-align: center;
 			vertical-align: top;
+		}
+
+		.section-title {
+			font-size: 12px;
+			font-weight: bold;
+			margin: 10px 0 6px;
+		}
+
+		.tanggungan-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 11px;
+		}
+
+		.tanggungan-table th,
+		.tanggungan-table td {
+			border: 1px solid #000;
+			padding: 4px;
 		}
 
 		.sign-space {
@@ -146,7 +167,16 @@
 						</tr>
 						<tr>
 							<td class="label-col">Jenis Dana</td>
-							<td>: <?php echo ucfirst(html_escape($row->jenis_dana)); ?></td>
+							<td>:
+								<?php
+								$jenisLabels = [
+									"infaq" => "Infaq",
+									"shodaqoh" => "Shodaqoh",
+									"infaq_shodaqoh" => "Infaq & Shodaqoh"
+								];
+								echo html_escape($jenisLabels[$row->jenis_dana] ?? ucfirst($row->jenis_dana));
+								?>
+							</td>
 						</tr>
 						<tr>
 							<td class="label-col">Nama Donatur</td>
@@ -171,28 +201,63 @@
 					<?php endif; ?>
 				</td>
 				<td style="width:50%; vertical-align: top; padding-left: 15px;">
-					<div class="highlight" style="text-align:center;background:transparent;border:1px solid #000;">
-						<div class="highlight-title">TOTAL NOMINAL DITERIMA</div>
-						<div class="highlight-value">Rp
-							<?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?>
+					<div class="section-title" style="margin-top: 0; color: #000;">RINCIAN DONASI</div>
+					<?php if (!empty($tanggungan)): ?>
+						<table class="tanggungan-table" style="margin-top: 8px;">
+							<thead style="background-color: #f4f4f4;">
+								<tr>
+									<th width="30">No</th>
+									<th>Keterangan</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php $no = 1;
+								foreach ($tanggungan as $item): ?>
+									<tr>
+										<td class="text-center">
+											<?php echo $no++; ?>
+										</td>
+										<td>
+											<?php echo html_escape($item->keterangan ?? 'Item donasi'); ?>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					<?php else: ?>
+						<div style="text-align: center; color: #000; margin-top: 30px; font-style: italic;">
+							Tidak ada rincian khusus
 						</div>
-					</div>
+					<?php endif; ?>
 				</td>
 			</tr>
 		</table>
 
+		<div class="highlight"
+			style="text-align: center; background-color: transparent; border: 1px solid #000; padding: 4px; margin-top: 5px; margin-bottom: 10px;">
+			<div class="highlight-title" style="color: #000; font-size: 11px;">TOTAL NOMINAL DITERIMA</div>
+			<div class="highlight-value" style="color: #000; margin-top: 2px; font-size: 14px; font-weight: bold;">
+				Rp
+				<?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?>
+			</div>
+		</div>
+
 		<table class="sign-wrap">
 			<tr>
-				<td style="text-align:left; vertical-align: top;">
-					<div>Donatur,</div>
-					<div class="sign-space"></div>
-					<div><strong>(<?php echo html_escape($row->nama_donatur); ?>)</strong></div>
-				</td>
-				<td style="text-align:right; vertical-align: top;">
-					<div>Penerima,</div>
-					<div class="sign-space"></div>
-					<div><strong>(<?php echo html_escape($namaPenerima); ?>)</strong></div>
-				</td>
+				<td>Donatur,</td>
+				<td>Penerima,</td>
+			</tr>
+			<tr>
+				<td class="sign-space"></td>
+				<td class="sign-space"></td>
+			</tr>
+			<tr>
+				<td><strong>(
+						<?php echo html_escape($namaDonaturTtd); ?>)
+					</strong></td>
+				<td><strong>(
+						<?php echo html_escape($namaPenerima); ?>)
+					</strong></td>
 			</tr>
 		</table>
 	</div>

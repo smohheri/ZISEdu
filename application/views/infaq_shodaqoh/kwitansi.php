@@ -141,7 +141,16 @@
 							</tr>
 							<tr>
 								<td class="pr-3">Jenis Dana</td>
-								<td>: <?php echo ucfirst(html_escape($row->jenis_dana)); ?></td>
+								<td>:
+									<?php
+									$jenisLabels = [
+										"infaq" => "Infaq",
+										"shodaqoh" => "Shodaqoh",
+										"infaq_shodaqoh" => "Infaq & Shodaqoh"
+									];
+									echo html_escape($jenisLabels[$row->jenis_dana] ?? ucfirst($row->jenis_dana));
+									?>
+								</td>
 							</tr>
 							<tr>
 								<td class="pr-3">Nama Donatur</td>
