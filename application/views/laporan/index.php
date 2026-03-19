@@ -97,7 +97,7 @@ $infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infa
 <div class="card">
     <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-hand-holding-usd mr-2"></i>Laporan Zakat Fitrah</h3></div>
     <div class="card-body table-responsive p-0">
-        <table class="table table-sm table-hover mb-0">
+        <table class="table table-sm table-hover text-nowrap mb-0">
             <thead>
                 <tr>
                     <th>No Transaksi</th>
@@ -132,12 +132,17 @@ $infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infa
             </tbody>
         </table>
     </div>
+    <?php if (isset($links_fitrah) && $links_fitrah !== ''): ?>
+    <div class="card-footer clearfix">
+        <?php echo $links_fitrah; ?>
+    </div>
+    <?php endif; ?>
 </div>
 
 <div class="card">
     <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-file-invoice-dollar mr-2"></i>Laporan Zakat Mal</h3></div>
     <div class="card-body table-responsive p-0">
-        <table class="table table-sm table-hover mb-0">
+        <table class="table table-sm table-hover text-nowrap mb-0">
             <thead>
                 <tr>
                     <th>No Transaksi</th>
@@ -166,12 +171,17 @@ $infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infa
             </tbody>
         </table>
     </div>
+    <?php if (isset($links_mal) && $links_mal !== ''): ?>
+    <div class="card-footer clearfix">
+        <?php echo $links_mal; ?>
+    </div>
+    <?php endif; ?>
 </div>
 
 <div class="card">
     <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-coins mr-2"></i>Laporan Infaq & Shodaqoh</h3></div>
     <div class="card-body table-responsive p-0">
-        <table class="table table-sm table-hover mb-0">
+        <table class="table table-sm table-hover text-nowrap mb-0">
             <thead>
                 <tr>
                     <th>No Transaksi</th>
@@ -207,12 +217,17 @@ $infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infa
             </tfoot>
         </table>
     </div>
+    <?php if (isset($links_infaq) && $links_infaq !== ''): ?>
+    <div class="card-footer clearfix">
+        <?php echo $links_infaq; ?>
+    </div>
+    <?php endif; ?>
 </div>
 
 <div class="card">
     <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-donate mr-2"></i>Laporan Penyaluran</h3></div>
     <div class="card-body table-responsive p-0">
-        <table class="table table-sm table-hover mb-0">
+        <table class="table table-sm table-hover text-nowrap mb-0">
             <thead>
                 <tr>
                     <th>No Penyaluran</th>
@@ -239,8 +254,15 @@ $infaqUang = isset($ringkasan['infaq_shodaqoh_uang']) ? (float) $ringkasan['infa
             </tbody>
         </table>
     </div>
+    <?php if (isset($links_penyaluran) && $links_penyaluran !== ''): ?>
+    <div class="card-footer clearfix">
+        <?php echo $links_penyaluran; ?>
+    </div>
+    <?php endif; ?>
 </div>
 
 <div class="alert alert-light border">
     <strong>Info:</strong> Total penyaluran beras periode ini: <strong><?php echo number_format($penyaluranBeras, 2, ',', '.'); ?> Kg</strong>
 </div>
+
+<!-- EOF -->

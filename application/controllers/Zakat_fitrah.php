@@ -24,10 +24,20 @@ class Zakat_fitrah extends CI_Controller
             'reuse_query_string' => TRUE
         ));
 
+        $rows = $this->zakat_fitrah->get_paginated($paging['limit'], $paging['offset'], $search);
+        foreach ($rows as $r) {
+            $tanggungan = $this->zakat_fitrah->get_tanggungan_aktif($r->muzakki_id);
+            $t_names = array();
+            foreach ($tanggungan as $t) {
+                $t_names[] = trim((string) $t->nama_anggota) . ' (' . trim((string) $t->hubungan_keluarga) . ')';
+            }
+            $r->tanggungan_list = empty($t_names) ? '-' : implode(', ', $t_names);
+        }
+
         $data = array(
             'page_title' => 'Zakat Fitrah',
             'content_view' => 'zakat_fitrah/index',
-            'rows' => $this->zakat_fitrah->get_paginated($paging['limit'], $paging['offset'], $search),
+            'rows' => $rows,
             'stats' => $this->zakat_fitrah->get_statistics(),
             'paging' => $paging,
             'paging_links' => $paging['links'],

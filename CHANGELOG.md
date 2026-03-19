@@ -4,6 +4,18 @@ Semua perubahan penting pada aplikasi ini dicatat di file ini.
 
 Format mengikuti gaya sederhana: `Added`, `Changed`, `Fixed`.
 
+## [v1.1.8] - 2026-03-19
+
+Penyempurnaan fitur detail riwayat Zakat Fitrah dan implementasi sistem paging yang lebih handal pada modul Laporan.
+
+### Added
+- Menambahkan informasi rincian anggota tanggungan muzakki pada modal "View Detail" riwayat transaksi Zakat Fitrah.
+- Implementasi sistem navigasi halaman (*server-side pagination*) yang mandiri/independen untuk setiap tabel data (Fitrah, Mal, Infaq & Shodaqoh, Penyaluran) dalam halaman utama Laporan menggunakan fungsi helper `zisedu_build_paging`.
+
+### Changed
+- Refaktor desain widget ringkasan statistik (berubah dari `small-box` menjadi `info-box`) pada halaman indeks Zakat Fitrah, Zakat Mal, dan Infaq & Shodaqoh agar tampak lebih modern, minimalis, dan proporsional.
+- Pembaruan metode analitik pada `Zakat_fitrah_model->get_statistics()` untuk mengambil akumulasi nilai mutlak pendapatan uang (Rp) dan beras (Kg) secara rasional, menggantikan parameter kalkulasi lama yang hanya menampilkan kuantitas baris transaksi.
+
 ## [v1.1.7] - 2026-03-19
 
 Rilis perbaikan dan penyempurnaan (*bugfixes*) pasca re-strukturisasi MVC baru, khususnya untuk fungsionalitas Kwitansi, Transaksi Terpadu, dan modul Infaq & Shodaqoh.

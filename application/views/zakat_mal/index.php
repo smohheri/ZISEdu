@@ -14,51 +14,39 @@
 <?php endif; ?>
 
 <div class="row">
-    <div class="col-lg-3 col-sm-6 col-12">
-        <div class="small-box bg-gradient-primary">
-            <div class="inner">
-                <h3><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></h3>
-                <p>Total Transaksi</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-file-invoice-dollar"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-primary"><i class="fas fa-file-invoice-dollar"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Transaksi</span>
+                <span class="info-box-number"><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-6 col-12">
-        <div class="small-box bg-gradient-info">
-            <div class="inner">
-                <h3>Rp
-                    <?php echo number_format(isset($stats['total_harta_bersih']) ? (float) $stats['total_harta_bersih'] : 0, 0, ',', '.'); ?>
-                </h3>
-                <p>Total Harta Bersih</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-wallet"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-info"><i class="fas fa-wallet"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Harta Bersih</span>
+                <span class="info-box-number">Rp <?php echo number_format(isset($stats['total_harta_bersih']) ? (float) $stats['total_harta_bersih'] : 0, 0, ',', '.'); ?></span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-6 col-12">
-        <div class="small-box bg-gradient-success">
-            <div class="inner">
-                <h3>Rp
-                    <?php echo number_format(isset($stats['total_zakat']) ? (float) $stats['total_zakat'] : 0, 0, ',', '.'); ?>
-                </h3>
-                <p>Total Zakat</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-hand-holding-usd"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-success"><i class="fas fa-hand-holding-usd"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Zakat</span>
+                <span class="info-box-number">Rp <?php echo number_format(isset($stats['total_zakat']) ? (float) $stats['total_zakat'] : 0, 0, ',', '.'); ?></span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-6 col-12">
-        <div class="small-box bg-gradient-warning">
-            <div class="inner">
-                <h3><?php echo isset($stats['lunas']) ? (int) $stats['lunas'] : 0; ?></h3>
-                <p>Status Lunas</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-check-circle"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-warning"><i class="fas fa-check-circle"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Status Lunas</span>
+                <span class="info-box-number"><?php echo isset($stats['lunas']) ? (int) $stats['lunas'] : 0; ?></span>
             </div>
         </div>
     </div>

@@ -99,7 +99,9 @@ class Zakat_fitrah_model extends CI_Model
 			'beras' => 0,
 			'lunas' => 0,
 			'draft' => 0,
-			'batal' => 0
+			'batal' => 0,
+			'total_nominal_uang' => 0.0,
+			'total_beras_kg' => 0.0
 		);
 
 		$metode_rows = $this->db
@@ -126,6 +128,17 @@ class Zakat_fitrah_model extends CI_Model
 			if (isset($stats[$key])) {
 				$stats[$key] = (int) $item->jumlah;
 			}
+		}
+
+		$sum_row = $this->db
+			->select('COALESCE(SUM(nominal_uang),0) AS total_nominal_uang, COALESCE(SUM(beras_kg),0) AS total_beras_kg', FALSE)
+			->from($this->table)
+			->where('status', 'lunas')
+			->get()
+			->row();
+		if ($sum_row) {
+			$stats['total_nominal_uang'] = (float) $sum_row->total_nominal_uang;
+			$stats['total_beras_kg']     = (float) $sum_row->total_beras_kg;
 		}
 
 		return $stats;

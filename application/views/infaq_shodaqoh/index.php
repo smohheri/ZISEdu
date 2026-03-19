@@ -14,52 +14,42 @@
 <?php endif; ?>
 
 <div class="row">
-	<div class="col-lg-3 col-sm-6 col-12">
-		<div class="small-box bg-gradient-primary">
-			<div class="inner">
-				<h3><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></h3>
-				<p>Total Transaksi</p>
-			</div>
-			<div class="icon">
-				<i class="fas fa-receipt"></i>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-sm-6 col-6">
-		<div class="small-box bg-gradient-info">
-			<div class="inner">
-				<h3><?php echo isset($stats['infaq']) ? (int) $stats['infaq'] : 0; ?></h3>
-				<p>Transaksi Infaq</p>
-			</div>
-			<div class="icon">
-				<i class="fas fa-donate"></i>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-sm-6 col-6">
-		<div class="small-box bg-gradient-success">
-			<div class="inner">
-				<h3><?php echo isset($stats['shodaqoh']) ? (int) $stats['shodaqoh'] : 0; ?></h3>
-				<p>Transaksi Shodaqoh</p>
-			</div>
-			<div class="icon">
-				<i class="fas fa-hand-holding-heart"></i>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-sm-6 col-12">
-		<div class="small-box bg-gradient-warning">
-			<div class="inner">
-				<h3>Rp
-					<?php echo number_format((float) (isset($stats['total_nominal']) ? $stats['total_nominal'] : 0), 0, ',', '.'); ?>
-				</h3>
-				<p>Total Diterima</p>
-			</div>
-			<div class="icon">
-				<i class="fas fa-wallet"></i>
-			</div>
-		</div>
-	</div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-primary"><i class="fas fa-receipt"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Transaksi</span>
+                <span class="info-box-number"><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-info"><i class="fas fa-donate"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Transaksi Infaq</span>
+                <span class="info-box-number"><?php echo isset($stats['infaq']) ? (int) $stats['infaq'] : 0; ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-success"><i class="fas fa-hand-holding-heart"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Transaksi Shodaqoh</span>
+                <span class="info-box-number"><?php echo isset($stats['shodaqoh']) ? (int) $stats['shodaqoh'] : 0; ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-warning"><i class="fas fa-wallet"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Diterima</span>
+                <span class="info-box-number">Rp <?php echo number_format((float) (isset($stats['total_nominal']) ? $stats['total_nominal'] : 0), 0, ',', '.'); ?></span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="card card-outline card-primary">

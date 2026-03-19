@@ -13,19 +13,60 @@ class Laporan extends CI_Controller
     public function index()
     {
         $filters = $this->_resolve_filters();
-        $reportData = $this->_build_report_data($filters['start_date'], $filters['end_date']);
+        $sd = $filters['start_date'];
+        $ed = $filters['end_date'];
+        $per_page = 10;
+
+        $pg_fitrah = zisedu_build_paging(array(
+            'base_url' => site_url('laporan'),
+            'total_rows' => $this->laporan->count_laporan_fitrah($sd, $ed),
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page_fitrah',
+            'reuse_query_string' => TRUE
+        ));
+
+        $pg_mal = zisedu_build_paging(array(
+            'base_url' => site_url('laporan'),
+            'total_rows' => $this->laporan->count_laporan_mal($sd, $ed),
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page_mal',
+            'reuse_query_string' => TRUE
+        ));
+
+        $pg_infaq = zisedu_build_paging(array(
+            'base_url' => site_url('laporan'),
+            'total_rows' => $this->laporan->count_laporan_infaq_shodaqoh($sd, $ed),
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page_infaq',
+            'reuse_query_string' => TRUE
+        ));
+
+        $pg_penyaluran = zisedu_build_paging(array(
+            'base_url' => site_url('laporan'),
+            'total_rows' => $this->laporan->count_laporan_penyaluran($sd, $ed),
+            'per_page' => $per_page,
+            'page_query_string' => TRUE,
+            'query_string_segment' => 'page_penyaluran',
+            'reuse_query_string' => TRUE
+        ));
 
         $data = array(
             'page_title' => 'Laporan',
             'content_view' => 'laporan/index',
-            'start_date' => $filters['start_date'],
-            'end_date' => $filters['end_date'],
-            'ringkasan' => $reportData['ringkasan'],
-            'rows_fitrah' => $reportData['rows_fitrah'],
-            'rows_mal' => $reportData['rows_mal'],
-            'rows_penyaluran' => $reportData['rows_penyaluran'],
-            'rows_mustahik' => $reportData['rows_mustahik'],
-            'rows_infaq_shodaqoh' => $reportData['rows_infaq_shodaqoh']
+            'start_date' => $sd,
+            'end_date' => $ed,
+            'ringkasan' => $this->laporan->get_ringkasan($sd, $ed),
+            'rows_fitrah' => $this->laporan->get_laporan_fitrah($sd, $ed, $pg_fitrah['limit'], $pg_fitrah['offset']),
+            'rows_mal' => $this->laporan->get_laporan_mal($sd, $ed, $pg_mal['limit'], $pg_mal['offset']),
+            'rows_infaq_shodaqoh' => $this->laporan->get_laporan_infaq_shodaqoh($sd, $ed, $pg_infaq['limit'], $pg_infaq['offset']),
+            'rows_penyaluran' => $this->laporan->get_laporan_penyaluran($sd, $ed, $pg_penyaluran['limit'], $pg_penyaluran['offset']),
+            'links_fitrah' => $pg_fitrah['links'],
+            'links_mal' => $pg_mal['links'],
+            'links_infaq' => $pg_infaq['links'],
+            'links_penyaluran' => $pg_penyaluran['links']
         );
 
         $this->load->view('layouts/adminlte', $data);

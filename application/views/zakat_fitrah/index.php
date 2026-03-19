@@ -14,47 +14,39 @@
 <?php endif; ?>
 
 <div class="row">
-    <div class="col-lg-3 col-sm-6 col-12">
-        <div class="small-box bg-gradient-primary">
-            <div class="inner">
-                <h3><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></h3>
-                <p>Total Transaksi</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-receipt"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-primary"><i class="fas fa-receipt"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Transaksi</span>
+                <span class="info-box-number"><?php echo isset($stats['total']) ? (int) $stats['total'] : 0; ?></span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-6 col-6">
-        <div class="small-box bg-gradient-info">
-            <div class="inner">
-                <h3><?php echo isset($stats['uang']) ? (int) $stats['uang'] : 0; ?></h3>
-                <p>Metode Uang</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-money-bill-wave"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-info"><i class="fas fa-money-bill-wave"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Uang</span>
+                <span class="info-box-number">Rp <?php echo number_format(isset($stats['total_nominal_uang']) ? $stats['total_nominal_uang'] : 0, 0, ',', '.'); ?></span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-6 col-6">
-        <div class="small-box bg-gradient-success">
-            <div class="inner">
-                <h3><?php echo isset($stats['beras']) ? (int) $stats['beras'] : 0; ?></h3>
-                <p>Metode Beras</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-seedling"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-success"><i class="fas fa-seedling"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Total Beras</span>
+                <span class="info-box-number"><?php echo number_format(isset($stats['total_beras_kg']) ? $stats['total_beras_kg'] : 0, 2, ',', '.'); ?> Kg</span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-sm-6 col-12">
-        <div class="small-box bg-gradient-warning">
-            <div class="inner">
-                <h3><?php echo isset($stats['lunas']) ? (int) $stats['lunas'] : 0; ?></h3>
-                <p>Status Lunas</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-check-circle"></i>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="info-box shadow">
+            <span class="info-box-icon bg-gradient-warning"><i class="fas fa-check-circle"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Transaksi Lunas</span>
+                <span class="info-box-number"><?php echo isset($stats['lunas']) ? (int) $stats['lunas'] : 0; ?></span>
             </div>
         </div>
     </div>
@@ -183,7 +175,8 @@
                                         data-nominal="Rp <?php echo number_format((float) $row->nominal_uang, 0, ',', '.'); ?>"
                                         data-metode-bayar="<?php echo html_escape(ucfirst($row->metode_bayar)); ?>"
                                         data-status="<?php echo html_escape(strtoupper($row->status)); ?>"
-                                        data-keterangan="<?php echo html_escape(!empty($row->keterangan) ? $row->keterangan : '-'); ?>">
+                                        data-keterangan="<?php echo html_escape(!empty($row->keterangan) ? $row->keterangan : '-'); ?>"
+                                        data-tanggungan="<?php echo html_escape(isset($row->tanggungan_list) ? $row->tanggungan_list : '-'); ?>">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <a class="btn btn-warning" href="<?php echo site_url('zakat_fitrah/edit/' . $row->id); ?>" title="Edit">
@@ -240,6 +233,7 @@
                     <div class="col-md-6 mb-2"><strong>Nominal Uang:</strong> <span id="detail-nominal">-</span></div>
                     <div class="col-md-6 mb-2"><strong>Metode Bayar:</strong> <span id="detail-metode-bayar">-</span></div>
                     <div class="col-md-6 mb-2"><strong>Status:</strong> <span id="detail-status">-</span></div>
+                    <div class="col-md-12 mb-2"><strong>Rincian Tanggungan:</strong><br><span id="detail-tanggungan">-</span></div>
                     <div class="col-md-12 mb-2"><strong>Keterangan:</strong><br><span id="detail-keterangan">-</span></div>
                 </div>
             </div>
@@ -268,6 +262,7 @@
             $('#detail-metode-bayar').text(btn.data('metode-bayar') || '-');
             $('#detail-status').text(btn.data('status') || '-');
             $('#detail-keterangan').text(btn.data('keterangan') || '-');
+            $('#detail-tanggungan').text(btn.data('tanggungan') || '-');
         });
     });
 </script>
